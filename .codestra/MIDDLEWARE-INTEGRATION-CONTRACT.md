@@ -2,14 +2,16 @@
 
 This repository remains independently buildable, testable, deployable, observable, and rollback-capable. Cross-system integration follows the Codestra canonical control plane instead of duplicating business/provider authority.
 
-## Canonical integration path
+## Canonical integration paths
 
-Public client -> Caddy -> Kong -> Middleware integration API :8095 -> /platform/v1 command kernel -> durable idempotency + command ledger -> outbox/worker -> owned adapter -> downstream domain/provider -> readback/reconciliation -> audit/metrics/traces
+Public client ingress -> Caddy -> Kong -> Middleware integration API :8095 -> /platform/v1 command kernel -> durable idempotency + command ledger -> outbox/worker -> owned adapter -> downstream domain/provider -> readback/reconciliation -> audit/metrics/traces
+
+BREERO service-to-service effects do **not** traverse public Kong. The existing BREERO worker path remains private and authenticated: BREERO worker -> private network -> Middleware `POST /api/v1/integrations/breero/events`, protected by the repository's mTLS + HMAC controls. `/platform/v1` is the public/control-plane command surface; the private BREERO adapter route remains the service dependency until an explicitly reviewed migration replaces it.
 
 ## Repository requirements
 
 1. Standalone ownership: this repository owns its domain logic/data or declared infrastructure function and must build/test/deploy/rollback independently.
-2. Cross-system effects: new cross-repo/provider-changing effects use Middleware /platform/v1 commands. No new parallel command authority or direct provider-effect bypass.
+2. Cross-system effects: public/control-plane clients use Middleware `/platform/v1` commands. BREERO worker-originated effects continue through the private authenticated `/api/v1/integrations/breero/events` adapter route. No new parallel command authority or direct provider-effect bypass.
 3. Durability: effectful work requires idempotency, operation identity, durable persistence/ledger/outbox, replay-safe failure semantics, readback and reconciliation.
 4. Ownership: every service/adapter/connector has one declared owner. Runtime metadata must be representable in Middleware /platform/v1/services: service_id, owner, repository, environment, health, metrics, OpenAPI when applicable, dependencies, SLO, deployment SHA, status.
 5. Identity: Keycloak is central IdP. JWT signature, issuer, audience, azp/client, scopes/roles and tenant binding fail closed.
