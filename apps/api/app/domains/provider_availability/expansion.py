@@ -70,6 +70,7 @@ def expand(
     blackouts: Sequence[Blackout],
     window_start: datetime,
     window_end: datetime,
+    selected_worker_id: uuid.UUID | None = None,
 ) -> list[Interval]:
     if window_start.tzinfo is None or window_end.tzinfo is None:
         raise ValueError("preview window must be timezone-aware")
@@ -84,7 +85,9 @@ def expand(
         blocks = sorted(
             (item.starts_at.astimezone(UTC), item.ends_at.astimezone(UTC))
             for item in blackouts
-            if item.worker_id is None or item.worker_id == rule.worker_id
+            if item.worker_id is None
+            or item.worker_id == rule.worker_id
+            or (rule.worker_id is None and item.worker_id == selected_worker_id)
         )
         for local_day in _local_dates(window_start, window_end, zone):
             if local_day.weekday() != rule.weekday:
