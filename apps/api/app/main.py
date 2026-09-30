@@ -7,10 +7,8 @@ import structlog
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
-from starlette.responses import JSONResponse
 
 from app.api.internal_odoo import router as internal_odoo_router
-from app.api.policy_registry import install_endpoint_registry
 from app.api.v1.router import api_router as api_v1_router
 from app.api.v2.router import api_router as api_v2_router
 from app.config import settings
@@ -22,7 +20,7 @@ from app.core.errors import (
 from app.core.lifespan import lifespan
 from app.core.redis_client import redis_client_from_request
 from app.db.session import engine
-from app.domains.auth.browser_session import ACCESS_COOKIE, validate_csrf
+from app.domains.audit import context as audit_request
 from app.observability import (
     configure_logging,
     configure_tracing,
@@ -33,7 +31,7 @@ from app.observability import (
     route_template,
 )
 
-EXPECTED_SCHEMA_REVISION = "031_provider_catalog"
+EXPECTED_SCHEMA_REVISION = "023_audit_read_model"
 READINESS_TIMEOUT_SECONDS = 3.0
 TRACE_ID_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:-]{0,127}")
 app = FastAPI(title=settings.app_name, version="2.0.0", lifespan=lifespan)
@@ -65,26 +63,15 @@ async def request_context(request: Request, call_next):
     correlation_id = _trace_id(request.headers.get("X-Correlation-ID")) or request_id
     request.state.request_id = request_id
     request.state.correlation_id = correlation_id
+    audit_context = audit_request.bind_request_context(
+        request_id=request_id,
+        correlation_id=correlation_id,
+        client_ip=request.client.host if request.client else None,
+    )
     started = time.perf_counter()
     status_code = 500
     try:
-        if (
-            request.method not in {"GET", "HEAD", "OPTIONS"}
-            and request.cookies.get(ACCESS_COOKIE)
-            and request.url.path not in {
-                "/api/v1/auth/browser/login",
-                "/api/v1/auth/browser/register/client",
-                "/api/v1/auth/browser/register/provider",
-            }
-        ):
-            try:
-                validate_csrf(request)
-            except HTTPException as exc:
-                response = JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
-            else:
-                response = await call_next(request)
-        else:
-            response = await call_next(request)
+        response = await call_next(request)
         status_code = response.status_code
     except Exception:
         logger.exception(
@@ -99,6 +86,7 @@ async def request_context(request: Request, call_next):
         response = v2_unexpected_error_response(request)
         status_code = response.status_code
     finally:
+        audit_request.reset_request_context(audit_context)
         duration_seconds = time.perf_counter() - started
         record_http_request(request, status_code, duration_seconds)
     duration_ms = round(duration_seconds * 1000, 2)
@@ -173,8 +161,5 @@ async def ready(request: Request) -> dict[str, str]:
     return {"status": "ready", **checks}
 
 
-# Build after every application route has been mounted. Any unowned runtime
-# operation fails import and therefore fails CI before an image can be built.
-install_endpoint_registry(app)
 # Add tracing last so its middleware surrounds request logging and supplies trace IDs.
 configure_tracing(app)

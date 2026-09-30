@@ -2,15 +2,15 @@ import uuid
 from collections.abc import Callable
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.db.session import get_db
+from app.domains.audit.recorder import record_access_denied
 from app.domains.auth.access_service import AccessService
-from app.domains.auth.browser_session import ACCESS_COOKIE
 from app.domains.auth.models import AccessRole, IdentityLink, User, UserRole
 from app.domains.auth.repository import UserRepository
 from app.domains.auth.security import decode_access_token
@@ -85,21 +85,17 @@ async def _keycloak_user(
 
 
 async def current_user(
-    request: Request,
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)],
     session: Annotated[AsyncSession, Depends(get_db)],
 ) -> User:
-    token = credentials.credentials if credentials else request.cookies.get(ACCESS_COOKIE)
-    if not token:
+    if not credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication required"
         )
-    claims = await decode_access_token(token)
+    claims = await decode_access_token(credentials.credentials)
     repository = UserRepository(session)
     user: User | None
-    issuer = str(claims.get("iss") or "").rstrip("/")
-    keycloak_issuer = str(settings.keycloak_issuer or "").rstrip("/")
-    if settings.keycloak_enabled and issuer and issuer == keycloak_issuer:
+    if settings.keycloak_enabled:
         user = await _keycloak_user(claims, repository, session)
     else:
         try:
@@ -108,21 +104,11 @@ async def current_user(
             raise HTTPException(status_code=401, detail="Invalid token") from exc
         user = await repository.by_id(user_id)
     if not user or not user.is_active or (
-        not (settings.keycloak_enabled and issuer and issuer == keycloak_issuer)
-        and claims.get("cv", 1) != user.credential_version
+        not settings.keycloak_enabled and claims.get("cv", 1) != user.credential_version
     ):
         raise HTTPException(status_code=401, detail="Invalid or inactive account")
     return user
 
-
-async def optional_current_user(
-    request: Request,
-    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer)],
-    session: Annotated[AsyncSession, Depends(get_db)],
-) -> User | None:
-    if not credentials and not request.cookies.get(ACCESS_COOKIE):
-        return None
-    return await current_user(request, credentials, session)
 
 def require_roles(*roles: UserRole) -> Callable:
     allowed_roles = frozenset(
@@ -137,6 +123,13 @@ def require_roles(*roles: UserRole) -> Callable:
     ) -> User:
         context = await AccessService(session).context(user, BRAND_KEY)
         if not allowed_roles.intersection(context.roles):
+            await record_access_denied(
+                session,
+                actor_id=user.id,
+                required=(f"role:{role.value}" for role in allowed_roles),
+                reason_code="missing_role",
+                brand_key=BRAND_KEY,
+            )
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions"
             )
@@ -157,6 +150,13 @@ def require_permissions(*permissions: str) -> Callable:
         context = await AccessService(session).context(user, BRAND_KEY)
         effective = set(context.permissions)
         if "*" not in effective and not required.issubset(effective):
+            await record_access_denied(
+                session,
+                actor_id=user.id,
+                required=required,
+                reason_code="missing_permission",
+                brand_key=BRAND_KEY,
+            )
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions"
             )
