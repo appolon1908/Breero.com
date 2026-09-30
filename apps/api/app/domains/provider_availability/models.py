@@ -26,7 +26,7 @@ class ProviderAvailabilityRule(Base):
     window applies to the whole provider organization.
     """
 
-    __tablename__ = "provider_availability_rules"
+    __tablename__ = "provider_declared_availability_rules"
     __table_args__ = (
         CheckConstraint(
             "weekday >= 0 AND weekday <= 6",
