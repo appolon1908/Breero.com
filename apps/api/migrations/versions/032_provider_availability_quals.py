@@ -69,7 +69,7 @@ def _owner_columns() -> list[sa.Column]:
 
 def upgrade() -> None:
     op.create_table(
-        "provider_availability_rules",
+        "provider_declared_availability_rules",
         *_owner_columns(),
         sa.Column("weekday", sa.Integer(), nullable=False),
         sa.Column("start_time", sa.Time(), nullable=False),
@@ -88,34 +88,34 @@ def upgrade() -> None:
         *_timestamps(),
         sa.CheckConstraint(
             "weekday >= 0 AND weekday <= 6",
-            name="ck_provider_availability_rules_availability_rule_weekday_range",
+            name="ck_provider_declared_availability_rules_availability_rule_weekday_range",
         ),
         sa.CheckConstraint(
             "start_time < end_time",
-            name="ck_provider_availability_rules_availability_rule_time_order",
+            name="ck_provider_declared_availability_rules_availability_rule_time_order",
         ),
         sa.CheckConstraint(
             "valid_from IS NULL OR valid_until IS NULL OR valid_from <= valid_until",
-            name="ck_provider_availability_rules_availability_rule_date_order",
+            name="ck_provider_declared_availability_rules_availability_rule_date_order",
         ),
         sa.CheckConstraint(
             "version > 0",
-            name="ck_provider_availability_rules_availability_rule_positive_version",
+            name="ck_provider_declared_availability_rules_availability_rule_positive_version",
         ),
     )
     op.create_index(
-        "ix_provider_availability_rules_vendor_id",
-        "provider_availability_rules",
+        "ix_provider_declared_availability_rules_vendor_id",
+        "provider_declared_availability_rules",
         ["vendor_id"],
     )
     op.create_index(
-        "ix_provider_availability_rules_worker_id",
-        "provider_availability_rules",
+        "ix_provider_declared_availability_rules_worker_id",
+        "provider_declared_availability_rules",
         ["worker_id"],
     )
     op.create_index(
-        "ix_provider_availability_rules_active",
-        "provider_availability_rules",
+        "ix_provider_declared_availability_rules_active",
+        "provider_declared_availability_rules",
         ["active"],
     )
 
@@ -272,7 +272,7 @@ def downgrade() -> None:
     )
     op.drop_table("provider_qualifications")
     op.drop_table("provider_blackout_periods")
-    op.drop_table("provider_availability_rules")
+    op.drop_table("provider_declared_availability_rules")
     bind = op.get_bind()
     postgresql.ENUM(name="provider_qualification_review_status").drop(bind)
     postgresql.ENUM(name="provider_qualification_status").drop(bind)
