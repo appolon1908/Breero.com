@@ -59,7 +59,11 @@ export function SiteHeader() {
   const logout = async () => {
     setOpen(false);
     setSigningOut(true);
-    await logoutCustomerSession("/");
+    try {
+      await logoutCustomerSession("/");
+    } catch {
+      setSigningOut(false);
+    }
   };
 
   const accountControls = authenticated ? (
