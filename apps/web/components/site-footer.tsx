@@ -32,7 +32,7 @@ export function SiteFooter() {
 
         <div className="footer__inner hz-site-footer__grid">
           <section className="footer__intro hz-site-footer__intro" aria-labelledby="breero-footer-title">
-            <Logo light />
+            <Logo />
             <p className="hz-eyebrow">Codestra product network</p>
             <h2 id="breero-footer-title" className="hz-site-footer__title">Clear home-service support, from request onward.</h2>
             <span className="footer__trust"><ShieldIcon size={18} />Request and quote workflow. No online payment is required or collected.</span>
