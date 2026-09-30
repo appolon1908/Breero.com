@@ -1,12 +1,17 @@
-"""Shared test-process defaults.
+"""Shared test-process safety guard.
 
-Tests must be runnable from a fresh checkout without relying on an operator's
-shell environment. Production/staging settings remain explicit; only the test
-process receives the safe test environment default.
+Never override an environment selected by the operator or dotenv-backed
+application settings. Tests that need APP_ENV=test must receive it explicitly
+from their test runner/CI environment.
 """
 
 from __future__ import annotations
 
 import os
 
-os.environ.setdefault("APP_ENV", "test")
+if "APP_ENV" not in os.environ:
+    # Do not synthesize test mode here: pydantic-settings may still load a
+    # staging/production .env (including DATABASE_URL) after this module loads.
+    # Unit tests use their own dependency overrides; integration CI must set
+    # APP_ENV=test together with its isolated database explicitly.
+    pass
