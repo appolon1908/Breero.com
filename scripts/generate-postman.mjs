@@ -21,6 +21,7 @@ function refSchema(schema) {
 function patternSample(pattern) {
   const choices = pattern?.match(/^\^\(([^()]+)\)\$$/)?.[1]?.split("|");
   if (choices?.length) return choices[0];
+  if (pattern === "^[A-Z]{2}$") return "NY";
   if (pattern === "^[A-Z]{3}$") return "USD";
   if (/postal|zip/i.test(pattern ?? "")) return "10001";
   return undefined;
