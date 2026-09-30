@@ -11,7 +11,7 @@ BREERO service-to-service effects do **not** traverse public Kong. The existing 
 ## Repository requirements
 
 1. Standalone ownership: this repository owns its domain logic/data or declared infrastructure function and must build/test/deploy/rollback independently.
-2. Cross-system effects: public/control-plane clients use Middleware `/platform/v1` commands. BREERO worker-originated effects continue through the private authenticated `/api/v1/integrations/breero/events` adapter route. No new parallel command authority or direct provider-effect bypass.
+2. Cross-system effects: BREERO browser/product clients continue to enter through BREERO-owned `/api/v1` routes, where BREERO authentication, authorization, tenant scope, and record policy remain authoritative. Public **control-plane** consumers may use Middleware `/platform/v1` commands. BREERO worker-originated effects continue through the private authenticated `/api/v1/integrations/breero/events` adapter route. No new parallel command authority or direct provider-effect bypass.
 3. Durability: effectful work requires idempotency, operation identity, durable persistence/ledger/outbox, replay-safe failure semantics, readback and reconciliation.
 4. Ownership: every service/adapter/connector has one declared owner. Runtime metadata must be representable in Middleware /platform/v1/services: service_id, owner, repository, environment, health, metrics, OpenAPI when applicable, dependencies, SLO, deployment SHA, status.
 5. Identity: Keycloak is central IdP. JWT signature, issuer, audience, azp/client, scopes/roles and tenant binding fail closed.
