@@ -277,6 +277,7 @@ class ProviderAvailabilityService:
             ],
             starts_at,
             ends_at,
+            selected_worker_id=worker_id,
         )
         return AvailabilityPreviewRead(
             window_start=starts_at,
