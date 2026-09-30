@@ -107,7 +107,7 @@ export function PortalApp({ config }: { config: PortalConfig }) {
   return <div className="portal-shell"><aside><a className="portal-brand" href="https://breero.com" aria-label="BREERO home">BREERO</a>
     <p>{config.name}</p><nav aria-label="Portal navigation">{config.sections.map((section) => <button key={section.label} className={active.label === section.label ? "is-active" : ""} onClick={() => void load(section)}>{section.label}</button>)}</nav>
     <button className="portal-signout" onClick={() => void logout()}>Sign out</button></aside>
-    <main><header><div><p className="portal-eyebrow">{config.eyebrow}</p><h1>{active.label}</h1></div><p>{session.user.full_name}<br/><small>{session.user.email}</small></p></header>
+    <main><header className="portal-topbar"><div><p className="portal-eyebrow">{config.eyebrow}</p><h1>{active.label}</h1></div><p>{session.user.full_name}<br/><small>{session.user.email}</small></p></header>
       <section className="portal-panel"><h2>{active.label}</h2><p>{active.description}</p>
         {!active.path && <div className="portal-notice">This capability is not exposed by the canonical API yet. No placeholder data is shown.</div>}
         {loading && <p role="status">Loading live data…</p>}{error && <p className="portal-error" role="alert">{error}</p>}
