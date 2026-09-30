@@ -88,7 +88,7 @@ export function SiteHeader() {
     <header className="site-header hz-site-header">
       <div className="site-header__bar hz-container hz-site-header__inner">
         <div className="hz-brand">
-          <Logo light priority />
+          <Logo priority />
           <span className="hz-brand__domain">breero.com</span>
         </div>
 
