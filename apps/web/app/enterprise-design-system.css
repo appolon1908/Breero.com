@@ -364,8 +364,8 @@ p {
   --hz-warning: #f7c66a;
   --hz-danger: #ff7a85;
   --hz-info: #7db9ff;
-  --hz-font-display: "Space Grotesk", "Inter", "Helvetica Neue", Arial, sans-serif;
-  --hz-font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --hz-font-display: var(--font-br-sans, "Manrope"), "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --hz-font-body: var(--font-br-sans, "Manrope"), "Helvetica Neue", "Segoe UI", Arial, sans-serif;
   --hz-font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --hz-canvas-max: 90rem;
   --hz-control: 2.75rem;
@@ -699,12 +699,12 @@ html[data-horizon-root] > body {
   font-size: 0.75rem;
 }
 
-@media (max-width: 64rem) {
+@media (max-width: 56.25rem) {
   .hz-site-nav--desktop {
     display: none;
   }
 
-  .hz-menu-button {
+  .site-header .mobile-menu-button.hz-menu-button {
     display: inline-flex;
   }
 
