@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.db.session import get_db
+from app.domains.audit.recorder import record_access_denied
 from app.domains.auth.access_service import AccessService
 from app.domains.auth.browser_session import ACCESS_COOKIE
 from app.domains.auth.models import AccessRole, IdentityLink, User, UserRole
@@ -137,6 +138,13 @@ def require_roles(*roles: UserRole) -> Callable:
     ) -> User:
         context = await AccessService(session).context(user, BRAND_KEY)
         if not allowed_roles.intersection(context.roles):
+            await record_access_denied(
+                session,
+                actor_id=user.id,
+                required=(f"role:{role.value}" for role in allowed_roles),
+                reason_code="missing_role",
+                brand_key=BRAND_KEY,
+            )
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions"
             )
@@ -157,6 +165,13 @@ def require_permissions(*permissions: str) -> Callable:
         context = await AccessService(session).context(user, BRAND_KEY)
         effective = set(context.permissions)
         if "*" not in effective and not required.issubset(effective):
+            await record_access_denied(
+                session,
+                actor_id=user.id,
+                required=required,
+                reason_code="missing_permission",
+                brand_key=BRAND_KEY,
+            )
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions"
             )

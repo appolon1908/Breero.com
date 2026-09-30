@@ -7,6 +7,7 @@ from app.api.v1 import (
     admin_dispatch,
     admin_geography,
     admin_users,
+    audit,
     auth,
     availability,
     booking_intents,
@@ -35,6 +36,7 @@ api_router.include_router(capabilities.router, prefix="/public", tags=["public-c
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 api_router.include_router(access.router, prefix="/auth/access", tags=["auth-access"])
 api_router.include_router(admin_users.router, prefix="/admin/users", tags=["admin-users"])
+api_router.include_router(audit.router, prefix="/admin/audit", tags=["admin-audit"])
 api_router.include_router(
     admin_geography.service_zones_router, prefix="/admin/service-zones", tags=["admin-service-zones"]
 )
