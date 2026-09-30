@@ -145,7 +145,16 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Enforce BREERO design system
-        run: node scripts/check-design-system.mjs "${{ github.event.pull_request.base.sha }}"
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="$PR_BASE_SHA"
+          if [[ "$EVENT_NAME" == push ]]; then base="$PUSH_BEFORE_SHA"; fi
+          node scripts/check-design-system.mjs "$base"
 
   quality:
     name: quality
