@@ -15,13 +15,15 @@ EXPECTED = {
 
 def validate(contract):
     errors = []
+    if contract.get('repository') != 'appolon1908/Breero.com':
+        errors.append('Repository authority must be appolon1908/Breero.com')
     components = contract['components']
-    names = [c['repository'].removeprefix('appolon1908-hue/') for c in components]
+    names = [c['repository'].removeprefix('appolon1908/') for c in components]
     if set(names) != EXPECTED or len(names) != len(EXPECTED):
         errors.append('Exactly the 14 approved stack repositories are required')
     for c in components:
-        if not c['repository'].startswith('appolon1908-hue/'):
-            errors.append('Repository owner must be appolon1908-hue')
+        if not c['repository'].startswith('appolon1908/'):
+            errors.append('Repository owner must be appolon1908')
         if c.get('odoo_business_write') is not False:
             errors.append('Monitoring, analytics and secrets components cannot write Odoo business data')
         if c.get('secret_source') != 'Codestra-OpenBao':

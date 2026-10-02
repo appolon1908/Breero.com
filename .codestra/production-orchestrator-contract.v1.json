@@ -1,6 +1,6 @@
 {
   "schema_version": "codestra.production-orchestrator-contract.v1",
-  "repository": "ingtrader21-spec/Breero.com",
+  "repository": "appolon1908/Breero.com",
   "repository_id": 1331354808,
   "default_branch": "main",
   "role": "application",
@@ -15,11 +15,11 @@
     "minimum_images": 5,
     "maximum_images": 5,
     "image_repositories": [
-      "ghcr.io/appolon1908-hue/breero-api",
-      "ghcr.io/appolon1908-hue/breero-frontend",
-      "ghcr.io/appolon1908-hue/breero-partner",
-      "ghcr.io/appolon1908-hue/breero-ops",
-      "ghcr.io/appolon1908-hue/breero-admin"
+      "ghcr.io/appolon1908/breero-api",
+      "ghcr.io/appolon1908/breero-frontend",
+      "ghcr.io/appolon1908/breero-partner",
+      "ghcr.io/appolon1908/breero-ops",
+      "ghcr.io/appolon1908/breero-admin"
     ],
     "require_digest": true,
     "allow_rebuild_after_staging": false,

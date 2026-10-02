@@ -9,6 +9,7 @@ needle="$(printf '%s%s' 'money' 'bee')"
 if grep -RIni \
   --exclude-dir=.git \
   --exclude-dir=.codestra \
+  --exclude=CANONICAL_REPOSITORIES.md \
   -- "$needle" "$root"; then
   echo "Cross-project product reference detected." >&2
   exit 1

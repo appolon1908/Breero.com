@@ -4,7 +4,7 @@
 
 ### Mission objective
 
-Transform the existing `appolon1908-hue/Breero.com` repository into a complete, enterprise-grade, two-sided home-services marketplace operating on the shared Codestra platform.
+Transform the existing `appolon1908/Breero.com` repository into a complete, enterprise-grade, two-sided home-services marketplace operating on the shared Codestra platform.
 
 This is an **extension, hardening, integration, and completion mission**.
 
@@ -1304,7 +1304,7 @@ A booking can proceed to completed job with immutable history and recovery paths
 ## Repository
 
 ```text
-appolon1908-hue/klyrow.com
+appolon1908/klyrow.com
 ```
 
 ## Authority
@@ -1393,7 +1393,7 @@ Transactional email delivery is traceable end-to-end.
 ## Repository
 
 ```text
-appolon1908-hue/telnexa
+appolon1908/telnexa
 ```
 
 ## Authority

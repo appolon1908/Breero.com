@@ -1,6 +1,6 @@
 # BREERO Marketplace V2 — Final Backend Production Implementation
 
-**Repository:** existing `appolon1908-hue/Breero.com` monorepo
+**Repository:** existing `appolon1908/Breero.com` monorepo
 **Backend application:** `apps/api`
 **Implementation principle:** domain-first modular monolith
 **Database:** existing PostgreSQL/PostGIS database and naming conventions

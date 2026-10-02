@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "system": "breero-marketplace",
-  "repository": "appolon1908-hue/Breero.com",
+  "repository": "appolon1908/Breero.com",
   "branch": "integration/n8n-marketplace-automation-v2-20260827",
   "authority": "marketplace-domain-system-of-record",
   "integration_boundary": "codestra-middleware-only",
