@@ -1,6 +1,6 @@
 # CODEX MASTER MISSION — BREERO Premium Public Website Brand
 
-Repository: `appolon1908-hue/Breero.com`
+Repository: `appolon1908/Breero.com`
 Branch: `codex/premium-public-web-brand`
 
 ## Authority and scope
