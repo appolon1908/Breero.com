@@ -13,6 +13,19 @@ class StackBoundaryTests(unittest.TestCase):
     def test_approved_contract(self):
         self.assertEqual(validate(self.contract), [])
 
+    def test_canonical_repository_owner_is_accepted(self):
+        changed = copy.deepcopy(self.contract)
+        changed['repository'] = 'appolon1908/Breero.com'
+        for component in changed['components']:
+            component['repository'] = component['repository'].replace(
+                'appolon1908-hue/', 'appolon1908/'
+            )
+        self.assertEqual(validate(changed), [])
+
+    def test_retired_top_level_owner_is_rejected(self):
+        self.contract['repository'] = 'appolon1908-hue/Breero.com'
+        self.assertTrue(validate(self.contract))
+
     def test_every_component_is_denied_odoo_writes(self):
         for component in self.contract['components']:
             with self.subTest(component=component['repository']):

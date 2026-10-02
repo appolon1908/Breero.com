@@ -1,26 +1,26 @@
 # Breero observability, analytics and secrets boundary
 
 The approved stack is recorded in [stack-contract.json](../deploy/observability/stack-contract.json).
-The repository owner for every component below is `appolon1908-hue`.
+The repository owner for every component below is `appolon1908`.
 
 ## Responsibilities
 
 | Repository | Responsibility |
 | --- | --- |
-| [Codestra-Prometheus](https://github.com/appolon1908-hue/Codestra-Prometheus) | Metrics collection, recording rules, alert rules and service health |
-| [Codestra-Alertmanager](https://github.com/appolon1908-hue/Codestra-Alertmanager) | Alert routing, grouping, escalation and Middleware notifications |
-| [Codestra-Grafana-](https://github.com/appolon1908-hue/Codestra-Grafana-) | Infrastructure, application, API, Odoo, Middleware, SMS, email and calling dashboards |
-| [Codestra-Telemetry](https://github.com/appolon1908-hue/Codestra-Telemetry) | OpenTelemetry collection and telemetry standards |
-| [Codestra-Alloy](https://github.com/appolon1908-hue/Codestra-Alloy) | Metrics, logs and traces collection and forwarding |
-| [Codestra-Loki](https://github.com/appolon1908-hue/Codestra-Loki) | Centralized application and infrastructure logs |
-| [Codestra-Tempo](https://github.com/appolon1908-hue/Codestra-Tempo) | Distributed API and service tracing |
-| [Codestra-Node-Exporter](https://github.com/appolon1908-hue/Codestra-Node-Exporter) | Linux CPU, memory, disk, filesystem and network metrics |
-| [Codestra-cAdvisor](https://github.com/appolon1908-hue/Codestra-cAdvisor) | Docker and container resource monitoring |
-| [Codestra-Redis-Exporter](https://github.com/appolon1908-hue/Codestra-Redis-Exporter) | Redis health, memory, connections, commands and queue metrics |
-| [Codestra-Blackbox-Exporter](https://github.com/appolon1908-hue/Codestra-Blackbox-Exporter) | HTTP, HTTPS, TCP, DNS, endpoint, TLS and availability probes |
-| [Codestra-Postgres-Exporter](https://github.com/appolon1908-hue/Codestra-Postgres-Exporter) | PostgreSQL monitoring |
-| [Superset](https://github.com/appolon1908-hue/Superset) | Read-only business intelligence, KPI reporting and analytics |
-| [Codestra-OpenBao](https://github.com/appolon1908-hue/Codestra-OpenBao) | Credentials, certificates, tokens and monitoring secrets |
+| [Codestra-Prometheus](https://github.com/appolon1908/Codestra-Prometheus) | Metrics collection, recording rules, alert rules and service health |
+| [Codestra-Alertmanager](https://github.com/appolon1908/Codestra-Alertmanager) | Alert routing, grouping, escalation and Middleware notifications |
+| [Codestra-Grafana-](https://github.com/appolon1908/Codestra-Grafana-) | Infrastructure, application, API, Odoo, Middleware, SMS, email and calling dashboards |
+| [Codestra-Telemetry](https://github.com/appolon1908/Codestra-Telemetry) | OpenTelemetry collection and telemetry standards |
+| [Codestra-Alloy](https://github.com/appolon1908/Codestra-Alloy) | Metrics, logs and traces collection and forwarding |
+| [Codestra-Loki](https://github.com/appolon1908/Codestra-Loki) | Centralized application and infrastructure logs |
+| [Codestra-Tempo](https://github.com/appolon1908/Codestra-Tempo) | Distributed API and service tracing |
+| [Codestra-Node-Exporter](https://github.com/appolon1908/Codestra-Node-Exporter) | Linux CPU, memory, disk, filesystem and network metrics |
+| [Codestra-cAdvisor](https://github.com/appolon1908/Codestra-cAdvisor) | Docker and container resource monitoring |
+| [Codestra-Redis-Exporter](https://github.com/appolon1908/Codestra-Redis-Exporter) | Redis health, memory, connections, commands and queue metrics |
+| [Codestra-Blackbox-Exporter](https://github.com/appolon1908/Codestra-Blackbox-Exporter) | HTTP, HTTPS, TCP, DNS, endpoint, TLS and availability probes |
+| [Codestra-Postgres-Exporter](https://github.com/appolon1908/Codestra-Postgres-Exporter) | PostgreSQL monitoring |
+| [Superset](https://github.com/appolon1908/Superset) | Read-only business intelligence, KPI reporting and analytics |
+| [Codestra-OpenBao](https://github.com/appolon1908/Codestra-OpenBao) | Credentials, certificates, tokens and monitoring secrets |
 
 ## Signal and control flows
 
@@ -84,9 +84,9 @@ instrumentation. The following existing work remains separate:
 
 | Work | Pull request | Dependency |
 | --- | --- | --- |
-| Metrics, tracing, heartbeat and log collection | [#106](https://github.com/appolon1908-hue/Breero.com/pull/106) | Validate and integrate instrumentation before enabling collection |
-| Shared monitoring onboarding | [#125](https://github.com/appolon1908-hue/Breero.com/pull/125) | Register actual service units and deployment identity |
-| OpenBao API secret-file integration | [#127](https://github.com/appolon1908-hue/Breero.com/pull/127) | Review secret delivery and rotation before activation |
+| Metrics, tracing, heartbeat and log collection | [#106](https://github.com/appolon1908/Breero.com/pull/106) | Validate and integrate instrumentation before enabling collection |
+| Shared monitoring onboarding | [#125](https://github.com/appolon1908/Breero.com/pull/125) | Register actual service units and deployment identity |
+| OpenBao API secret-file integration | [#127](https://github.com/appolon1908/Breero.com/pull/127) | Review secret delivery and rotation before activation |
 
 `activation_enabled=false` and `runtime_coverage=unverified` accurately describe this
 contract's initial state. This change defines and checks architecture; it does not merge

@@ -1,6 +1,6 @@
 # OpenBao API secret integration
 
-Source authority: [Codestra-OpenBao](https://github.com/appolon1908-hue/Codestra-OpenBao).
+Source authority: [Codestra-OpenBao](https://github.com/appolon1908/Codestra-OpenBao).
 The machine-readable contract is `openbao-secret-consumer.v1.json`.
 This change prepares file-based credential consumption; runtime binding is unverified.
 

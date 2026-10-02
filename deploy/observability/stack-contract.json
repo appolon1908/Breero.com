@@ -1,89 +1,89 @@
 {
   "schema_version": 1,
-  "repository": "appolon1908-hue/Breero.com",
+  "repository": "appolon1908/Breero.com",
   "activation_enabled": false,
   "runtime_coverage": "unverified",
   "components": [
     {
-      "repository": "appolon1908-hue/Codestra-Prometheus",
+      "repository": "appolon1908/Codestra-Prometheus",
       "role": "Metrics collection, recording rules, alert rules and service health",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Alertmanager",
+      "repository": "appolon1908/Codestra-Alertmanager",
       "role": "Alert routing, grouping, escalation and Middleware notifications",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Grafana-",
+      "repository": "appolon1908/Codestra-Grafana-",
       "role": "Infrastructure, application, API, Odoo, Middleware, SMS, email and calling dashboards",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Telemetry",
+      "repository": "appolon1908/Codestra-Telemetry",
       "role": "OpenTelemetry collection and telemetry standards",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Alloy",
+      "repository": "appolon1908/Codestra-Alloy",
       "role": "Metrics, logs and traces collection and forwarding",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Loki",
+      "repository": "appolon1908/Codestra-Loki",
       "role": "Centralized application and infrastructure logs",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Tempo",
+      "repository": "appolon1908/Codestra-Tempo",
       "role": "Distributed API and service tracing",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Node-Exporter",
+      "repository": "appolon1908/Codestra-Node-Exporter",
       "role": "Linux CPU, memory, disk, filesystem and network metrics",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-cAdvisor",
+      "repository": "appolon1908/Codestra-cAdvisor",
       "role": "Docker and container resource monitoring",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Redis-Exporter",
+      "repository": "appolon1908/Codestra-Redis-Exporter",
       "role": "Redis health, memory, connections, commands and queue metrics",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Blackbox-Exporter",
+      "repository": "appolon1908/Codestra-Blackbox-Exporter",
       "role": "HTTP, HTTPS, TCP, DNS, endpoint, TLS and availability probes",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-Postgres-Exporter",
+      "repository": "appolon1908/Codestra-Postgres-Exporter",
       "role": "PostgreSQL monitoring",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Superset",
+      "repository": "appolon1908/Superset",
       "role": "Read-only business intelligence, KPI reporting and analytics",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
     },
     {
-      "repository": "appolon1908-hue/Codestra-OpenBao",
+      "repository": "appolon1908/Codestra-OpenBao",
       "role": "Credentials, certificates, tokens and monitoring secrets",
       "odoo_business_write": false,
       "secret_source": "Codestra-OpenBao"
