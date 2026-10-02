@@ -89,21 +89,21 @@ jobs:
           file: ${{ matrix.dockerfile }}
           build-args: ${{ matrix.build_args }}
           push: true
-          tags: ghcr.io/appolon1908-hue/${{ matrix.repository }}:${{ github.sha }}
+          tags: ghcr.io/appolon1908/${{ matrix.repository }}:${{ github.sha }}
           provenance: mode=max
           sbom: true
 
       - name: Attest exact ${{ matrix.component }} build provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
-          subject-name: ghcr.io/appolon1908-hue/${{ matrix.repository }}
+          subject-name: ghcr.io/appolon1908/${{ matrix.repository }}
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
 
       - name: Record immutable component evidence
         env:
           COMPONENT: ${{ matrix.component }}
-          IMAGE_REPOSITORY: ghcr.io/appolon1908-hue/${{ matrix.repository }}
+          IMAGE_REPOSITORY: ghcr.io/appolon1908/${{ matrix.repository }}
           IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
         run: |
           set -Eeuo pipefail

@@ -58,7 +58,7 @@ def render_current(data: dict) -> str:
         "",
         "| Field | Source evidence |",
         "|---|---|",
-        "| REPOSITORY | `ingtrader21-spec/Breero.com` |",
+        "| REPOSITORY | `appolon1908/Breero.com` |",
         f"| SOURCE_SHA | `{sha}` |",
         f"| ALEMBIC_HEADS | `{', '.join(data['alembic_heads'])}` |",
         f"| ALEMBIC_REVISIONS | {len(data['alembic_revisions'])} |",

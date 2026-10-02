@@ -55,8 +55,8 @@ git fetch --all --prune
 git rev-parse HEAD
 git rev-parse origin/main
 git log -5 --oneline --decorate
-gh pr list --repo appolon1908-hue/Breero.com --state open
-gh pr status --repo appolon1908-hue/Breero.com
+gh pr list --repo appolon1908/Breero.com --state open
+gh pr status --repo appolon1908/Breero.com
 ```
 
 Do not reuse CI, review, or migration evidence from an older head after a push, rebase, merge, or retarget.

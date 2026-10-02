@@ -12,6 +12,10 @@ mkdir -p "$test_root/.codestra" "$test_root/apps"
 printf '%s\n' "$needle" > "$test_root/.codestra/catalog.txt"
 "$validator" "$test_root"
 
+printf '%s\n' "$needle" > "$test_root/CANONICAL_REPOSITORIES.md"
+"$validator" "$test_root"
+rm "$test_root/CANONICAL_REPOSITORIES.md"
+
 printf '%s\n' "$needle" > "$test_root/apps/product.txt"
 if "$validator" "$test_root" >/dev/null 2>&1; then
   echo "product-scope validation accepted a cross-project product reference" >&2

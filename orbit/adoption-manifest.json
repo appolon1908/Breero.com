@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0.0",
-  "repository": "appolon1908-hue/Breero.com",
+  "repository": "appolon1908/Breero.com",
   "classification": "first-party-ui",
   "targetBranch": "codex/codestra-orbit-v2-breero-com",
   "adoptionMode": "full-shell",
