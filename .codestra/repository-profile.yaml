@@ -5,7 +5,7 @@ canonical_url: "https://github.com/appolon1908/Breero.com"
 default_branch_observed: "main"
 classification:
   type: "application"
-  subtype: "general"
+  subtype: "saas-web-application"
   standalone: true
   integration_boundary: "api-or-endpoint"
 lifecycle:
@@ -13,8 +13,10 @@ lifecycle:
   development: "development"
   testing: "testing"
   staging: "staging"
-  production: "namespace-conflict: production/* already exists"
+  production: "production"
   exact_branch_exception: true
+  exception_notes:
+    - "production: exact refs/heads/production is blocked by existing production/* namespace; historical refs preserved"
 governance:
   canonical_owner_is_authority: true
   transferred_owner_refs_are_non_authoritative: true
