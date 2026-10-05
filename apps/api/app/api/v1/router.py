@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    ),
     access,
     addresses,
     admin,
@@ -19,16 +20,16 @@ from app.api.v1 import (
     integrations,
     jobs,
     operations,
-    portal,
     payments,
+    portal,
     provider,
     provider_availability,
     provider_catalog,
+    provider_leads,
+    provider_onboarding,
     provider_qualifications,
     provider_work,
     provider_workforce,
-    provider_leads,
-    provider_onboarding,
     public_booking,
     public_forms,
     services,
