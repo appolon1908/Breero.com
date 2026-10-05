@@ -64,7 +64,7 @@ CATALOG_REPOSITORIES = {
     "appolon1908-hue/backend2",
     "appolon1908-hue/beyvra-frontend",
     "appolon1908-hue/scrapper",
-    "ingtrader21-spec/Breero.com",
+    "appolon1908/Breero.com",
     "appolon1908-hue/Moneybee-Backend",
     "appolon1908-hue/Telnexa-web",
     CONTROLLER_REPOSITORY,
@@ -131,7 +131,7 @@ EXPECTED_CHECK_WORKFLOWS = {
         "deployment-policy": ".github/workflows/ci.yml",
         "validate": ".github/workflows/ci.yml",
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         "orchestrator-contract": ".github/workflows/production-orchestrator-contract.yml",
         "quality": ".github/workflows/quality.yml",
     },
@@ -193,7 +193,7 @@ EXPECTED_CHECK_WORKFLOW_SHA256 = {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
         ".github/workflows/ci.yml": "31d81c5be094a1510bc821ef4359bba591630d2273662f5de0683205d908c60d",
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
         ".github/workflows/quality.yml": "2be72e0820aea5373c0f273b260dd9be5599698802864ae50fb28077abe53c6a",
     },
@@ -329,7 +329,7 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
             ".codestra/validate-production-orchestrator-contract.py": SHARED_PRODUCTION_VALIDATOR_SHA256,
         },
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": {
             ".codestra/validate-production-orchestrator-contract.py": BREERO_PRODUCTION_VALIDATOR_SHA256,
         },
@@ -411,7 +411,7 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "783feb31fc0ada4b043a62bf53dbfc1f"
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
-    "ingtrader21-spec/Breero.com": (
+    "appolon1908/Breero.com": (
         "64de950026f40397f606a3fb351ab08a"
         "b42c9abf3b856decb1aca471e06ff2dd"
     ),
@@ -2308,7 +2308,7 @@ def self_test() -> int:
     require(
         breero_quality_closure
         <= set(
-            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["ingtrader21-spec/Breero.com"][
+            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["appolon1908/Breero.com"][
                 ".github/workflows/quality.yml"
             ]
         ),
@@ -2352,7 +2352,7 @@ def self_test() -> int:
         pass
     else:
         raise PolicyError("negative required-check workflow digest regression passed")
-    if local_repository == "ingtrader21-spec/Breero.com":
+    if local_repository == "appolon1908/Breero.com":
         portal_path = "deploy/portals/Dockerfile"
         portal_bytes = Path(portal_path).read_bytes()
         validate_workflow_executable_bytes(
