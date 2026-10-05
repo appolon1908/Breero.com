@@ -7,11 +7,11 @@
     "build": "next build",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "dependencies": {
     "@breero/portal": "workspace:*",
-    "next": "15.5.24",
+    "next": "^15.5.24",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
