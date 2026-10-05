@@ -759,12 +759,7 @@ APPROVED_JOB_EXECUTABLE_CONFIGURATION_SHA256: dict[str, dict[str, str]] = {
         ".github/workflows/ci.yml": "31d81c5be094a1510bc821ef4359bba591630d2273662f5de0683205d908c60d",
         ".github/workflows/release-readiness.yml": "22fb9e9447770c5b463b028d9ef6195df53fbc99b2e8a467ba11e7a2b58b167b",
     },
-    "appolon1908/Breero.com": {
-        ".github/workflows/backend-production.yml": (
-            "22ebd9d26c48220d4c5eb62b54ee75f0"
-            "2a22e6cef69e1c74e149a6b31b2ed284"
-        ),
-    },
+    "appolon1908/Breero.com": {},
 }
 APPROVED_OFFLINE_RUN_SHA256: dict[str, dict[str, frozenset[str]]] = {
     "appolon1908-hue/beyvra-backend": {
