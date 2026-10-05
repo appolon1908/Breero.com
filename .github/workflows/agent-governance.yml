@@ -9,6 +9,9 @@ permissions:
   contents: read
 jobs:
   single-lane-governance:
+    # Governance is repository-only; keep this job inert under production-orchestrator classification.
+    # RUNTIME_MUTATION_DISABLED=true
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
