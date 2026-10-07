@@ -1,0 +1,852 @@
+{
+  "schema_version": "codestra.workstations.v3",
+  "family": "breero",
+  "product": "Breero.com",
+  "sections": [
+    {
+      "section": "br-01-foundation",
+      "branch": "section/br-01-foundation",
+      "order": 1,
+      "depends_on": [],
+      "subsections": [
+        {
+          "subsection": "01-app-bootstrap",
+          "workstation_id": "breero-com::br-01-foundation::01-app-bootstrap",
+          "branch": "subsection/br-01-foundation--01-app-bootstrap",
+          "parent_branch": "section/br-01-foundation",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-01-foundation/subsections/01-app-bootstrap/repo"
+        },
+        {
+          "subsection": "02-config-errors",
+          "workstation_id": "breero-com::br-01-foundation::02-config-errors",
+          "branch": "subsection/br-01-foundation--02-config-errors",
+          "parent_branch": "section/br-01-foundation",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-01-foundation::01-app-bootstrap"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-01-foundation/subsections/02-config-errors/repo"
+        },
+        {
+          "subsection": "03-lifecycle",
+          "workstation_id": "breero-com::br-01-foundation::03-lifecycle",
+          "branch": "subsection/br-01-foundation--03-lifecycle",
+          "parent_branch": "section/br-01-foundation",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-01-foundation::02-config-errors"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-01-foundation/subsections/03-lifecycle/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-02-users-orgs",
+      "branch": "section/br-02-users-orgs",
+      "order": 2,
+      "depends_on": [
+        "breero-com::br-01-foundation"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-accounts",
+          "workstation_id": "breero-com::br-02-users-orgs::01-accounts",
+          "branch": "subsection/br-02-users-orgs--01-accounts",
+          "parent_branch": "section/br-02-users-orgs",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-02-users-orgs/subsections/01-accounts/repo"
+        },
+        {
+          "subsection": "02-organizations",
+          "workstation_id": "breero-com::br-02-users-orgs::02-organizations",
+          "branch": "subsection/br-02-users-orgs--02-organizations",
+          "parent_branch": "section/br-02-users-orgs",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-02-users-orgs::01-accounts"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-02-users-orgs/subsections/02-organizations/repo"
+        },
+        {
+          "subsection": "03-memberships-rbac",
+          "workstation_id": "breero-com::br-02-users-orgs::03-memberships-rbac",
+          "branch": "subsection/br-02-users-orgs--03-memberships-rbac",
+          "parent_branch": "section/br-02-users-orgs",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-02-users-orgs::02-organizations"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-02-users-orgs/subsections/03-memberships-rbac/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-03-marketplace",
+      "branch": "section/br-03-marketplace",
+      "order": 3,
+      "depends_on": [
+        "breero-com::br-02-users-orgs"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-providers",
+          "workstation_id": "breero-com::br-03-marketplace::01-providers",
+          "branch": "subsection/br-03-marketplace--01-providers",
+          "parent_branch": "section/br-03-marketplace",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-03-marketplace/subsections/01-providers/repo"
+        },
+        {
+          "subsection": "02-services",
+          "workstation_id": "breero-com::br-03-marketplace::02-services",
+          "branch": "subsection/br-03-marketplace--02-services",
+          "parent_branch": "section/br-03-marketplace",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-03-marketplace::01-providers"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-03-marketplace/subsections/02-services/repo"
+        },
+        {
+          "subsection": "03-discovery",
+          "workstation_id": "breero-com::br-03-marketplace::03-discovery",
+          "branch": "subsection/br-03-marketplace--03-discovery",
+          "parent_branch": "section/br-03-marketplace",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-03-marketplace::02-services"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-03-marketplace/subsections/03-discovery/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-04-trust-disputes",
+      "branch": "section/br-04-trust-disputes",
+      "order": 4,
+      "depends_on": [
+        "breero-com::br-03-marketplace"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-trust-signals",
+          "workstation_id": "breero-com::br-04-trust-disputes::01-trust-signals",
+          "branch": "subsection/br-04-trust-disputes--01-trust-signals",
+          "parent_branch": "section/br-04-trust-disputes",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-04-trust-disputes/subsections/01-trust-signals/repo"
+        },
+        {
+          "subsection": "02-disputes",
+          "workstation_id": "breero-com::br-04-trust-disputes::02-disputes",
+          "branch": "subsection/br-04-trust-disputes--02-disputes",
+          "parent_branch": "section/br-04-trust-disputes",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-04-trust-disputes::01-trust-signals"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-04-trust-disputes/subsections/02-disputes/repo"
+        },
+        {
+          "subsection": "03-resolution-audit",
+          "workstation_id": "breero-com::br-04-trust-disputes::03-resolution-audit",
+          "branch": "subsection/br-04-trust-disputes--03-resolution-audit",
+          "parent_branch": "section/br-04-trust-disputes",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-04-trust-disputes::02-disputes"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-04-trust-disputes/subsections/03-resolution-audit/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-05-documents",
+      "branch": "section/br-05-documents",
+      "order": 5,
+      "depends_on": [
+        "breero-com::br-04-trust-disputes"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-secure-upload",
+          "workstation_id": "breero-com::br-05-documents::01-secure-upload",
+          "branch": "subsection/br-05-documents--01-secure-upload",
+          "parent_branch": "section/br-05-documents",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-05-documents/subsections/01-secure-upload/repo"
+        },
+        {
+          "subsection": "02-processing",
+          "workstation_id": "breero-com::br-05-documents::02-processing",
+          "branch": "subsection/br-05-documents--02-processing",
+          "parent_branch": "section/br-05-documents",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-05-documents::01-secure-upload"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-05-documents/subsections/02-processing/repo"
+        },
+        {
+          "subsection": "03-access-retention",
+          "workstation_id": "breero-com::br-05-documents::03-access-retention",
+          "branch": "subsection/br-05-documents--03-access-retention",
+          "parent_branch": "section/br-05-documents",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-05-documents::02-processing"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-05-documents/subsections/03-access-retention/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-06-availability",
+      "branch": "section/br-06-availability",
+      "order": 6,
+      "depends_on": [
+        "breero-com::br-05-documents"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-schedules",
+          "workstation_id": "breero-com::br-06-availability::01-schedules",
+          "branch": "subsection/br-06-availability--01-schedules",
+          "parent_branch": "section/br-06-availability",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-06-availability/subsections/01-schedules/repo"
+        },
+        {
+          "subsection": "02-booking",
+          "workstation_id": "breero-com::br-06-availability::02-booking",
+          "branch": "subsection/br-06-availability--02-booking",
+          "parent_branch": "section/br-06-availability",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-06-availability::01-schedules"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-06-availability/subsections/02-booking/repo"
+        },
+        {
+          "subsection": "03-conflicts",
+          "workstation_id": "breero-com::br-06-availability::03-conflicts",
+          "branch": "subsection/br-06-availability--03-conflicts",
+          "parent_branch": "section/br-06-availability",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-06-availability::02-booking"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-06-availability/subsections/03-conflicts/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-07-conversations",
+      "branch": "section/br-07-conversations",
+      "order": 7,
+      "depends_on": [
+        "breero-com::br-06-availability"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-threads",
+          "workstation_id": "breero-com::br-07-conversations::01-threads",
+          "branch": "subsection/br-07-conversations--01-threads",
+          "parent_branch": "section/br-07-conversations",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-07-conversations/subsections/01-threads/repo"
+        },
+        {
+          "subsection": "02-messaging",
+          "workstation_id": "breero-com::br-07-conversations::02-messaging",
+          "branch": "subsection/br-07-conversations--02-messaging",
+          "parent_branch": "section/br-07-conversations",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-07-conversations::01-threads"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-07-conversations/subsections/02-messaging/repo"
+        },
+        {
+          "subsection": "03-notifications",
+          "workstation_id": "breero-com::br-07-conversations::03-notifications",
+          "branch": "subsection/br-07-conversations--03-notifications",
+          "parent_branch": "section/br-07-conversations",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-07-conversations::02-messaging"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-07-conversations/subsections/03-notifications/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-08-billing",
+      "branch": "section/br-08-billing",
+      "order": 8,
+      "depends_on": [
+        "breero-com::br-07-conversations"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-checkout",
+          "workstation_id": "breero-com::br-08-billing::01-checkout",
+          "branch": "subsection/br-08-billing--01-checkout",
+          "parent_branch": "section/br-08-billing",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-08-billing/subsections/01-checkout/repo"
+        },
+        {
+          "subsection": "02-payouts",
+          "workstation_id": "breero-com::br-08-billing::02-payouts",
+          "branch": "subsection/br-08-billing--02-payouts",
+          "parent_branch": "section/br-08-billing",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-08-billing::01-checkout"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-08-billing/subsections/02-payouts/repo"
+        },
+        {
+          "subsection": "03-ledger-refunds",
+          "workstation_id": "breero-com::br-08-billing::03-ledger-refunds",
+          "branch": "subsection/br-08-billing--03-ledger-refunds",
+          "parent_branch": "section/br-08-billing",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-08-billing::02-payouts"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-08-billing/subsections/03-ledger-refunds/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-09-integrations",
+      "branch": "section/br-09-integrations",
+      "order": 9,
+      "depends_on": [
+        "breero-com::br-08-billing"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-middleware",
+          "workstation_id": "breero-com::br-09-integrations::01-middleware",
+          "branch": "subsection/br-09-integrations--01-middleware",
+          "parent_branch": "section/br-09-integrations",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-09-integrations/subsections/01-middleware/repo"
+        },
+        {
+          "subsection": "02-odoo",
+          "workstation_id": "breero-com::br-09-integrations::02-odoo",
+          "branch": "subsection/br-09-integrations--02-odoo",
+          "parent_branch": "section/br-09-integrations",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-09-integrations::01-middleware"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-09-integrations/subsections/02-odoo/repo"
+        },
+        {
+          "subsection": "03-provider-adapters",
+          "workstation_id": "breero-com::br-09-integrations::03-provider-adapters",
+          "branch": "subsection/br-09-integrations--03-provider-adapters",
+          "parent_branch": "section/br-09-integrations",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-09-integrations::02-odoo"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-09-integrations/subsections/03-provider-adapters/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-10-analytics-saas",
+      "branch": "section/br-10-analytics-saas",
+      "order": 10,
+      "depends_on": [
+        "breero-com::br-09-integrations"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-analytics",
+          "workstation_id": "breero-com::br-10-analytics-saas::01-analytics",
+          "branch": "subsection/br-10-analytics-saas--01-analytics",
+          "parent_branch": "section/br-10-analytics-saas",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-10-analytics-saas/subsections/01-analytics/repo"
+        },
+        {
+          "subsection": "02-metering-quotas",
+          "workstation_id": "breero-com::br-10-analytics-saas::02-metering-quotas",
+          "branch": "subsection/br-10-analytics-saas--02-metering-quotas",
+          "parent_branch": "section/br-10-analytics-saas",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-10-analytics-saas::01-analytics"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-10-analytics-saas/subsections/02-metering-quotas/repo"
+        },
+        {
+          "subsection": "03-admin",
+          "workstation_id": "breero-com::br-10-analytics-saas::03-admin",
+          "branch": "subsection/br-10-analytics-saas--03-admin",
+          "parent_branch": "section/br-10-analytics-saas",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-10-analytics-saas::02-metering-quotas"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-10-analytics-saas/subsections/03-admin/repo"
+        }
+      ]
+    },
+    {
+      "section": "br-11-release",
+      "branch": "section/br-11-release",
+      "order": 11,
+      "depends_on": [
+        "breero-com::br-10-analytics-saas"
+      ],
+      "subsections": [
+        {
+          "subsection": "01-testing-security",
+          "workstation_id": "breero-com::br-11-release::01-testing-security",
+          "branch": "subsection/br-11-release--01-testing-security",
+          "parent_branch": "section/br-11-release",
+          "order": 1,
+          "depends_on": [],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-11-release/subsections/01-testing-security/repo"
+        },
+        {
+          "subsection": "02-performance-dr",
+          "workstation_id": "breero-com::br-11-release::02-performance-dr",
+          "branch": "subsection/br-11-release--02-performance-dr",
+          "parent_branch": "section/br-11-release",
+          "order": 2,
+          "depends_on": [
+            "breero-com::br-11-release::01-testing-security"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-11-release/subsections/02-performance-dr/repo"
+        },
+        {
+          "subsection": "03-certification-promotion",
+          "workstation_id": "breero-com::br-11-release::03-certification-promotion",
+          "branch": "subsection/br-11-release--03-certification-promotion",
+          "parent_branch": "section/br-11-release",
+          "order": 3,
+          "depends_on": [
+            "breero-com::br-11-release::02-performance-dr"
+          ],
+          "required_gates": [
+            "lint",
+            "unit",
+            "integration",
+            "contract",
+            "security",
+            "clean_tree",
+            "remote_sha_match",
+            "ci_exact_sha",
+            "review",
+            "regression"
+          ],
+          "worktree": "/srv/codestra/workstations/Breero.com/sections/br-11-release/subsections/03-certification-promotion/repo"
+        }
+      ]
+    }
+  ]
+}
