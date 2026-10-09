@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import {
   groupRulesByWeekday,
@@ -145,4 +145,3 @@ describe("qualifications", () => {
     expect(validateQualificationDraft({ ...draft, qualificationType: "TRAINING", expiresOn: "" }, "2026-09-25").errors).toEqual([]);
   });
 });
-

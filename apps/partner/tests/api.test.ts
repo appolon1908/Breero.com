@@ -1,4 +1,4 @@
-﻿import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { ApiError, errorFromResponse, PartnerApi, resolveApiBase } from "../lib/api";
 
@@ -115,4 +115,3 @@ describe("errorFromResponse", () => {
     expect((await errorFromResponse(new Response("<html>", { status: 502 }))).message).toBe("Request failed (502)");
   });
 });
-

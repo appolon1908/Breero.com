@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Partner-portal transport. Every provider route derives the provider organization
  * from the bearer token; no method here accepts or sends a vendor identifier.
  */
@@ -228,4 +228,3 @@ export class PartnerApi {
     );
   }
 }
-

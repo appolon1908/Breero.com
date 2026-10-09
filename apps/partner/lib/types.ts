@@ -1,4 +1,4 @@
-﻿// Partner-local mirrors of the provider API response contracts (apps/api/openapi.json).
+// Partner-local mirrors of the provider API response contracts (apps/api/openapi.json).
 // Shared generated types belong to @breero/types; these stay local until that package
 // publishes provider self-service contracts.
 
@@ -194,4 +194,3 @@ export interface ProviderOffer {
   scheduled_start: string | null;
   scheduled_end: string | null;
 }
-
