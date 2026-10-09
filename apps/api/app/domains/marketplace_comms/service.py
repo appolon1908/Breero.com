@@ -1,8 +1,9 @@
-﻿import uuid
+import uuid
 from sqlalchemy import func,select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.domains.booking.models import Customer
 from app.domains.marketplace.models import LeadConnection
+from app.domains.project_requests.models import ProjectRequest
 from app.domains.workforce.provider_scope import provider_vendor
 from .models import Conversation,Message,Quote,QuoteStatus
 from .schemas import MessageCreate,QuoteCreate
@@ -11,7 +12,7 @@ class MarketplaceCommsService:
  async def customer_connection(self,connection_id:uuid.UUID,user_id:uuid.UUID)->LeadConnection:
   customer=await self.session.scalar(select(Customer).where(Customer.user_id==user_id))
   if not customer:raise PermissionError("Customer profile required")
-  c=await self.session.scalar(select(LeadConnection).join(__import__("app.domains.project_requests.models",fromlist=["ProjectRequest"]).ProjectRequest).where(LeadConnection.id==connection_id,__import__("app.domains.project_requests.models",fromlist=["ProjectRequest"]).ProjectRequest.customer_id==customer.id,LeadConnection.active.is_(True)))
+  c=await self.session.scalar(select(LeadConnection).join(ProjectRequest).where(LeadConnection.id==connection_id,ProjectRequest.customer_id==customer.id,LeadConnection.active.is_(True)))
   if not c:raise LookupError("Connection not found")
   return c
  async def provider_connection(self,connection_id,user):
