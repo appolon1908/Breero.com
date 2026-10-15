@@ -53,3 +53,7 @@ The [observability stack contract](docs/observability-stack.md) defines the shar
 collectors, telemetry stores, Alertmanager, Grafana, Superset and OpenBao responsibilities.
 Middleware is the controlled bridge for all Odoo business writes. Architecture checks run
 in CI; production telemetry coverage requires separate runtime evidence.
+
+## Governance Git hooks
+
+Enable the shared pre-push checks from your approved workstation using the [hook setup and lease instructions](docs/governance-git-hooks.md). Activation is explicit for each clone; existing CI and publication requirements still apply.
