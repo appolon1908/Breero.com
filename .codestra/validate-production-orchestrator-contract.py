@@ -50,8 +50,8 @@ MONEYBEE_RELEASE_VALIDATOR_SECURITY_SHA256 = (
     "8d8f21260babfae5eaedbdd46472b1ec"
 )
 BREERO_RELEASE_VALIDATOR_SECURITY_SHA256 = (
-    "026fc58d91407b4237fcecdf53fa43ef"
-    "f02b91d0dea407cd428a7c9ff5fa2307"
+    "5243f31409941fcfa1aa30785cc0fb3c"
+    "f9838cb74447ec60fbaa13f72d71aaa4"
 )
 EXPECTED_RELEASE_VALIDATOR_SECURITY_SHA256 = {
     "appolon1908-hue/Infustruction-repo": STANDARD_RELEASE_VALIDATOR_SECURITY_SHA256,
@@ -6817,6 +6817,7 @@ def validate_negative_regressions(contract: dict[str, Any]) -> None:
             os.environ["GITHUB_REPOSITORY_ID"] = "1331354808"
             validate(canonical_contract)
             identity_cases = (
+                ("previous owner", "ingtrader21-spec/Breero.com", "ingtrader21-spec/Breero.com", 1331354808, "1331354808", "outside the protected catalog"),
                 ("former owner", "appolon1908-hue/Breero.com", "appolon1908-hue/Breero.com", 1331354808, "1331354808", "outside the protected catalog"),
                 ("unregistered owner", "untrusted/Breero.com", "untrusted/Breero.com", 1331354808, "1331354808", "outside the protected catalog"),
                 ("mismatched contract", canonical, "untrusted/Breero.com", 1331354808, "1331354808", "repository identity mismatch"),

@@ -158,7 +158,7 @@ EXPECTED_CHECK_WORKFLOWS = {
     },
 }
 ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256 = (
-    "49e64c8aefa400cf68db6f89ef87fd588bad70ebebd4e4b9e2b3507c3e2da563"
+    "5d5f118c8089a7298cc7439327689f862bf669bad46ec9160a0b5763fa11e869"
 )
 EXPECTED_CHECK_WORKFLOW_SHA256 = {
     "appolon1908-hue/Infustruction-repo": {
@@ -217,8 +217,8 @@ SHARED_PRODUCTION_VALIDATOR_SHA256 = (
     "83d2fce102104543b871530f11115f20"
 )
 BREERO_PRODUCTION_VALIDATOR_SHA256 = (
-    "04d6c779efccedb52819c7b53cfed529"
-    "bcd28bfaa0d7e9b9982d8e84be34b818"
+    "da8c321873423f9eacacd741ec9cd4b7"
+    "8866a1e8c846025475681d2ab0d243db"
 )
 KEYCLOAK_PRODUCTION_VALIDATOR_SHA256 = (
     "6006bbc7850ce7666de926b6cad2585b"
@@ -355,8 +355,8 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
                 "8b80a290652f1d69172259a19e7e0d57"
             ),
             "deploy/portals/Dockerfile": (
-                "84fc0e3906f8675f742ef7c568c12732"
-                "133553ed3fc0e11b92fe8f99d45a0c1a"
+                "cfefde6354cbe300a79be4f028c93d4d"
+                "3c2cda8b2e6855051c895d7d9a6856f3"
             ),
             "scripts/ci/classify-quality-scope.sh": "7cc6cc7d213e4c962a8cda4ce052bbcfa51decc1af78ac663b1170c1b8c210c2",
             "scripts/ci/test-classify-quality-scope.sh": "0365cd71d85e00facf1a64c2f11734e413430af75e4cf39e0e52971d13d5c473",
@@ -412,8 +412,8 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
     "appolon1908/Breero.com": (
-        "64de950026f40397f606a3fb351ab08a"
-        "b42c9abf3b856decb1aca471e06ff2dd"
+        "234e90a9cbf1ff3eefb4bf50d06a4d39"
+        "3900416a542829598d235d6c452289d9"
     ),
     "appolon1908-hue/Moneybee-Backend": (
         "a283e388028892ced3ac8445893ec2fa"
@@ -2353,6 +2353,14 @@ def self_test() -> int:
     else:
         raise PolicyError("negative required-check workflow digest regression passed")
     if local_repository == "appolon1908/Breero.com":
+        quality_path = ".github/workflows/quality.yml"
+        validate_workflow_definition_bytes(
+            local_repository, checkout_sha, quality_path, Path(quality_path).read_bytes()
+        )
+        for bound_path in EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256[local_repository][quality_path]:
+            validate_workflow_executable_bytes(
+                local_repository, quality_path, bound_path, Path(bound_path).read_bytes()
+            )
         portal_path = "deploy/portals/Dockerfile"
         portal_bytes = Path(portal_path).read_bytes()
         validate_workflow_executable_bytes(
