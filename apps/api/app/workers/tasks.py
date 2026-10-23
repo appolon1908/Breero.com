@@ -9,6 +9,10 @@ from app.db.worker_session import WorkerSessionLocal
 from app.domains.booking.models import EXPIRING_BOOKING_STATUSES, Booking, BookingStatus
 from app.domains.common.outbox_service import OutboxService
 from app.domains.finance.service import FinanceService
+from app.domains.public_submissions.acknowledgments import (
+    ACKNOWLEDGMENT_EVENT,
+    deliver_acknowledgment,
+)
 from app.domains.public_submissions.models import DownstreamStatus, PublicSubmission
 from app.integrations.email import EmailAdapter
 from app.integrations.middleware import MiddlewareAdapter
@@ -55,6 +59,8 @@ class UnhandledOutboxEvent(RuntimeError):
 
 
 async def deliver_outbox_event(event, session, adapter, email):
+    if event.event_type == ACKNOWLEDGMENT_EVENT:
+        return await deliver_acknowledgment(event, session, email)
     notification_events = {
         "email_verification_requested",
         "password_reset_requested",

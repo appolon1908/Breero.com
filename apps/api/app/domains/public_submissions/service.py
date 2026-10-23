@@ -10,8 +10,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import settings
 from app.core.errors import DomainError
 from app.domains.catalog.models import Service
-from app.domains.common.outbox import EventStatus, IntegrationEvent
+from app.domains.common.outbox import AuditLog, EventStatus, IntegrationEvent
 
+from .acknowledgments import acknowledgment_event
 from .consent import CONSENT_FLAGS, canonical_disclosures
 from .models import DownstreamStatus, PublicSubmission, SubmissionType
 from .schemas import SubmissionAccepted, TrackingFields
@@ -200,5 +201,19 @@ class PublicSubmissionService:
                 processed_at=None,
             )
         )
+        receipt = acknowledgment_event(submission, now)
+        if receipt is not None:
+            self.session.add(receipt)
+            self.session.add(
+                AuditLog(
+                    actor_id=None,
+                    actor_type="consumer",
+                    action="public_submission.acknowledgment_queued",
+                    resource_type="public_submission",
+                    resource_id=submission.id,
+                    metadata_json={"schema_version": 1},
+                    created_at=now,
+                )
+            )
         await self.session.commit()
         return SubmissionAccepted(request_id=submission.id, downstream_status=downstream.value)

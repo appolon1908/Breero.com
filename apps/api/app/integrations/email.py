@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 import smtplib
 from dataclasses import dataclass
 from email.message import EmailMessage
@@ -97,6 +98,13 @@ class EmailAdapter:
         if not self.delivery_url:
             raise EmailDeliveryDisabled("Email provider is not configured")
         headers = {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
+        if event_type == "service_request.received":
+            key = payload.get("idempotency_key")
+            if not isinstance(key, str) or not re.fullmatch(
+                r"public_submission_ack:[0-9a-f-]{36}:1", key
+            ):
+                raise ValueError("Request receipt requires an opaque deduplication key")
+            headers["Idempotency-Key"] = key
         async with httpx.AsyncClient(timeout=20) as client:
             response = await client.post(
                 self.delivery_url,
@@ -118,7 +126,34 @@ EMAIL_TEMPLATES = {
 }
 
 
-def render_email(event_type: str, context: dict[str, Any] | None = None) -> RenderedEmail:
+REQUEST_RECEIPT_TEMPLATES = {
+    "en": (
+        "Breero — service request received",
+        "We received your service request. Reference: {request_id}. "
+        "We will review it and contact you about next steps. "
+        "Your preferred time is a request; an appointment and provider are not confirmed. "
+        "This email does not confirm a quote, payment, or service booking.",
+    ),
+    "es": (
+        "Breero — solicitud de servicio recibida",
+        "Recibimos tu solicitud de servicio. Referencia: {request_id}. "
+        "La revisaremos y te contactaremos para indicarte los siguientes pasos. "
+        "Tu horario preferido está pendiente de revisión; la cita y el proveedor no están confirmados. "
+        "Este correo no confirma un presupuesto, un pago ni una reserva de servicio.",
+    ),
+}
+
+
+def render_email(
+    event_type: str,
+    context: dict[str, Any] | None = None,
+    *,
+    language: str = "en",
+) -> RenderedEmail:
+    if event_type == "service_request.received":
+        locale = language.lower().replace("_", "-").split("-", 1)[0]
+        subject, body = REQUEST_RECEIPT_TEMPLATES.get(locale, REQUEST_RECEIPT_TEMPLATES["en"])
+        return RenderedEmail(subject, body.format_map(context or {}))
     if event_type not in EMAIL_TEMPLATES:
         raise ValueError(f"Unsupported email event: {event_type}")
     subject, body = EMAIL_TEMPLATES[event_type]
