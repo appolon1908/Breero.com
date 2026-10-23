@@ -1,8 +1,10 @@
 """Generate deterministic OpenAPI and endpoint-policy artifacts for CI review."""
 
 import argparse
+import difflib
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -99,7 +101,14 @@ args = parser.parse_args()
 for target, document in ((openapi_target, schema), (registry_target, registry)):
     content = json.dumps(document, indent=2, sort_keys=True) + "\n"
     if args.check:
-        if not target.exists() or target.read_text() != content:
+        committed = target.read_text() if target.exists() else ""
+        if not target.exists() or committed != content:
+            sys.stderr.writelines(difflib.unified_diff(
+                committed.splitlines(keepends=True),
+                content.splitlines(keepends=True),
+                fromfile=f"committed/{target.name}",
+                tofile=f"generated/{target.name}",
+            ))
             raise SystemExit(f"Stale generated artifact: {target}")
     else:
         target.write_text(content)

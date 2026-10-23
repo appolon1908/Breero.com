@@ -153,12 +153,13 @@ def test_readiness_alias_uses_the_same_policy_as_the_health_endpoint() -> None:
 
 def test_committed_contract_artifacts_match_the_runtime_registry() -> None:
     api_root = Path(__file__).resolve().parents[1]
-    subprocess.run(
+    result = subprocess.run(
         [sys.executable, "scripts/generate_openapi.py", "--check"],
         cwd=api_root,
         env={**os.environ, "OPENAPI_PATH": str(api_root / "openapi.json"),
              "ENDPOINT_REGISTRY_PATH": str(api_root / "endpoint-registry.json")},
-        check=True,
+        check=False,
         capture_output=True,
         text=True,
     )
+    assert result.returncode == 0, result.stdout + result.stderr
