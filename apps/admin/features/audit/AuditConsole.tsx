@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 
-import { AuditApiError, auditGet, readAccessToken } from "./api";
+import { AuditApiError, auditGet } from "./api";
 import { AuditFilterError, defaultFilters, detailPath, formatMetadataValue, humanize, listPath, MAX_PAGE_SIZE, tracePath } from "./query";
 import { AUDIT_CATEGORIES, type AuditCorrelationTrace, type AuditEventDetail, type AuditEventPage, type AuditFilters } from "./types";
 
@@ -48,7 +48,8 @@ function EventDetail({ event, onTrace }: { event: AuditEventDetail; onTrace: (id
 }
 
 export function AuditConsole() {
-  const [token, setToken] = useState<string | null>(null);
+  const [authorized, setAuthorized] = useState(false);
+  const accessGranted = useRef(false);
   const [draft, setDraft] = useState<AuditFilters>(() => defaultFilters());
   const [applied, setApplied] = useState<AuditFilters | null>(null);
   const [cursors, setCursors] = useState<(string | null)[]>([null]);
@@ -57,15 +58,37 @@ export function AuditConsole() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { setToken(readAccessToken()); }, []);
+  const handleFailure = useCallback((reason: unknown) => {
+    if (reason instanceof AuditApiError && (reason.status === 401 || reason.status === 403)) {
+      accessGranted.current = false;
+      setAuthorized(false);
+      setPage(null);
+      setPanel(null);
+    }
+    setError(message(reason));
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    // The catalog requires admin.audit.read, so the server decides which session may enter.
+    auditGet("/admin/audit/catalog").then(() => {
+      if (!active) return;
+      accessGranted.current = true;
+      setAuthorized(true);
+    }).catch((reason) => { if (active) handleFailure(reason); });
+    return () => { active = false; accessGranted.current = false; };
+  }, [handleFailure]);
 
   const load = useCallback(async (filters: AuditFilters, cursor: string | null) => {
-    if (!token) return;
+    if (!accessGranted.current) return;
     setLoading(true); setError("");
-    try { setPage(await auditGet<AuditEventPage>(listPath(filters, cursor), token)); }
-    catch (reason) { setPage(null); setError(message(reason)); }
+    try {
+      const nextPage = await auditGet<AuditEventPage>(listPath(filters, cursor));
+      if (accessGranted.current) setPage(nextPage);
+    }
+    catch (reason) { setPage(null); handleFailure(reason); }
     finally { setLoading(false); }
-  }, [token]);
+  }, [handleFailure]);
 
   useEffect(() => { if (applied) void load(applied, cursors[cursors.length - 1]); }, [applied, cursors, load]);
 
@@ -75,18 +98,22 @@ export function AuditConsole() {
   }
 
   async function open<T>(path: () => string, toPanel: (body: T) => Panel) {
-    if (!token) return;
+    if (!accessGranted.current) return;
     setError("");
-    try { setPanel(toPanel(await auditGet<T>(path(), token))); }
-    catch (reason) { setError(message(reason)); }
+    try {
+      const body = await auditGet<T>(path());
+      if (accessGranted.current) setPanel(toPanel(body));
+    }
+    catch (reason) { handleFailure(reason); }
   }
   const openDetail = (id: string) => void open<AuditEventDetail>(() => detailPath(id), (event) => ({ kind: "detail", event }));
   const openTrace = (id: string) => void open<AuditCorrelationTrace>(() => tracePath(id), (trace) => ({ kind: "trace", trace }));
 
   const update = <K extends keyof AuditFilters>(key: K, value: AuditFilters[K]) => setDraft((current) => ({ ...current, [key]: value }));
 
-  if (!token) return <main className="portal-login"><section className="portal-login__card">
+  if (!authorized) return <main className="portal-login"><section className="portal-login__card">
     <h1>Audit log</h1><p>Sign in to the admin portal first. This console reuses that session and never shows placeholder data.</p>
+    {error && <p className="portal-error" role="alert">{error}</p>}
     <Link href="/">Go to admin sign-in</Link></section></main>;
 
   return <main className="audit-console">
