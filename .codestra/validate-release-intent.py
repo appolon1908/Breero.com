@@ -217,8 +217,8 @@ SHARED_PRODUCTION_VALIDATOR_SHA256 = (
     "83d2fce102104543b871530f11115f20"
 )
 BREERO_PRODUCTION_VALIDATOR_SHA256 = (
-    "e92055c6a4a57ffde979c7198aa00f41"
-    "1e5f4a50b298002399068a238da5add8"
+    "be65ccc393c3ea9b1facc678c260fa92"
+    "e8cba858c67905b823a1c6b8e09af272"
 )
 KEYCLOAK_PRODUCTION_VALIDATOR_SHA256 = (
     "6006bbc7850ce7666de926b6cad2585b"
@@ -347,8 +347,7 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
                 "d546a037bc63040d9697895dd40473b2"
             ),
             "apps/api/Dockerfile": (
-                "7287f79b9b0a2c6d8a6ff618386c0641"
-                "5a0680c940aa81c5957597f08f93095e"
+                "3d970e686a71bfcc2e27bde3a266714bbc42780e82c949e6c7371d7c442eaa87"
             ),
             "deploy/frontend/Dockerfile": (
                 "5502d3c2cb4abd3c85a1f4f8f898fb4a"
@@ -412,8 +411,7 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
     "appolon1908/Breero.com": (
-        "a2957f6d4c7abd16b249d1914c6247c6"
-        "1ca70bbd3e9afe00f047c11790c282a5"
+        "425bfe173b7a15bcc7ea29f160d502f3e0424557b7b9979a5b6d62b98cf4a3fd"
     ),
     "appolon1908-hue/Moneybee-Backend": (
         "a283e388028892ced3ac8445893ec2fa"
