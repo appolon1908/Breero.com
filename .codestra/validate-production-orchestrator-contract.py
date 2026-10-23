@@ -50,8 +50,8 @@ MONEYBEE_RELEASE_VALIDATOR_SECURITY_SHA256 = (
     "8d8f21260babfae5eaedbdd46472b1ec"
 )
 BREERO_RELEASE_VALIDATOR_SECURITY_SHA256 = (
-    "a3bc1cbb3d34db4b079d1bd698a7daf8"
-    "4438795e4047cd7c87b70f261278ffb1"
+    "b7a03818d884835101c96c1546fbc7ba"
+    "1097f0dfc6d91f0a748ff86b54dc60a2"
 )
 EXPECTED_RELEASE_VALIDATOR_SECURITY_SHA256 = {
     "appolon1908-hue/Infustruction-repo": STANDARD_RELEASE_VALIDATOR_SECURITY_SHA256,
@@ -611,7 +611,7 @@ APPROVED_COMPLEX_SCRIPT_SHA256: dict[str, dict[str, str]] = {
         ),
     },
     "appolon1908/Breero.com": {
-        "apps/api/scripts/check_schema_drift.py": "2d4f1783c134af3d68c1bae459c42f6d46ce67ae7468e7ed0da64f6feffa9967",
+        "apps/api/scripts/check_schema_drift.py": "340a39e67dcda20824da7b59f6eee2a7d97e875bac3fce85c407e6ef45397914",
         "apps/api/scripts/generate_openapi.py": "46ed75f51bfacfd5eb7f7f225fa68042d40e6f61c489dad559ada8268b48ab0f",
         "scripts/ci/test-classify-quality-scope.sh": "0365cd71d85e00facf1a64c2f11734e413430af75e4cf39e0e52971d13d5c473",
         "scripts/ci/test-validate-breero-scope.sh": "ea29de36868e28ff82e3ec151f896aed388d2421f5907151c4c13480dae20bf8",
@@ -721,7 +721,7 @@ APPROVED_CONTROL_PLANE_WORKFLOW_SHA256: dict[str, dict[str, str]] = {
         ),
     },
     "appolon1908/Breero.com": {
-        ".github/workflows/quality.yml": "2be72e0820aea5373c0f273b260dd9be5599698802864ae50fb28077abe53c6a",
+        ".github/workflows/quality.yml": "e2b6dc53accdc5edcf2338dfa96cc65d6d1849fef04c94ea0ee552d0adcf609e",
     },
     "appolon1908-hue/Moneybee-Backend": {
         ".github/workflows/ci.yml": (
@@ -759,7 +759,7 @@ APPROVED_JOB_EXECUTABLE_CONFIGURATION_SHA256: dict[str, dict[str, str]] = {
         ".github/workflows/ci.yml": "31d81c5be094a1510bc821ef4359bba591630d2273662f5de0683205d908c60d",
         ".github/workflows/release-readiness.yml": "22fb9e9447770c5b463b028d9ef6195df53fbc99b2e8a467ba11e7a2b58b167b",
     },
-    "appolon1908/Breero.com": {},
+    "appolon1908/Breero.com": {".github/workflows/backend-production.yml": "22ebd9d26c48220d4c5eb62b54ee75f02a22e6cef69e1c74e149a6b31b2ed284"},
 }
 APPROVED_OFFLINE_RUN_SHA256: dict[str, dict[str, frozenset[str]]] = {
     "appolon1908-hue/beyvra-backend": {
@@ -6811,6 +6811,7 @@ def validate_negative_regressions(contract: dict[str, Any]) -> None:
             os.environ["GITHUB_REPOSITORY_ID"] = "1331354808"
             validate(canonical_contract)
             identity_cases = (
+                ("previous owner", "ingtrader21-spec/Breero.com", "ingtrader21-spec/Breero.com", 1331354808, "1331354808", "outside the protected catalog"),
                 ("former owner", "appolon1908-hue/Breero.com", "appolon1908-hue/Breero.com", 1331354808, "1331354808", "outside the protected catalog"),
                 ("unregistered owner", "untrusted/Breero.com", "untrusted/Breero.com", 1331354808, "1331354808", "outside the protected catalog"),
                 ("mismatched contract", canonical, "untrusted/Breero.com", 1331354808, "1331354808", "repository identity mismatch"),
