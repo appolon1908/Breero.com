@@ -65,7 +65,7 @@ export function SiteFooter() {
           <section className="footer__intro hz-site-footer__intro" aria-labelledby="breero-footer-title">
             <Logo light />
             <p className="hz-eyebrow">Codestra product network</p>
-            <h2 id="breero-footer-title" className="hz-site-footer__title">Home services, without the hassle.</h2>
+            <h2 id="breero-footer-title" className="hz-site-footer__title">Home services, handled.</h2>
             <span className="footer__trust"><ShieldIcon size={18} />Quote required. No online payment is required or collected.</span>
             <p className="hz-site-footer__legal-address">
               <strong>{legalIdentity}</strong><br />
