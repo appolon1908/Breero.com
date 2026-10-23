@@ -126,8 +126,8 @@ async def test_operations_control_center_dispatch_journey() -> None:
                 ProviderWorkingHours(
                     worker_id=second.id,
                     weekday=now.date().weekday(),
-                    start_time=time(0, 0),
-                    end_time=time(23, 59),
+                    start_time=time(7, 0),
+                    end_time=time(19, 0),
                     capacity=1,
                 ),
             ]
