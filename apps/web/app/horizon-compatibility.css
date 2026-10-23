@@ -1,0 +1,138 @@
+/*
+ * Reconciles the Horizon shell with BREERO's retained legacy selectors.
+ * This file is loaded after horizon.css so breakpoint and typography contracts
+ * remain deterministic until the legacy selectors are removed in a later PR.
+ */
+
+.hz-site-footer__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.hz-site-footer__intro {
+  grid-column: 1 / -1;
+}
+
+.footer__intro.hz-site-footer__intro > .hz-eyebrow {
+  max-width: none;
+  margin: 0;
+  color: var(--hz-text-muted);
+  font-family: var(--hz-font-body);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+
+.footer__intro.hz-site-footer__intro > .hz-site-footer__legal-address {
+  max-width: 28rem;
+  margin: 0;
+  color: var(--hz-text-muted);
+  font-family: var(--hz-font-body);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+
+.footer__intro.hz-site-footer__intro > .hz-site-footer__legal-address a {
+  color: var(--hz-text);
+}
+
+@media (max-width: 64rem) {
+  .hz-site-footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 56.25rem) {
+  .hz-site-nav--desktop {
+    display: none;
+  }
+
+  .site-header .mobile-menu-button.hz-menu-button {
+    display: inline-flex;
+  }
+
+  .site-header .header-signin,
+  .site-header .header-book {
+    display: none;
+  }
+}
+
+@media (min-width: 56.3125rem) {
+  .hz-site-nav--desktop {
+    display: flex;
+  }
+
+  .site-header .mobile-menu-button.hz-menu-button {
+    display: none;
+  }
+}
+
+@media (max-width: 42rem) {
+  .hz-site-footer__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hz-site-footer__intro {
+    grid-column: auto;
+  }
+}
+
+/* Legacy page and consent surfaces remain light inside the dark Horizon shell. */
+#main-content,
+.cookie-consent {
+  --hz-text: var(--br-ink);
+  color: var(--br-ink);
+  color-scheme: light;
+}
+
+#main-content {
+  background: var(--br-paper);
+}
+
+/* Keep Horizon shell colors authoritative over legacy element selectors. */
+.hz-site-nav .hz-site-nav__link {
+  color: var(--hz-text-muted);
+}
+
+.hz-site-nav .hz-site-nav__link:hover,
+.hz-site-nav .hz-site-nav__link[aria-current="page"] {
+  color: var(--hz-text);
+}
+
+.site-header .hz-menu-button {
+  border-color: var(--hz-border-strong);
+  color: var(--hz-text);
+}
+
+/* These retained panels have their own dark surfaces in either shell theme. */
+.mk-section--navy,
+.mk-discovery,
+.upcoming-card {
+  --hz-text: var(--br-white);
+}
+
+/* Keep every desktop action reachable before switching to the mobile menu. */
+@media (min-width: 56.3125rem) and (max-width: 80rem) {
+  .site-header__bar.hz-site-header__inner {
+    height: auto;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    padding-block: 0.75rem;
+  }
+
+  .hz-site-nav--desktop {
+    position: static;
+    order: 3;
+    flex: 1 0 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 0;
+    transform: none;
+  }
+
+  .hz-header-actions {
+    flex-shrink: 0;
+  }
+}

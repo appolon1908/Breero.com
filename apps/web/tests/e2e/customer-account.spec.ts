@@ -1,5 +1,21 @@
 import { expect, test } from "@playwright/test";
 
+test.beforeEach(async ({ page }) => {
+  // Account data uses the mock API, while the real session guard reads this endpoint.
+  await page.route("**/api/v1/auth/csrf", (route) =>
+    route.fulfill({ json: { csrf_token: "e2e-customer-session" } }),
+  );
+});
+
+test("account content stays protected when the session is unauthorized", async ({ page }) => {
+  await page.route("**/api/v1/auth/csrf", (route) =>
+    route.fulfill({ status: 401, json: { detail: "Not authenticated" } }),
+  );
+  await page.goto("/account");
+  await expect(page).toHaveURL(/\/account\/login\?next=%2Faccount$/);
+  await expect(page.getByRole("heading", { name: /Hello, Maya/ })).toHaveCount(0);
+});
+
 const widths = [375, 430, 768, 1024, 1280, 1440];
 for (const width of widths) {
   test(`account dashboard is responsive at ${width}px`, async ({ page }) => {
