@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi.routing import APIRoute
 
 from app.api.v1 import (
     access,
@@ -82,7 +83,17 @@ if settings.payments_enabled and settings.stripe_enabled:
     )
 api_router.include_router(jobs.router, prefix="/jobs", tags=["jobs"])
 api_router.include_router(vendors.router, prefix="/vendors", tags=["vendors"])
-api_router.include_router(provider.router, prefix="/provider", tags=["provider"])
+# The dedicated provider routers above own these two GET contracts. Keep the
+# remaining legacy operations without registering shadowed duplicate handlers.
+legacy_provider_router = APIRouter(routes=[
+    route for route in provider.router.routes
+    if not (
+        isinstance(route, APIRoute)
+        and route.methods == {"GET"}
+        and route.path in {"/jobs", "/availability"}
+    )
+])
+api_router.include_router(legacy_provider_router, prefix="/provider", tags=["provider"])
 api_router.include_router(operations.router, prefix="/operations", tags=["operations"])
 api_router.include_router(admin_dispatch.router, prefix="/admin", tags=["admin-dispatch"])
 api_router.include_router(admin.router, prefix="/admin", tags=["administration"])

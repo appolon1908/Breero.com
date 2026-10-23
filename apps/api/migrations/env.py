@@ -7,7 +7,9 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.config import settings
 from app.db.base import Base
+from app.domains.administration import models as administration_models  # noqa: F401
 from app.domains.auth import models as auth_models  # noqa: F401
+from app.domains.booking import capacity_models  # noqa: F401
 from app.domains.booking import models as booking_models  # noqa: F401
 from app.domains.booking_intents import models as booking_intent_models  # noqa: F401
 from app.domains.catalog import models as catalog_models  # noqa: F401
@@ -24,6 +26,7 @@ from app.domains.provider_catalog import models as provider_catalog_models  # no
 from app.domains.provider_qualifications import models as provider_qual_models  # noqa: F401
 from app.domains.public_submissions import models as public_submission_models  # noqa: F401
 from app.domains.workforce import models as workforce_models  # noqa: F401
+from app.domains.workforce import provider_models  # noqa: F401
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.database_url)

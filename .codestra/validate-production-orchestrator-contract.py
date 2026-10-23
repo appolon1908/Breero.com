@@ -611,8 +611,8 @@ APPROVED_COMPLEX_SCRIPT_SHA256: dict[str, dict[str, str]] = {
         ),
     },
     "appolon1908/Breero.com": {
-        "apps/api/scripts/check_schema_drift.py": "340a39e67dcda20824da7b59f6eee2a7d97e875bac3fce85c407e6ef45397914",
-        "apps/api/scripts/generate_openapi.py": "46ed75f51bfacfd5eb7f7f225fa68042d40e6f61c489dad559ada8268b48ab0f",
+        "apps/api/scripts/check_schema_drift.py": "760bef9e20656d0c3797fe9be3ef8dae6a8cfc94d1feac0f4e69915d9361cc2a",
+        "apps/api/scripts/generate_openapi.py": "9b0e56c904079ddeecf69d3d6f024446bc7d65fd5f6f3d173c387cf1c4ca5122",
         "scripts/ci/test-classify-quality-scope.sh": "0365cd71d85e00facf1a64c2f11734e413430af75e4cf39e0e52971d13d5c473",
         "scripts/ci/test-validate-breero-scope.sh": "ea29de36868e28ff82e3ec151f896aed388d2421f5907151c4c13480dae20bf8",
         "scripts/ci/validate-breero-scope.sh": "f8ffb8a3953c56d7d6722938825bfb33fced802ba162f4cefd3d12be8ffb9a1e",
