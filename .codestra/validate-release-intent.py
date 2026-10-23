@@ -64,7 +64,7 @@ CATALOG_REPOSITORIES = {
     "appolon1908-hue/backend2",
     "appolon1908-hue/beyvra-frontend",
     "appolon1908-hue/scrapper",
-    "ingtrader21-spec/Breero.com",
+    "appolon1908/Breero.com",
     "appolon1908-hue/Moneybee-Backend",
     "appolon1908-hue/Telnexa-web",
     CONTROLLER_REPOSITORY,
@@ -131,7 +131,7 @@ EXPECTED_CHECK_WORKFLOWS = {
         "deployment-policy": ".github/workflows/ci.yml",
         "validate": ".github/workflows/ci.yml",
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         "orchestrator-contract": ".github/workflows/production-orchestrator-contract.yml",
         "quality": ".github/workflows/quality.yml",
     },
@@ -193,7 +193,7 @@ EXPECTED_CHECK_WORKFLOW_SHA256 = {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
         ".github/workflows/ci.yml": "31d81c5be094a1510bc821ef4359bba591630d2273662f5de0683205d908c60d",
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
         ".github/workflows/quality.yml": "2be72e0820aea5373c0f273b260dd9be5599698802864ae50fb28077abe53c6a",
     },
@@ -217,8 +217,8 @@ SHARED_PRODUCTION_VALIDATOR_SHA256 = (
     "83d2fce102104543b871530f11115f20"
 )
 BREERO_PRODUCTION_VALIDATOR_SHA256 = (
-    "19ba2f63ad6b29506e80e1a72f4ee2c4"
-    "b9f5bdd6d6177382bb6c4e03af7ad510"
+    "29852dcf7c0e3bf22d9a13640da7de67"
+    "455882b7e94665ecc02ec9a02950e6d0"
 )
 KEYCLOAK_PRODUCTION_VALIDATOR_SHA256 = (
     "6006bbc7850ce7666de926b6cad2585b"
@@ -329,7 +329,7 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
             ".codestra/validate-production-orchestrator-contract.py": SHARED_PRODUCTION_VALIDATOR_SHA256,
         },
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": {
             ".codestra/validate-production-orchestrator-contract.py": BREERO_PRODUCTION_VALIDATOR_SHA256,
         },
@@ -347,8 +347,7 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
                 "d546a037bc63040d9697895dd40473b2"
             ),
             "apps/api/Dockerfile": (
-                "7287f79b9b0a2c6d8a6ff618386c0641"
-                "5a0680c940aa81c5957597f08f93095e"
+                "3d970e686a71bfcc2e27bde3a266714bbc42780e82c949e6c7371d7c442eaa87"
             ),
             "deploy/frontend/Dockerfile": (
                 "5502d3c2cb4abd3c85a1f4f8f898fb4a"
@@ -411,9 +410,8 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "783feb31fc0ada4b043a62bf53dbfc1f"
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
-    "ingtrader21-spec/Breero.com": (
-        "64de950026f40397f606a3fb351ab08a"
-        "b42c9abf3b856decb1aca471e06ff2dd"
+    "appolon1908/Breero.com": (
+        "360751c703f1ed48e77677fc0df6d3705e646267c41454f415426142eea7f11b"
     ),
     "appolon1908-hue/Moneybee-Backend": (
         "a283e388028892ced3ac8445893ec2fa"
@@ -2308,7 +2306,7 @@ def self_test() -> int:
     require(
         breero_quality_closure
         <= set(
-            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["ingtrader21-spec/Breero.com"][
+            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["appolon1908/Breero.com"][
                 ".github/workflows/quality.yml"
             ]
         ),
@@ -2352,7 +2350,15 @@ def self_test() -> int:
         pass
     else:
         raise PolicyError("negative required-check workflow digest regression passed")
-    if local_repository == "ingtrader21-spec/Breero.com":
+    if local_repository == "appolon1908/Breero.com":
+        quality_path = ".github/workflows/quality.yml"
+        validate_workflow_definition_bytes(
+            local_repository, checkout_sha, quality_path, Path(quality_path).read_bytes()
+        )
+        for bound_path in EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256[local_repository][quality_path]:
+            validate_workflow_executable_bytes(
+                local_repository, quality_path, bound_path, Path(bound_path).read_bytes()
+            )
         portal_path = "deploy/portals/Dockerfile"
         portal_bytes = Path(portal_path).read_bytes()
         validate_workflow_executable_bytes(
