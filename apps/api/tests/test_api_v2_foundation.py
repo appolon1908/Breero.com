@@ -294,14 +294,43 @@ def test_unsafe_trace_headers_are_not_reflected() -> None:
     uuid.UUID(request_id)
 
 
-def test_openapi_exposes_only_the_real_v2_foundation_route() -> None:
+def test_openapi_exposes_the_mounted_v2_surface_with_its_permissions() -> None:
     schema = app.openapi()
+    expected_permissions = {
+        ("/api/v2/capabilities", "get"): "capabilities.read",
+        ("/api/v2/project-requests", "post"): "role:customer",
+        ("/api/v2/project-requests/{request_id}", "get"): "role:customer",
+        ("/api/v2/project-requests/{request_id}", "patch"): "role:customer",
+        ("/api/v2/project-requests/{request_id}/submit", "post"): "role:customer",
+        ("/api/v2/project-requests/{request_id}/cancel", "post"): "role:customer",
+        ("/api/v2/opportunities", "get"): "role:vendor_admin",
+        ("/api/v2/opportunities/{opportunity_id}/decision", "post"): "role:vendor_admin",
+        ("/api/v2/lead-connections/{connection_id}/quotes", "get"): "role:customer",
+        ("/api/v2/lead-connections/{connection_id}/quotes", "post"): "role:vendor_admin",
+        ("/api/v2/lead-connections/{connection_id}/messages", "get"): "roles:customer|vendor_admin",
+        ("/api/v2/lead-connections/{connection_id}/messages", "post"): "roles:customer|vendor_admin",
+    }
+    operations = {
+        (path, method): operation
+        for path, methods in schema["paths"].items()
+        if path.startswith("/api/v2/")
+        for method, operation in methods.items()
+        if method in {"get", "post", "put", "patch", "delete", "head", "options", "trace"}
+    }
 
-    assert schema["paths"]["/api/v2/capabilities"]["get"]["operationId"] == (
-        "get_v2_capabilities"
-    )
+    assert operations.keys() == expected_permissions.keys()
+    assert operations[("/api/v2/capabilities", "get")]["operationId"] == "get_v2_capabilities"
     assert "ApiError" in schema["components"]["schemas"]
-    assert "/api/v2/project-requests" not in schema["paths"]
+    for identity, permission in expected_permissions.items():
+        operation = operations[identity]
+        policy = operation["x-breero-policy"][identity[1].upper()]
+        assert policy["permission"] == permission
+        if identity == ("/api/v2/capabilities", "get"):
+            assert policy["authentication"] == "none"
+            assert not operation.get("security")
+        else:
+            assert policy["authentication"] == "bearer"
+            assert operation["security"] == [{"HTTPBearer": []}]
 
 
 def _stable_operation_contract(operation: dict[str, Any]) -> dict[str, Any]:
