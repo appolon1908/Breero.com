@@ -23,7 +23,12 @@ def test_audit_context_is_migrated_with_its_persisted_model() -> None:
 
     output = StringIO()
     context = MigrationContext.configure(
-        dialect_name="postgresql", opts={"as_sql": True, "output_buffer": output}
+        dialect_name="postgresql",
+        opts={
+            "as_sql": True,
+            "output_buffer": output,
+            "target_metadata": AuditLog.metadata,
+        },
     )
     with Operations.context(context):
         migration.module.upgrade()
@@ -44,5 +49,45 @@ def test_audit_context_is_migrated_with_its_persisted_model() -> None:
     assert "ADD COLUMN result VARCHAR(16) DEFAULT 'success' NOT NULL" in ddl
     assert str(AuditLog.__table__.c.result.server_default.arg) == "success"
     assert "CHECK (result IN ('success', 'denied', 'failure'))" in ddl
+    assert "UPDATE audit_logs" not in ddl
+    assert "DROP " not in ddl
+
+
+
+def test_provider_migration_follows_audit_without_rewriting_audit_history() -> None:
+    config = Config()
+    config.set_main_option("script_location", str(Path(__file__).parents[1] / "migrations"))
+    scripts = ScriptDirectory.from_config(config)
+    migration = scripts.get_revision("033_provider_availability_quals")
+    assert migration is not None
+    assert migration.down_revision == "032_audit_read_model"
+
+    output = StringIO()
+    context = MigrationContext.configure(
+        dialect_name="postgresql",
+        opts={
+            "as_sql": True,
+            "output_buffer": output,
+            "target_metadata": AuditLog.metadata,
+        },
+    )
+    with Operations.context(context):
+        migration.module.upgrade()
+    ddl = output.getvalue()
+    for table in (
+        "provider_declared_availability_rules",
+        "provider_blackout_periods",
+        "provider_qualifications",
+    ):
+        assert f"CREATE TABLE {table}" in ddl
+    for target in ("vendors", "workers", "users"):
+        assert f"REFERENCES {target} (id)" in ddl
+    for permission in (
+        "provider.availability.read",
+        "provider.qualifications.manage",
+        "provider.offers.decide",
+    ):
+        assert f"('vendor_admin', '{permission}')" in ddl
+    assert "ALTER TABLE audit_logs" not in ddl
     assert "UPDATE audit_logs" not in ddl
     assert "DROP " not in ddl
