@@ -162,3 +162,30 @@ def test_committed_contract_artifacts_match_the_runtime_registry() -> None:
         capture_output=True,
         text=True,
     )
+
+
+@pytest.mark.parametrize(
+    "method,path,rule,permission",
+    [
+        ("GET", "/api/v1/admin/users", "admin-user-read", "admin.access.manage"),
+        ("GET", "/api/v1/admin/users/{user_id}/effective-access", "admin-user-read", "admin.access.manage"),
+        ("PUT", "/api/v1/admin/users/{user_id}/access", "admin-user-access-replacement", "admin.access.manage"),
+        ("POST", "/api/v1/admin/users/{user_id}/disable", "admin-user-lifecycle", "admin.access.manage"),
+        ("POST", "/api/v1/admin/users/{user_id}/reactivate", "admin-user-lifecycle", "admin.access.manage"),
+        ("GET", "/api/v1/finance/payout-batches", "finance-staff-read", "roles:finance|admin"),
+        ("GET", "/api/v1/provider/finance/payouts/{payout_id}", "provider-finance-read", "provider.finance.read"),
+    ],
+)
+def test_admin_finance_features_keep_explicit_endpoint_policies(
+    method: str, path: str, rule: str, permission: str,
+) -> None:
+    entries = get_endpoint_registry(app)["endpoints"]
+    entry = next(item for item in entries if item["method"] == method and item["path"] == path)
+    assert entry["policy_rule"] == rule
+    assert entry["permission"] == permission
+    assert entry["authentication"] == "bearer"
+    if method == "GET":
+        assert entry["emitted_effect"] == "none"
+    if "/finance/" in path:
+        assert "read-only" in entry["capability_gate"]
+        assert "settings.payout_enabled" in entry["capability_gate"]
