@@ -64,7 +64,7 @@ CATALOG_REPOSITORIES = {
     "appolon1908-hue/backend2",
     "appolon1908-hue/beyvra-frontend",
     "appolon1908-hue/scrapper",
-    "ingtrader21-spec/Breero.com",
+    "appolon1908/Breero.com",
     "appolon1908-hue/Moneybee-Backend",
     "appolon1908-hue/Telnexa-web",
     CONTROLLER_REPOSITORY,
@@ -131,7 +131,7 @@ EXPECTED_CHECK_WORKFLOWS = {
         "deployment-policy": ".github/workflows/ci.yml",
         "validate": ".github/workflows/ci.yml",
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         "orchestrator-contract": ".github/workflows/production-orchestrator-contract.yml",
         "quality": ".github/workflows/quality.yml",
     },
@@ -193,9 +193,9 @@ EXPECTED_CHECK_WORKFLOW_SHA256 = {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
         ".github/workflows/ci.yml": "31d81c5be094a1510bc821ef4359bba591630d2273662f5de0683205d908c60d",
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
-        ".github/workflows/quality.yml": "2be72e0820aea5373c0f273b260dd9be5599698802864ae50fb28077abe53c6a",
+        ".github/workflows/quality.yml": '334419b496981eb3b613ded088376bc8965e46a319292bad3af3b7c4f17a1764',
     },
     "appolon1908-hue/Moneybee-Backend": {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
@@ -217,8 +217,8 @@ SHARED_PRODUCTION_VALIDATOR_SHA256 = (
     "83d2fce102104543b871530f11115f20"
 )
 BREERO_PRODUCTION_VALIDATOR_SHA256 = (
-    "00c8bb9669838972fecbe3ff24e6bd50"
-    "b7e7ee8b1173764b933671beb972ecc9"
+    "0fb977e06a3e52db66449b7c02dd93bf"
+    "341698303380286cc317f9d480698d83"
 )
 KEYCLOAK_PRODUCTION_VALIDATOR_SHA256 = (
     "6006bbc7850ce7666de926b6cad2585b"
@@ -329,7 +329,7 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
             ".codestra/validate-production-orchestrator-contract.py": SHARED_PRODUCTION_VALIDATOR_SHA256,
         },
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": {
             ".codestra/validate-production-orchestrator-contract.py": BREERO_PRODUCTION_VALIDATOR_SHA256,
         },
@@ -364,6 +364,7 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
             "scripts/ci/validate-breero-scope.sh": "f8ffb8a3953c56d7d6722938825bfb33fced802ba162f4cefd3d12be8ffb9a1e",
             "scripts/pr_consolidation/validate_ledger.py": "cb2ad21f2b5dce32619297d296092453a5b0b40474645271bdc1b5eaf006aa59",
             "scripts/pr_consolidation/test_validate_ledger.py": "0dac962d1e624c294b06283ffa223ebecdedd36588aede15939d066eb1b2dcce",
+            "scripts/check-design-system.mjs": "0ce62e4d29af92ad52c9ef282db30d9e98fbc55e281c2405e4c2a08edb3605b1",
         },
     },
     "appolon1908-hue/Moneybee-Backend": {
@@ -411,9 +412,9 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "783feb31fc0ada4b043a62bf53dbfc1f"
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
-    "ingtrader21-spec/Breero.com": (
-        "64de950026f40397f606a3fb351ab08a"
-        "b42c9abf3b856decb1aca471e06ff2dd"
+    "appolon1908/Breero.com": (
+        "b03639571f20a6527ac9d65fc3d2ba88"
+        "2fdea858c173cd6b12ac960b68ef83aa"
     ),
     "appolon1908-hue/Moneybee-Backend": (
         "a283e388028892ced3ac8445893ec2fa"
@@ -2308,7 +2309,7 @@ def self_test() -> int:
     require(
         breero_quality_closure
         <= set(
-            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["ingtrader21-spec/Breero.com"][
+            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["appolon1908/Breero.com"][
                 ".github/workflows/quality.yml"
             ]
         ),
@@ -2352,7 +2353,15 @@ def self_test() -> int:
         pass
     else:
         raise PolicyError("negative required-check workflow digest regression passed")
-    if local_repository == "ingtrader21-spec/Breero.com":
+    if local_repository == "appolon1908/Breero.com":
+        quality_path = ".github/workflows/quality.yml"
+        validate_workflow_definition_bytes(
+            local_repository, checkout_sha, quality_path, Path(quality_path).read_bytes()
+        )
+        for bound_path in EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256[local_repository][quality_path]:
+            validate_workflow_executable_bytes(
+                local_repository, quality_path, bound_path, Path(bound_path).read_bytes()
+            )
         portal_path = "deploy/portals/Dockerfile"
         portal_bytes = Path(portal_path).read_bytes()
         validate_workflow_executable_bytes(
