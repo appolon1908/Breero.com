@@ -1,6 +1,7 @@
 """Policy coverage for the provider and marketplace routes mounted by the portal."""
 
 import inspect
+import uuid
 from types import SimpleNamespace
 
 import pytest
@@ -99,7 +100,7 @@ async def test_feature_policy_matches_authorization_and_denies_missing_access(
         return context
 
     monkeypatch.setattr(AccessService, "context", access_context)
-    principal = object()
+    principal = SimpleNamespace(id=uuid.uuid4())
     if "required" in values:
         required = values["required"]
         assert set(rule.permission.split(" && ")) == set(required)
