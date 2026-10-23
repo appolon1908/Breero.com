@@ -105,12 +105,14 @@ class ProjectRequestService:
                     )
                 ).all()
             )
-            for a in current:
-                await self.session.delete(a)
-            for a in payload.answers:
+            for existing_answer in current:
+                await self.session.delete(existing_answer)
+            for incoming_answer in payload.answers:
                 self.session.add(
                     ProjectRequestAnswer(
-                        project_request_id=item.id, question_id=a.question_id, value=a.value
+                        project_request_id=item.id,
+                        question_id=incoming_answer.question_id,
+                        value=incoming_answer.value,
                     )
                 )
         item.version += 1

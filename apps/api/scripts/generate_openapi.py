@@ -1,8 +1,10 @@
 """Generate deterministic OpenAPI and endpoint-policy artifacts for CI review."""
 
 import argparse
+import difflib
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -96,13 +98,23 @@ for path, operations in schema.get("paths", {}).items():
 parser = argparse.ArgumentParser()
 parser.add_argument("--check", action="store_true")
 args = parser.parse_args()
+stale_targets: list[Path] = []
 for target, document in ((openapi_target, schema), (registry_target, registry)):
     content = json.dumps(document, indent=2, sort_keys=True) + "\n"
     if args.check:
-        if not target.exists() or target.read_text() != content:
-            raise SystemExit(f"Stale generated artifact: {target}")
+        committed = target.read_text() if target.exists() else ""
+        if not target.exists() or committed != content:
+            sys.stderr.writelines(difflib.unified_diff(
+                committed.splitlines(keepends=True),
+                content.splitlines(keepends=True),
+                fromfile=f"committed/{target.name}",
+                tofile=f"generated/{target.name}",
+            ))
+            stale_targets.append(target)
     else:
         target.write_text(content)
+if stale_targets:
+    raise SystemExit("Stale generated artifacts: " + ", ".join(map(str, stale_targets)))
 print(
     f"validated {len(schema.get('paths', {}))} paths / {len(operation_ids)} operations / "
     f"{len(registry['endpoints'])} endpoint policies"

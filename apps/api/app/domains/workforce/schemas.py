@@ -73,6 +73,43 @@ class WorkerRead(BaseModel):
     available: bool
 
 
+class ProviderWorkerCreate(BaseModel):
+    """Provider self-service team member; account linking and activation stay with BREERO."""
+
+    model_config = ConfigDict(extra="forbid")
+    first_name: str = Field(min_length=1, max_length=80)
+    last_name: str = Field(min_length=1, max_length=80)
+    email: EmailStr
+    phone: str = Field(min_length=5, max_length=32)
+
+    @model_validator(mode="after")
+    def normalize(self):
+        self.first_name = self.first_name.strip()
+        self.last_name = self.last_name.strip()
+        self.phone = self.phone.strip()
+        if not self.first_name or not self.last_name:
+            raise ValueError("first_name and last_name are required")
+        return self
+
+
+class ProviderWorkerRead(BaseModel):
+    id: uuid.UUID
+    first_name: str
+    last_name: str
+    email: str
+    phone: str
+    status: WorkerStatus
+    available: bool
+    skills: list
+    has_account: bool
+    is_account_owner: bool
+
+
+class ProviderWorkerList(BaseModel):
+    items: list[ProviderWorkerRead]
+    total: int
+
+
 class LocationUpdate(BaseModel):
     latitude: float = Field(ge=-90, le=90)
     longitude: float = Field(ge=-180, le=180)
