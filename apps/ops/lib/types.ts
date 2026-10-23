@@ -308,6 +308,3 @@ export interface OfferRead { id: string; job_id: string; vendor_id: string; work
 export interface AssignmentRead { id: string; job_id: string; vendor_id: string; worker_id: string; status: string; assigned_at: string }
 export interface ReassignmentRead { assignment: AssignmentRead; released_assignment_id: string; job_id: string; job_status: JobStatus; job_version: number }
 export interface JobRead { id: string; status: JobStatus; vendor_id: string | null; worker_id: string | null }
-
-export interface OpsUser { id: string; email: string; full_name: string; role: string }
-export interface OpsSession { access_token: string; user: OpsUser }

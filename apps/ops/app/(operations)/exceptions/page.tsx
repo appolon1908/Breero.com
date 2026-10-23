@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { PageFrame } from "../../components/PageFrame";
-import { ExceptionsView } from "../../components/views/ExceptionsView";
-import { SEVERITY_LABELS } from "../../lib/format";
-import { useOps, useResource } from "../../lib/session";
-import { RISK_SEVERITIES, type RiskSeverity } from "../../lib/types";
+import { PageFrame } from "../../../components/PageFrame";
+import { ExceptionsView } from "../../../components/views/ExceptionsView";
+import { SEVERITY_LABELS } from "../../../lib/format";
+import { useOps, useResource } from "../../../lib/session";
+import { RISK_SEVERITIES, type RiskSeverity } from "../../../lib/types";
 
 export default function ExceptionsPage() {
   const { api } = useOps();

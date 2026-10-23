@@ -10,7 +10,6 @@ import type {
   JobStatus,
   OfferRead,
   OperationsDashboard,
-  OpsSession,
   QueuePage,
   ReassignmentRead,
   RiskSeverity,
@@ -19,73 +18,49 @@ import type {
 } from "./types";
 
 export class OpsApiError extends Error {
-  constructor(message: string, readonly status: number, readonly code?: string) {
+  constructor(message: string, readonly status: number, readonly code?: string, readonly details: string[] = []) {
     super(message);
     this.name = "OpsApiError";
   }
 }
 
-/** Extract the server's own message from any V1 error envelope. */
-export async function errorFromResponse(response: Response): Promise<OpsApiError> {
-  const parsed: unknown = await response.json().catch(() => null);
-  const body = parsed && typeof parsed === "object" ? (parsed as Record<string, unknown>) : {};
-  const nested = body.error && typeof body.error === "object" ? (body.error as Record<string, unknown>) : {};
-  const detail = body.detail;
-  let message = `Request failed (${response.status})`;
-  if (typeof nested.message === "string") message = nested.message;
-  else if (typeof detail === "string") message = detail;
-  else if (Array.isArray(detail)) {
-    message = detail
-      .map((item) => (item && typeof item === "object" && typeof (item as { msg?: unknown }).msg === "string" ? (item as { msg: string }).msg : "Invalid value"))
-      .join("; ");
-  } else if (typeof body.message === "string") message = body.message;
-  return new OpsApiError(message, response.status, typeof nested.code === "string" ? nested.code : undefined);
-}
-
-export interface OpsApiOptions {
-  baseUrl: string;
-  token?: string;
-  fetch?: typeof globalThis.fetch;
-  onUnauthorized?: () => void;
-}
+export type OpsRequest = <T>(path: string, init?: RequestInit) => Promise<T>;
 
 const CONTROL = "/operations/control-center";
 const segment = (value: string) => encodeURIComponent(value);
 
-export function createOpsApi(options: OpsApiOptions) {
-  const fetcher = options.fetch ?? globalThis.fetch.bind(globalThis);
-
+export function createOpsApi(portalRequest: OpsRequest) {
   async function request<T>(path: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
-    const headers = new Headers({ Accept: "application/json" });
-    if (init.body !== undefined) headers.set("Content-Type", "application/json");
-    if (options.token) headers.set("Authorization", `Bearer ${options.token}`);
-    let response: Response;
     try {
-      response = await fetcher(`${options.baseUrl}${path}`, {
+      const value = await portalRequest<T>(path, {
         method: init.method ?? "GET",
-        headers,
+        headers: init.body === undefined ? undefined : { "Content-Type": "application/json" },
         body: init.body === undefined ? undefined : JSON.stringify(init.body),
-        cache: "no-store",
       });
-    } catch {
-      throw new OpsApiError("Unable to reach the BREERO API", 0);
-    }
-    if (!response.ok) {
-      const error = await errorFromResponse(response);
-      if (response.status === 401) options.onUnauthorized?.();
-      throw error;
-    }
-    if (response.status === 204) return undefined as T;
-    try {
-      return (await response.json()) as T;
-    } catch {
-      throw new OpsApiError("The BREERO API returned an unreadable response", response.status);
+      if (value !== undefined && (value === null || typeof value !== "object")) {
+        throw new OpsApiError("The BREERO API returned an unreadable response", 200);
+      }
+      return value;
+    } catch (reason) {
+      const problem = reason instanceof Error && "problem" in reason ? reason.problem : null;
+      if (problem && typeof problem === "object" && "status" in problem && typeof problem.status === "number") {
+        const details = "details" in problem && Array.isArray(problem.details)
+          ? problem.details.filter((item): item is string => typeof item === "string") : [];
+        const message = "message" in problem && typeof problem.message === "string" ? problem.message : "Request failed";
+        throw new OpsApiError(
+          details.length ? `${message} ${details.join("; ")}` : message,
+          problem.status,
+          "code" in problem && typeof problem.code === "string" ? problem.code : undefined,
+          details,
+        );
+      }
+      if (reason instanceof SyntaxError) throw new OpsApiError("The BREERO API returned an unreadable response", 200);
+      if (reason instanceof TypeError) throw new OpsApiError("Unable to reach the BREERO API", 0);
+      throw reason;
     }
   }
 
   return {
-    login: (email: string, password: string) =>
-      request<OpsSession & { refresh_token?: string }>("/auth/login", { method: "POST", body: { email, password } }),
     dashboard: () => request<OperationsDashboard>(`${CONTROL}/summary`),
     queue: (filters: QueueFilterState) => request<QueuePage>(`${CONTROL}/queue?${toQueueSearchParams(filters)}`),
     exceptions: (severity?: RiskSeverity) =>

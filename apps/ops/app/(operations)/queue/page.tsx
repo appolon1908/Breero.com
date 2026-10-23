@@ -2,12 +2,12 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useMemo } from "react";
-import { PageFrame } from "../../components/PageFrame";
-import { Loading } from "../../components/ui";
-import { JobTable } from "../../components/views/JobTable";
-import { QueueFilters } from "../../components/views/QueueFilters";
-import { fromSearchParams, toQueueSearchParams, type QueueFilterState } from "../../lib/queue-filters";
-import { useOps, useResource } from "../../lib/session";
+import { PageFrame } from "../../../components/PageFrame";
+import { Loading } from "../../../components/ui";
+import { JobTable } from "../../../components/views/JobTable";
+import { QueueFilters } from "../../../components/views/QueueFilters";
+import { fromSearchParams, toQueueSearchParams, type QueueFilterState } from "../../../lib/queue-filters";
+import { useOps, useResource } from "../../../lib/session";
 
 function DispatchQueue() {
   const { api } = useOps();

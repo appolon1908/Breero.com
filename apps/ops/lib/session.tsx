@@ -2,12 +2,12 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import type { OpsApi } from "./api";
-import type { OpsSession } from "./types";
+import type { PortalSessionView } from "@breero/portal";
 
 export interface OpsContextValue {
-  session: OpsSession;
+  session: PortalSessionView;
   api: OpsApi;
-  signOut: () => void;
+  signOut: () => Promise<void>;
 }
 
 export const OpsContext = createContext<OpsContextValue | null>(null);
@@ -36,10 +36,10 @@ export function useResource<T>(loader: () => Promise<T>): Resource<T> {
 
   useEffect(() => {
     let active = true;
-    setState((previous) => ({ data: previous.data, loading: true }));
+    setState({ loading: true });
     loader().then(
       (data) => { if (active) setState({ data, loading: false }); },
-      (reason: unknown) => { if (active) setState((previous) => ({ data: previous.data, loading: false, error: errorMessage(reason) })); },
+      (reason: unknown) => { if (active) setState({ loading: false, error: errorMessage(reason) }); },
     );
     return () => { active = false; };
   }, [loader, nonce]);

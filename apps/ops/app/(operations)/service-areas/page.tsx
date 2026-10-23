@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback } from "react";
-import { PageFrame } from "../../components/PageFrame";
-import { ServiceAreasView } from "../../components/views/ServiceAreasView";
-import { useOps, useResource } from "../../lib/session";
+import { PageFrame } from "../../../components/PageFrame";
+import { ServiceAreasView } from "../../../components/views/ServiceAreasView";
+import { useOps, useResource } from "../../../lib/session";
 
 export default function ServiceAreasPage() {
   const { api } = useOps();

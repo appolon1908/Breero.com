@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
-import { PageFrame } from "../../../components/PageFrame";
-import { DispatchPanel } from "../../../components/views/DispatchPanel";
-import { JobDetailView, WorkRequestList } from "../../../components/views/JobDetailView";
-import { TransitionPanel } from "../../../components/views/TransitionPanel";
-import { STATUS_LABELS } from "../../../lib/format";
-import { errorMessage, useOps, useResource } from "../../../lib/session";
-import type { AssignmentCandidate, JobStatus } from "../../../lib/types";
+import { PageFrame } from "../../../../components/PageFrame";
+import { DispatchPanel } from "../../../../components/views/DispatchPanel";
+import { JobDetailView, WorkRequestList } from "../../../../components/views/JobDetailView";
+import { TransitionPanel } from "../../../../components/views/TransitionPanel";
+import { STATUS_LABELS } from "../../../../lib/format";
+import { errorMessage, useOps, useResource } from "../../../../lib/session";
+import type { AssignmentCandidate, JobStatus } from "../../../../lib/types";
 
 type Feedback = { tone: "ok" | "error"; message: string } | null;
 

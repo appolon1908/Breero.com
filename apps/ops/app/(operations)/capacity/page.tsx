@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { PageFrame } from "../../components/PageFrame";
-import { CapacityView } from "../../components/views/CapacityView";
-import { useOps, useResource } from "../../lib/session";
+import { PageFrame } from "../../../components/PageFrame";
+import { CapacityView } from "../../../components/views/CapacityView";
+import { useOps, useResource } from "../../../lib/session";
 
 export default function CapacityPage() {
   const { api } = useOps();
