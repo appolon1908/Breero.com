@@ -95,6 +95,14 @@ legacy_provider_router = APIRouter(routes=[
 ])
 api_router.include_router(legacy_provider_router, prefix="/provider", tags=["provider"])
 api_router.include_router(operations.router, prefix="/operations", tags=["operations"])
+# Read-only finance projections never move money, so they stay mounted while the
+# payout command surface below remains behind PAYOUT_ENABLED.
+api_router.include_router(finance.read_router, prefix="/finance", tags=["finance-reads"])
+api_router.include_router(
+    finance.provider_router,
+    prefix="/provider/finance",
+    tags=["provider-finance"],
+)
 api_router.include_router(admin_dispatch.router, prefix="/admin", tags=["admin-dispatch"])
 api_router.include_router(admin.router, prefix="/admin", tags=["administration"])
 if settings.payout_enabled:
