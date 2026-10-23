@@ -5,8 +5,10 @@ rest of `apps/admin` can evolve independently.
 
 - API: `GET /api/v1/admin/audit/{events,security-events,events/{id},correlations/{id},catalog}`,
   permission `admin.audit.read` (see `docs/audit-read-model.md`).
-- Session: reuses the `@breero/portal` session in `sessionStorage`. The token is only sent
-  as a bearer header to the `https` API origin, with `credentials: "omit"`.
+- Session: reuses the portal's HttpOnly browser-session cookie through HTTPS requests
+  with `credentials: "include"`; JavaScript never reads or stores an access token.
+  The permission-protected catalog verifies access before the console opens. A 401 or
+  403 clears the loaded records and returns to the sign-in prompt.
 - Rendering: text only. Metadata comes from the server allowlist and is never parsed as
   HTML or serialized from nested objects.
 

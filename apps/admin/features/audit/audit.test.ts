@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { AuditApiError, auditGet, readAccessToken } from "./api";
+import { AuditApiError, auditGet } from "./api";
 import { AuditFilterError, buildSearchParams, defaultFilters, detailPath, formatMetadataValue, listPath, toLocalInput, tracePath } from "./query";
 import type { AuditFilters } from "./types";
 
@@ -58,34 +58,47 @@ describe("audit query building", () => {
 });
 
 describe("audit transport", () => {
-  afterEach(() => { vi.unstubAllEnvs(); });
+  afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
 
-  it("reads only a well-formed portal session token", () => {
-    expect(readAccessToken({ getItem: () => JSON.stringify({ access_token: "t" }) })).toBe("t");
-    expect(readAccessToken({ getItem: () => "{broken" })).toBeNull();
-    expect(readAccessToken({ getItem: () => JSON.stringify({ access_token: 1 }) })).toBeNull();
-    expect(readAccessToken({ getItem: () => null })).toBeNull();
+  it("uses the browser session when checking audit access", async () => {
+    vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "https://api.example.test/api/v1");
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ categories: [] })));
+    vi.stubGlobal("fetch", fetcher);
+
+    await auditGet("/admin/audit/catalog");
+
+    expect(fetcher).toHaveBeenCalledWith("https://api.example.test/api/v1/admin/audit/catalog", {
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+      credentials: "include",
+    });
   });
 
-  it("requires an https API origin and sends the bearer token without cookies", async () => {
+  it("requires an https API origin and sends cookies without a bearer token", async () => {
     vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "https://api.example.test/api/v1/");
-    const fetcher = vi.fn(async () => new Response(JSON.stringify({ ok: true }), { status: 200 }));
-    await auditGet("/admin/audit/catalog", "secret-token", fetcher as unknown as typeof fetch);
-    const [url, init] = fetcher.mock.calls[0] as unknown as [string, RequestInit];
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ ok: true })));
+    await auditGet("/admin/audit/catalog", fetcher);
+    const [url, init] = fetcher.mock.calls[0];
     expect(url).toBe("https://api.example.test/api/v1/admin/audit/catalog");
-    expect(init.credentials).toBe("omit");
-    expect((init.headers as Record<string, string>).Authorization).toBe("Bearer secret-token");
+    expect(init?.credentials).toBe("include");
+    expect(init?.cache).toBe("no-store");
+    expect(new Headers(init?.headers).has("Authorization")).toBe(false);
 
     vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "http://insecure.example.test");
-    await expect(auditGet("/x", "t", fetcher as unknown as typeof fetch)).rejects.toThrow(/secure API origin/);
+    await expect(auditGet("/x", fetcher)).rejects.toThrow(/secure API origin/);
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
-  it("maps denials to a non-leaky message that never echoes the token", async () => {
+  it.each([401, 403])("rejects a denied browser session with status %s without leaking server details", async (status) => {
     vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "https://api.example.test");
-    const fetcher = vi.fn(async () => new Response(JSON.stringify({ detail: "Insufficient permissions" }), { status: 403 }));
-    const failure = auditGet("/admin/audit/events", "secret-token", fetcher as unknown as typeof fetch);
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(
+      JSON.stringify({ error: { code: "ACCESS_DENIED", message: "private-server-detail" } }),
+      { status },
+    ));
+    const failure = auditGet("/admin/audit/catalog", fetcher);
     await expect(failure).rejects.toBeInstanceOf(AuditApiError);
-    await expect(failure).rejects.not.toThrow(/secret-token/);
-    await expect(failure).rejects.toThrow(/not authorized/);
+    await expect(failure).rejects.toMatchObject({ status, code: "ACCESS_DENIED" });
+    await expect(failure).rejects.not.toThrow(/private-server-detail/);
+    await expect(failure).rejects.toThrow(status === 401 ? /session has expired/ : /not authorized/);
   });
 });
