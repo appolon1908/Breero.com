@@ -95,13 +95,18 @@ async def test_explicit_reopt_in_deactivates_applicable_suppression() -> None:
     assert suppression_active is False
 
 
-def test_no_payment_route_is_mounted_while_scheduling_routes_are_mounted() -> None:
+def test_payment_commands_stay_unmounted_with_read_only_finance() -> None:
     from app.main import app
 
-    paths = set(app.openapi()["paths"])
+    paths = app.openapi()["paths"]
     assert "/api/v1/bookings" in paths
     assert "/api/v1/availability/search" in paths
-    assert not any("payment" in path or "stripe" in path for path in paths)
+    payment_paths = {path for path in paths if "payment" in path or "stripe" in path}
+    assert payment_paths == {"/api/v1/finance/payments"}
+    assert set(paths["/api/v1/finance/payments"]) == {"get"}
+    for path, operations in paths.items():
+        if path.startswith(("/api/v1/finance/", "/api/v1/provider/finance/")):
+            assert not {"post", "put", "patch", "delete"}.intersection(operations)
 
 
 def test_production_effective_modes_keep_marketing_and_automation_off() -> None:
