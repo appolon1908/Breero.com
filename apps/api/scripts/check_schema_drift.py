@@ -22,9 +22,14 @@ from app.domains.dispatch import models as _dispatch  # noqa: F401
 from app.domains.finance import models as _finance  # noqa: F401
 from app.domains.geography import models as _geography  # noqa: F401
 from app.domains.jobs import models as _jobs  # noqa: F401
+from app.domains.marketplace import models as _marketplace  # noqa: F401
+from app.domains.marketplace_comms import models as _marketplace_comms  # noqa: F401
 from app.domains.payments import models as _payments  # noqa: F401
 from app.domains.professional_leads import models as _professional_leads  # noqa: F401
+from app.domains.project_requests import models as _project_requests  # noqa: F401
+from app.domains.provider_availability import models as _provider_availability  # noqa: F401
 from app.domains.provider_catalog import models as _provider_catalog  # noqa: F401
+from app.domains.provider_qualifications import models as _provider_qualifications  # noqa: F401
 from app.domains.public_submissions import models as _public_submissions  # noqa: F401
 from app.domains.workforce import models as _workforce  # noqa: F401
 from app.domains.workforce import provider_models as _workforce_provider  # noqa: F401

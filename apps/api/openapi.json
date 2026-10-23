@@ -459,6 +459,26 @@
         "title": "AdminUnassignmentRequest",
         "type": "object"
       },
+      "AnswerInput": {
+        "properties": {
+          "question_id": {
+            "format": "uuid",
+            "title": "Question Id",
+            "type": "string"
+          },
+          "value": {
+            "additionalProperties": true,
+            "title": "Value",
+            "type": "object"
+          }
+        },
+        "required": [
+          "question_id",
+          "value"
+        ],
+        "title": "AnswerInput",
+        "type": "object"
+      },
       "ApiError": {
         "properties": {
           "code": {
@@ -865,60 +885,223 @@
         "title": "AvailabilityExceptionWrite",
         "type": "object"
       },
-      "AvailabilityRuleRead": {
+      "AvailabilityInterval": {
         "properties": {
-          "available": {
-            "default": true,
-            "title": "Available",
-            "type": "boolean"
-          },
-          "day_of_week": {
-            "maximum": 6.0,
-            "minimum": 0.0,
-            "title": "Day Of Week",
-            "type": "integer"
-          },
-          "emergency_only": {
-            "default": false,
-            "title": "Emergency Only",
-            "type": "boolean"
-          },
-          "end_local_time": {
-            "format": "time",
-            "title": "End Local Time",
+          "ends_at": {
+            "format": "date-time",
+            "title": "Ends At",
             "type": "string"
           },
-          "id": {
-            "format": "uuid",
-            "title": "Id",
+          "starts_at": {
+            "format": "date-time",
+            "title": "Starts At",
             "type": "string"
           },
-          "professional_id": {
-            "format": "uuid",
-            "title": "Professional Id",
+          "timezone": {
+            "title": "Timezone",
             "type": "string"
           },
-          "start_local_time": {
-            "format": "time",
-            "title": "Start Local Time",
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "worker_id",
+          "starts_at",
+          "ends_at",
+          "timezone"
+        ],
+        "title": "AvailabilityInterval",
+        "type": "object"
+      },
+      "AvailabilityPreviewRead": {
+        "properties": {
+          "intervals": {
+            "items": {
+              "$ref": "#/components/schemas/AvailabilityInterval"
+            },
+            "title": "Intervals",
+            "type": "array"
+          },
+          "window_end": {
+            "format": "date-time",
+            "title": "Window End",
             "type": "string"
           },
-          "timezone_id": {
-            "maxLength": 64,
-            "minLength": 3,
-            "title": "Timezone Id",
+          "window_start": {
+            "format": "date-time",
+            "title": "Window Start",
             "type": "string"
           }
         },
         "required": [
-          "professional_id",
-          "day_of_week",
-          "start_local_time",
-          "end_local_time",
-          "timezone_id",
-          "id"
+          "window_start",
+          "window_end",
+          "intervals"
         ],
-        "title": "AvailabilityRuleRead",
+        "title": "AvailabilityPreviewRead",
+        "type": "object"
+      },
+      "AvailabilityRuleCreate": {
+        "additionalProperties": false,
+        "description": "Weekly window. ``weekday`` uses ISO order with Monday=0 through Sunday=6.",
+        "properties": {
+          "end_time": {
+            "format": "time",
+            "title": "End Time",
+            "type": "string"
+          },
+          "start_time": {
+            "format": "time",
+            "title": "Start Time",
+            "type": "string"
+          },
+          "timezone": {
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Timezone",
+            "type": "string"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "weekday": {
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Weekday",
+            "type": "integer"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "weekday",
+          "start_time",
+          "end_time",
+          "timezone"
+        ],
+        "title": "AvailabilityRuleCreate",
+        "type": "object"
+      },
+      "AvailabilityRuleUpdate": {
+        "additionalProperties": false,
+        "properties": {
+          "end_time": {
+            "anyOf": [
+              {
+                "format": "time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Time"
+          },
+          "start_time": {
+            "anyOf": [
+              {
+                "format": "time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Time"
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timezone"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "weekday": {
+            "anyOf": [
+              {
+                "maximum": 6.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weekday"
+          }
+        },
+        "title": "AvailabilityRuleUpdate",
         "type": "object"
       },
       "AvailabilityRuleWrite": {
@@ -1026,6 +1209,194 @@
           "remaining_capacity"
         ],
         "title": "AvailabilitySlot",
+        "type": "object"
+      },
+      "BlackoutPeriodCreate": {
+        "additionalProperties": false,
+        "description": "Absolute interval. Offsets are required; values are stored in UTC.",
+        "properties": {
+          "ends_at": {
+            "format": "date-time",
+            "title": "Ends At",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "starts_at": {
+            "format": "date-time",
+            "title": "Starts At",
+            "type": "string"
+          },
+          "timezone": {
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Timezone",
+            "type": "string"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "starts_at",
+          "ends_at",
+          "timezone"
+        ],
+        "title": "BlackoutPeriodCreate",
+        "type": "object"
+      },
+      "BlackoutPeriodRead": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "ends_at": {
+            "format": "date-time",
+            "title": "Ends At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "starts_at": {
+            "format": "date-time",
+            "title": "Starts At",
+            "type": "string"
+          },
+          "timezone": {
+            "title": "Timezone",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "vendor_id": {
+            "format": "uuid",
+            "title": "Vendor Id",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "id",
+          "vendor_id",
+          "worker_id",
+          "starts_at",
+          "ends_at",
+          "timezone",
+          "reason",
+          "version",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "BlackoutPeriodRead",
+        "type": "object"
+      },
+      "BlackoutPeriodUpdate": {
+        "additionalProperties": false,
+        "properties": {
+          "ends_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends At"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "starts_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starts At"
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timezone"
+          }
+        },
+        "title": "BlackoutPeriodUpdate",
         "type": "object"
       },
       "BookingAnswerInput": {
@@ -1229,7 +1600,6 @@
             "$ref": "#/components/schemas/BookingStatus"
           },
           "total_amount": {
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Total Amount",
             "type": "string"
           },
@@ -1673,7 +2043,6 @@
             "$ref": "#/components/schemas/BookingStatus"
           },
           "total_amount": {
-            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
             "title": "Total Amount",
             "type": "string"
           },
@@ -2544,6 +2913,19 @@
         "title": "CustomerInput",
         "type": "object"
       },
+      "Decision": {
+        "properties": {
+          "accept": {
+            "title": "Accept",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "accept"
+        ],
+        "title": "Decision",
+        "type": "object"
+      },
       "Department": {
         "enum": [
           "customer",
@@ -2798,6 +3180,24 @@
           }
         },
         "title": "DispatcherQueueUpdate",
+        "type": "object"
+      },
+      "EvidenceStorageRead": {
+        "properties": {
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "upload_enabled": {
+            "title": "Upload Enabled",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "upload_enabled",
+          "reason"
+        ],
+        "title": "EvidenceStorageRead",
         "type": "object"
       },
       "FeatureFlagPatch": {
@@ -3121,6 +3521,28 @@
         "title": "ManualAssignment",
         "type": "object"
       },
+      "MessageCreate": {
+        "properties": {
+          "body": {
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Body",
+            "type": "string"
+          },
+          "client_message_id": {
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Client Message Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "body",
+          "client_message_id"
+        ],
+        "title": "MessageCreate",
+        "type": "object"
+      },
       "MessageResponse": {
         "properties": {
           "message": {
@@ -3323,6 +3745,42 @@
           "reason"
         ],
         "title": "OperatorBookingConfirmation",
+        "type": "object"
+      },
+      "OpportunityRead": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "project_request_id": {
+            "format": "uuid",
+            "title": "Project Request Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "vendor_id": {
+            "format": "uuid",
+            "title": "Vendor Id",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "project_request_id",
+          "vendor_id",
+          "status",
+          "version"
+        ],
+        "title": "OpportunityRead",
         "type": "object"
       },
       "Page": {
@@ -4058,6 +4516,196 @@
         "title": "ProfileRead",
         "type": "object"
       },
+      "ProjectRequestCreate": {
+        "properties": {
+          "address_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address Id"
+          },
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/AnswerInput"
+            },
+            "title": "Answers",
+            "type": "array"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 160,
+            "minLength": 3,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "service_id",
+          "title"
+        ],
+        "title": "ProjectRequestCreate",
+        "type": "object"
+      },
+      "ProjectRequestPatch": {
+        "properties": {
+          "address_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address Id"
+          },
+          "answers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AnswerInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answers"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "title": "ProjectRequestPatch",
+        "type": "object"
+      },
+      "ProjectRequestRead": {
+        "properties": {
+          "address_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address Id"
+          },
+          "customer_id": {
+            "format": "uuid",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProjectRequestStatus"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "customer_id",
+          "service_id",
+          "address_id",
+          "title",
+          "description",
+          "status",
+          "version"
+        ],
+        "title": "ProjectRequestRead",
+        "type": "object"
+      },
+      "ProjectRequestStatus": {
+        "enum": [
+          "DRAFT",
+          "SUBMITTED",
+          "QUALIFYING",
+          "MATCHING",
+          "MATCHED",
+          "QUOTING",
+          "BOOKED",
+          "CANCELLED",
+          "EXPIRED",
+          "UNSERVICEABLE"
+        ],
+        "title": "ProjectRequestStatus",
+        "type": "string"
+      },
       "ProviderApplicationDecision": {
         "additionalProperties": false,
         "properties": {
@@ -4263,6 +4911,36 @@
         ],
         "title": "ProviderApplicationStatus",
         "type": "string"
+      },
+      "ProviderAvailabilityRead": {
+        "properties": {
+          "blackouts": {
+            "items": {
+              "$ref": "#/components/schemas/BlackoutPeriodRead"
+            },
+            "title": "Blackouts",
+            "type": "array"
+          },
+          "consumed_by_scheduling": {
+            "default": false,
+            "description": "Provider-declared availability is not yet an input to booking, dispatch, or automatic assignment.",
+            "title": "Consumed By Scheduling",
+            "type": "boolean"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/app__domains__provider_availability__schemas__AvailabilityRuleRead"
+            },
+            "title": "Rules",
+            "type": "array"
+          }
+        },
+        "required": [
+          "rules",
+          "blackouts"
+        ],
+        "title": "ProviderAvailabilityRead",
+        "type": "object"
       },
       "ProviderCredentialRead": {
         "properties": {
@@ -4649,6 +5327,304 @@
           "postal_code"
         ],
         "title": "ProviderInterestCreate",
+        "type": "object"
+      },
+      "ProviderJobList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderJobRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "ProviderJobList",
+        "type": "object"
+      },
+      "ProviderJobRead": {
+        "description": "Job fields a provider may see; customer identity and pricing are excluded.",
+        "properties": {
+          "booking_id": {
+            "format": "uuid",
+            "title": "Booking Id",
+            "type": "string"
+          },
+          "completed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completed At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "scheduled_end": {
+            "format": "date-time",
+            "title": "Scheduled End",
+            "type": "string"
+          },
+          "scheduled_start": {
+            "format": "date-time",
+            "title": "Scheduled Start",
+            "type": "string"
+          },
+          "service_id": {
+            "format": "uuid",
+            "title": "Service Id",
+            "type": "string"
+          },
+          "service_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Service Name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "id",
+          "booking_id",
+          "service_id",
+          "service_name",
+          "status",
+          "scheduled_start",
+          "scheduled_end",
+          "worker_id",
+          "completed_at",
+          "updated_at"
+        ],
+        "title": "ProviderJobRead",
+        "type": "object"
+      },
+      "ProviderOfferDecision": {
+        "additionalProperties": false,
+        "properties": {
+          "accept": {
+            "title": "Accept",
+            "type": "boolean"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "accept"
+        ],
+        "title": "ProviderOfferDecision",
+        "type": "object"
+      },
+      "ProviderOfferList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderOfferRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "ProviderOfferList",
+        "type": "object"
+      },
+      "ProviderOfferRead": {
+        "properties": {
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "job_id": {
+            "format": "uuid",
+            "title": "Job Id",
+            "type": "string"
+          },
+          "job_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/JobStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "responded_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Responded At"
+          },
+          "round": {
+            "title": "Round",
+            "type": "integer"
+          },
+          "scheduled_end": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduled End"
+          },
+          "scheduled_start": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduled Start"
+          },
+          "service_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Service Id"
+          },
+          "service_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Service Name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OfferStatus"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "id",
+          "job_id",
+          "worker_id",
+          "status",
+          "round",
+          "expires_at",
+          "responded_at",
+          "created_at",
+          "job_status",
+          "service_id",
+          "service_name",
+          "scheduled_start",
+          "scheduled_end"
+        ],
+        "title": "ProviderOfferRead",
         "type": "object"
       },
       "ProviderOnboardingUpdate": {
@@ -5550,6 +6526,123 @@
         "title": "ProviderSkillRead",
         "type": "object"
       },
+      "ProviderWorkerCreate": {
+        "additionalProperties": false,
+        "description": "Provider self-service team member; account linking and activation stay with BREERO.",
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Last Name",
+            "type": "string"
+          },
+          "phone": {
+            "maxLength": 32,
+            "minLength": 5,
+            "title": "Phone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name",
+          "email",
+          "phone"
+        ],
+        "title": "ProviderWorkerCreate",
+        "type": "object"
+      },
+      "ProviderWorkerList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderWorkerRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "ProviderWorkerList",
+        "type": "object"
+      },
+      "ProviderWorkerRead": {
+        "properties": {
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "has_account": {
+            "title": "Has Account",
+            "type": "boolean"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_account_owner": {
+            "title": "Is Account Owner",
+            "type": "boolean"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "phone": {
+            "title": "Phone",
+            "type": "string"
+          },
+          "skills": {
+            "items": {},
+            "title": "Skills",
+            "type": "array"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WorkerStatus"
+          }
+        },
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "phone",
+          "status",
+          "available",
+          "skills",
+          "has_account",
+          "is_account_owner"
+        ],
+        "title": "ProviderWorkerRead",
+        "type": "object"
+      },
       "PublicAddressInput": {
         "properties": {
           "city": {
@@ -5737,6 +6830,469 @@
         "title": "PublicSlot",
         "type": "object"
       },
+      "QualificationCreate": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_reference": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Reference"
+          },
+          "expires_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires On"
+          },
+          "issued_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued On"
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Z]{2,3}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          },
+          "qualification_type": {
+            "$ref": "#/components/schemas/QualificationType"
+          },
+          "reference_last4": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9]{4}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Last4"
+          },
+          "title": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "qualification_type",
+          "title"
+        ],
+        "title": "QualificationCreate",
+        "type": "object"
+      },
+      "QualificationList": {
+        "properties": {
+          "evidence_storage": {
+            "$ref": "#/components/schemas/EvidenceStorageRead"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QualificationRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "evidence_storage"
+        ],
+        "title": "QualificationList",
+        "type": "object"
+      },
+      "QualificationRead": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "evidence_reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Reference"
+          },
+          "expires_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires On"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_expired": {
+            "default": false,
+            "title": "Is Expired",
+            "type": "boolean"
+          },
+          "issued_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued On"
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          },
+          "qualification_type": {
+            "$ref": "#/components/schemas/QualificationType"
+          },
+          "reference_last4": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Last4"
+          },
+          "review_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Reason"
+          },
+          "review_status": {
+            "$ref": "#/components/schemas/QualificationReviewStatus"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "status": {
+            "$ref": "#/components/schemas/QualificationStatus"
+          },
+          "submitted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted At"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "vendor_id": {
+            "format": "uuid",
+            "title": "Vendor Id",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "id",
+          "vendor_id",
+          "worker_id",
+          "qualification_type",
+          "title",
+          "issuer",
+          "jurisdiction",
+          "reference_last4",
+          "issued_on",
+          "expires_on",
+          "evidence_reference",
+          "status",
+          "review_status",
+          "review_reason",
+          "reviewed_at",
+          "submitted_at",
+          "version",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "QualificationRead",
+        "type": "object"
+      },
+      "QualificationReviewDecision": {
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "enum": [
+              "APPROVED",
+              "REJECTED",
+              "INFORMATION_REQUESTED"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "decision",
+          "reason"
+        ],
+        "title": "QualificationReviewDecision",
+        "type": "object"
+      },
+      "QualificationReviewStatus": {
+        "enum": [
+          "NOT_SUBMITTED",
+          "PENDING_REVIEW",
+          "APPROVED",
+          "REJECTED",
+          "INFORMATION_REQUESTED"
+        ],
+        "title": "QualificationReviewStatus",
+        "type": "string"
+      },
+      "QualificationStatus": {
+        "enum": [
+          "DRAFT",
+          "SUBMITTED",
+          "WITHDRAWN"
+        ],
+        "title": "QualificationStatus",
+        "type": "string"
+      },
+      "QualificationType": {
+        "enum": [
+          "LICENSE",
+          "INSURANCE",
+          "CERTIFICATION",
+          "BACKGROUND_CHECK",
+          "TRAINING",
+          "OTHER"
+        ],
+        "title": "QualificationType",
+        "type": "string"
+      },
+      "QualificationUpdate": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_reference": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Reference"
+          },
+          "expires_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires On"
+          },
+          "issued_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issued On"
+          },
+          "issuer": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuer"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Z]{2,3}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          },
+          "reference_last4": {
+            "anyOf": [
+              {
+                "pattern": "^[A-Za-z0-9]{4}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Last4"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "title": "QualificationUpdate",
+        "type": "object"
+      },
       "QuestionRead": {
         "properties": {
           "help_text": {
@@ -5901,6 +7457,55 @@
         "title": "QuestionWrite",
         "type": "object"
       },
+      "QuoteCreate": {
+        "properties": {
+          "currency": {
+            "maxLength": 3,
+            "minLength": 3,
+            "title": "Currency",
+            "type": "string"
+          },
+          "line_items": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Line Items",
+            "type": "array"
+          },
+          "terms": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Terms"
+          },
+          "total_amount": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Total Amount"
+          }
+        },
+        "required": [
+          "currency",
+          "line_items",
+          "total_amount"
+        ],
+        "title": "QuoteCreate",
+        "type": "object"
+      },
       "RefreshRequest": {
         "properties": {
           "refresh_token": {
@@ -6035,7 +7640,6 @@
           "base_price": {
             "anyOf": [
               {
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
                 "type": "string"
               },
               {
@@ -6124,7 +7728,6 @@
           "base_price": {
             "anyOf": [
               {
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
                 "type": "string"
               },
               {
@@ -6508,7 +8111,6 @@
                 "type": "number"
               },
               {
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
                 "type": "string"
               },
               {
@@ -7903,6 +9505,160 @@
         ],
         "title": "WorkerStatus",
         "type": "string"
+      },
+      "app__domains__provider_availability__schemas__AvailabilityRuleRead": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "end_time": {
+            "format": "time",
+            "title": "End Time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "start_time": {
+            "format": "time",
+            "title": "Start Time",
+            "type": "string"
+          },
+          "timezone": {
+            "title": "Timezone",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "vendor_id": {
+            "format": "uuid",
+            "title": "Vendor Id",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "weekday": {
+            "title": "Weekday",
+            "type": "integer"
+          },
+          "worker_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Worker Id"
+          }
+        },
+        "required": [
+          "id",
+          "vendor_id",
+          "worker_id",
+          "weekday",
+          "start_time",
+          "end_time",
+          "timezone",
+          "valid_from",
+          "valid_until",
+          "version",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "AvailabilityRuleRead",
+        "type": "object"
+      },
+      "app__domains__workforce__provider_schemas__AvailabilityRuleRead": {
+        "properties": {
+          "available": {
+            "default": true,
+            "title": "Available",
+            "type": "boolean"
+          },
+          "day_of_week": {
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Day Of Week",
+            "type": "integer"
+          },
+          "emergency_only": {
+            "default": false,
+            "title": "Emergency Only",
+            "type": "boolean"
+          },
+          "end_local_time": {
+            "format": "time",
+            "title": "End Local Time",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "professional_id": {
+            "format": "uuid",
+            "title": "Professional Id",
+            "type": "string"
+          },
+          "start_local_time": {
+            "format": "time",
+            "title": "Start Local Time",
+            "type": "string"
+          },
+          "timezone_id": {
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Timezone Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "professional_id",
+          "day_of_week",
+          "start_local_time",
+          "end_local_time",
+          "timezone_id",
+          "id"
+        ],
+        "title": "AvailabilityRuleRead",
+        "type": "object"
       }
     },
     "securitySchemes": {
@@ -9748,6 +11504,85 @@
             "resource_owner": "provider-onboarding",
             "response_schema": "app.domains.workforce.schemas.ProviderApplicationRead",
             "tenant_scope": "route-defined-current-scope"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/provider-qualifications/{qualification_id}/review": {
+      "post": {
+        "operationId": "review_provider_qualification_api_v1_admin_provider_qualifications__qualification_id__review_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "qualification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Qualification Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualificationReviewDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Review Provider Qualification",
+        "tags": [
+          "admin-provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "trust-operations",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "qualification-reviewed-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "legacy-not-enforced",
+            "permission": "trust.credentials.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualification-review",
+            "rate_limit_class": "standard",
+            "record_policy": "submitted-qualification-pending-review-under-row-lock",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "app.domains.provider_qualifications.schemas.QualificationRead",
+            "tenant_scope": "global-operations"
           }
         }
       }
@@ -17421,21 +19256,46 @@
     },
     "/api/v1/provider/availability": {
       "get": {
-        "operationId": "availability_api_v1_provider_availability_get",
+        "operationId": "get_provider_availability_api_v1_provider_availability_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "worker_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Worker Id"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/AvailabilityRuleRead"
-                  },
-                  "title": "Response Availability Api V1 Provider Availability Get",
-                  "type": "array"
+                  "$ref": "#/components/schemas/ProviderAvailabilityRead"
                 }
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
           }
         },
         "security": [
@@ -17443,9 +19303,9 @@
             "HTTPBearer": []
           }
         ],
-        "summary": "Availability",
+        "summary": "Get Provider Availability",
         "tags": [
-          "provider"
+          "provider-availability"
         ],
         "x-breero-policy": {
           "GET": {
@@ -17456,15 +19316,15 @@
             "emitted_effect": "none",
             "idempotency_key_policy": "not-applicable",
             "if_match_version_policy": "not-applicable",
-            "permission": "roles:vendor_admin|technician",
+            "permission": "provider.availability.read",
             "pii_classification": "provider-sensitive",
-            "policy_rule": "provider-availability-read",
-            "rate_limit_class": "authenticated-provider",
-            "record_policy": "current-provider-availability",
+            "policy_rule": "provider-declared-availability-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-provider-availability; optional-owned-worker",
             "request_hash_policy": "not-applicable",
             "request_schema": "none",
             "resource_owner": "provider-scheduling",
-            "response_schema": "builtins.list",
+            "response_schema": "app.domains.provider_availability.schemas.ProviderAvailabilityRead",
             "tenant_scope": "provider-membership"
           }
         }
@@ -17491,7 +19351,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/AvailabilityRuleRead"
+                    "$ref": "#/components/schemas/app__domains__workforce__provider_schemas__AvailabilityRuleRead"
                   },
                   "title": "Response Replace Availability Api V1 Provider Availability Put",
                   "type": "array"
@@ -17543,6 +19403,244 @@
         }
       }
     },
+    "/api/v1/provider/availability/blackouts": {
+      "post": {
+        "operationId": "create_provider_blackout_period_api_v1_provider_availability_blackouts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlackoutPeriodCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlackoutPeriodRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Provider Blackout Period",
+        "tags": [
+          "provider-availability"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "blackouts-created-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "not-applicable-on-create",
+            "permission": "provider.availability.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-blackouts-create",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider; optional-owned-worker",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-scheduling",
+            "response_schema": "app.domains.provider_availability.schemas.BlackoutPeriodRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/availability/blackouts/{blackout_id}": {
+      "delete": {
+        "operationId": "delete_provider_blackout_period_api_v1_provider_availability_blackouts__blackout_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "blackout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Blackout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Delete Provider Blackout Period",
+        "tags": [
+          "provider-availability"
+        ],
+        "x-breero-policy": {
+          "DELETE": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "blackouts-deactivated-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "provider.availability.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-blackouts-delete",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-blackouts",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-scheduling",
+            "response_schema": "none",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "update_provider_blackout_period_api_v1_provider_availability_blackouts__blackout_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "blackout_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Blackout Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlackoutPeriodUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlackoutPeriodRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Provider Blackout Period",
+        "tags": [
+          "provider-availability"
+        ],
+        "x-breero-policy": {
+          "PATCH": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "blackouts-updated-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "provider.availability.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-blackouts-update",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-blackouts",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-scheduling",
+            "response_schema": "app.domains.provider_availability.schemas.BlackoutPeriodRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
     "/api/v1/provider/availability/exceptions": {
       "get": {
         "operationId": "exceptions_api_v1_provider_availability_exceptions_get",
@@ -17582,7 +19680,7 @@
             "if_match_version_policy": "not-applicable",
             "permission": "roles:vendor_admin|technician",
             "pii_classification": "provider-sensitive",
-            "policy_rule": "provider-availability-read",
+            "policy_rule": "legacy-provider-availability-exceptions-read",
             "rate_limit_class": "authenticated-provider",
             "record_policy": "current-provider-availability",
             "request_hash_policy": "not-applicable",
@@ -17798,6 +19896,344 @@
         }
       }
     },
+    "/api/v1/provider/availability/preview": {
+      "get": {
+        "operationId": "preview_provider_availability_api_v1_provider_availability_preview_get",
+        "parameters": [
+          {
+            "description": "Inclusive UTC-offset start of the window",
+            "in": "query",
+            "name": "starts_at",
+            "required": true,
+            "schema": {
+              "description": "Inclusive UTC-offset start of the window",
+              "format": "date-time",
+              "title": "Starts At",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Exclusive UTC-offset end; at most 31 days",
+            "in": "query",
+            "name": "ends_at",
+            "required": true,
+            "schema": {
+              "description": "Exclusive UTC-offset end; at most 31 days",
+              "format": "date-time",
+              "title": "Ends At",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "worker_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Worker Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityPreviewRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Preview Provider Availability",
+        "tags": [
+          "provider-availability"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "provider.availability.read",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-declared-availability-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-provider-availability; optional-owned-worker",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "provider-scheduling",
+            "response_schema": "app.domains.provider_availability.schemas.AvailabilityPreviewRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/availability/rules": {
+      "post": {
+        "operationId": "create_provider_availability_rule_api_v1_provider_availability_rules_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailabilityRuleCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__domains__provider_availability__schemas__AvailabilityRuleRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Provider Availability Rule",
+        "tags": [
+          "provider-availability"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "rules-created-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "not-applicable-on-create",
+            "permission": "provider.availability.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-rules-create",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider; optional-owned-worker",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-scheduling",
+            "response_schema": "app.domains.provider_availability.schemas.AvailabilityRuleRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/availability/rules/{rule_id}": {
+      "delete": {
+        "operationId": "delete_provider_availability_rule_api_v1_provider_availability_rules__rule_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Rule Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Delete Provider Availability Rule",
+        "tags": [
+          "provider-availability"
+        ],
+        "x-breero-policy": {
+          "DELETE": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "rules-deactivated-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "provider.availability.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-rules-delete",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-rules",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-scheduling",
+            "response_schema": "none",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "update_provider_availability_rule_api_v1_provider_availability_rules__rule_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rule_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Rule Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailabilityRuleUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__domains__provider_availability__schemas__AvailabilityRuleRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Provider Availability Rule",
+        "tags": [
+          "provider-availability"
+        ],
+        "x-breero-policy": {
+          "PATCH": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "rules-updated-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "provider.availability.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-rules-update",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-rules",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-scheduling",
+            "response_schema": "app.domains.provider_availability.schemas.AvailabilityRuleRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
     "/api/v1/provider/capacity": {
       "get": {
         "operationId": "capacity_api_v1_provider_capacity_get",
@@ -18006,21 +20442,68 @@
     },
     "/api/v1/provider/jobs": {
       "get": {
-        "operationId": "jobs_api_v1_provider_jobs_get",
+        "operationId": "list_provider_jobs_api_v1_provider_jobs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/JobStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/JobRead"
-                  },
-                  "title": "Response Jobs Api V1 Provider Jobs Get",
-                  "type": "array"
+                  "$ref": "#/components/schemas/ProviderJobList"
                 }
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
           }
         },
         "security": [
@@ -18028,9 +20511,9 @@
             "HTTPBearer": []
           }
         ],
-        "summary": "Jobs",
+        "summary": "List Provider Jobs",
         "tags": [
-          "provider"
+          "provider-work"
         ],
         "x-breero-policy": {
           "GET": {
@@ -18041,15 +20524,15 @@
             "emitted_effect": "none",
             "idempotency_key_policy": "not-applicable",
             "if_match_version_policy": "not-applicable",
-            "permission": "roles:vendor_admin|technician",
+            "permission": "provider.jobs.read",
             "pii_classification": "customer-sensitive",
-            "policy_rule": "provider-jobs-read",
-            "rate_limit_class": "authenticated-provider",
+            "policy_rule": "provider-job-list",
+            "rate_limit_class": "standard",
             "record_policy": "current-provider-owned-jobs",
             "request_hash_policy": "not-applicable",
             "request_schema": "none",
             "resource_owner": "provider-jobs",
-            "response_schema": "builtins.list",
+            "response_schema": "app.domains.provider_work.schemas.ProviderJobList",
             "tenant_scope": "provider-membership"
           }
         }
@@ -18112,13 +20595,190 @@
             "if_match_version_policy": "not-applicable",
             "permission": "roles:vendor_admin|technician",
             "pii_classification": "customer-sensitive",
-            "policy_rule": "provider-jobs-read",
+            "policy_rule": "legacy-provider-job-detail-read",
             "rate_limit_class": "authenticated-provider",
             "record_policy": "current-provider-owned-jobs",
             "request_hash_policy": "not-applicable",
             "request_schema": "none",
             "resource_owner": "provider-jobs",
             "response_schema": "app.domains.jobs.schemas.JobRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/offers": {
+      "get": {
+        "operationId": "list_provider_offers_api_v1_provider_offers_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/OfferStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderOfferList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Provider Offers",
+        "tags": [
+          "provider-work"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "provider.jobs.read",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "provider-offers-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-provider-owned-offers",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "provider-dispatch",
+            "response_schema": "app.domains.provider_work.schemas.ProviderOfferList",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/offers/{offer_id}/decision": {
+      "post": {
+        "operationId": "decide_provider_offer_api_v1_provider_offers__offer_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "offer_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Offer Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderOfferDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderOfferRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Decide Provider Offer",
+        "tags": [
+          "provider-work"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "offer-decision-and-conditional-assignment-booking-confirmation-audit-and-job-transition",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "legacy-not-enforced",
+            "permission": "provider.jobs.read && provider.offers.decide",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "provider-offer-decide",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-pending-offer; reserved-worker-checked",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-dispatch",
+            "response_schema": "app.domains.provider_work.schemas.ProviderOfferRead",
             "tenant_scope": "provider-membership"
           }
         }
@@ -18390,6 +21050,548 @@
             "request_schema": "none",
             "resource_owner": "provider-onboarding",
             "response_schema": "app.domains.workforce.schemas.VendorRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/qualifications": {
+      "get": {
+        "operationId": "list_provider_qualifications_api_v1_provider_qualifications_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "worker_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Worker Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_withdrawn",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Include Withdrawn",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Provider Qualifications",
+        "tags": [
+          "provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "provider.credentials.read",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualifications-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-provider-qualification; optional-owned-worker",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "app.domains.provider_qualifications.schemas.QualificationList",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_provider_qualification_api_v1_provider_qualifications_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualificationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Provider Qualification",
+        "tags": [
+          "provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "draft-qualification-created-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "not-applicable-on-create",
+            "permission": "provider.qualifications.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualifications-create",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider; optional-owned-worker",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "app.domains.provider_qualifications.schemas.QualificationRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/qualifications/{qualification_id}": {
+      "delete": {
+        "operationId": "withdraw_provider_qualification_api_v1_provider_qualifications__qualification_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "qualification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Qualification Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Withdraw Provider Qualification",
+        "tags": [
+          "provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "DELETE": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "qualification-withdrawn-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "provider.qualifications.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualification-withdraw",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-qualification",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "none",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      },
+      "get": {
+        "operationId": "get_provider_qualification_api_v1_provider_qualifications__qualification_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "qualification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Qualification Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Provider Qualification",
+        "tags": [
+          "provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "provider.credentials.read",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualifications-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-provider-qualification; optional-owned-worker",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "app.domains.provider_qualifications.schemas.QualificationRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "update_provider_qualification_api_v1_provider_qualifications__qualification_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "qualification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Qualification Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualificationUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Provider Qualification",
+        "tags": [
+          "provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "PATCH": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "qualification-updated-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "provider.qualifications.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualification-update",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-qualification",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "app.domains.provider_qualifications.schemas.QualificationRead",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/qualifications/{qualification_id}/evidence": {
+      "post": {
+        "description": "Fail closed. The request body is never read or persisted.",
+        "operationId": "upload_provider_qualification_evidence_api_v1_provider_qualifications__qualification_id__evidence_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "qualification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Qualification Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Governed document storage is not configured."
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Upload Provider Qualification Evidence",
+        "tags": [
+          "provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "unavailable:governed-evidence-storage",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable-unavailable",
+            "if_match_version_policy": "not-applicable-unavailable",
+            "permission": "provider.qualifications.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualification-evidence-unavailable",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-qualification; request-body-not-read",
+            "request_hash_policy": "not-applicable-unavailable",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "none",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/qualifications/{qualification_id}/submit": {
+      "post": {
+        "operationId": "submit_provider_qualification_api_v1_provider_qualifications__qualification_id__submit_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "qualification_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Qualification Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "If-Match"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Submit Provider Qualification",
+        "tags": [
+          "provider-qualifications"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "qualification-submitted-for-review-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "provider.qualifications.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-qualification-submit",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-qualification",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-qualifications",
+            "response_schema": "app.domains.provider_qualifications.schemas.QualificationRead",
             "tenant_scope": "provider-membership"
           }
         }
@@ -19179,6 +22381,118 @@
             "request_schema": "none",
             "resource_owner": "provider-catalog",
             "response_schema": "none",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v1/provider/workers": {
+      "get": {
+        "operationId": "list_provider_workers_api_v1_provider_workers_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderWorkerList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Provider Workers",
+        "tags": [
+          "provider-workforce"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "provider.profile.read",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-team-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-provider-workers",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "provider-workforce",
+            "response_schema": "app.domains.workforce.schemas.ProviderWorkerList",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_provider_worker_api_v1_provider_workers_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProviderWorkerCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProviderWorkerRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Provider Worker",
+        "tags": [
+          "provider-workforce"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "invited-worker-created-and-audit-log",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "not-applicable-on-create",
+            "permission": "provider.worker.manage",
+            "pii_classification": "provider-sensitive",
+            "policy_rule": "provider-team-create",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider; unlinked-invited-unavailable-worker",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "provider-workforce",
+            "response_schema": "app.domains.workforce.schemas.ProviderWorkerRead",
             "tenant_scope": "provider-membership"
           }
         }
@@ -20015,6 +23329,791 @@
         }
       }
     },
+    "/api/v2/lead-connections/{connection_id}/messages": {
+      "get": {
+        "operationId": "messages_api_v2_lead_connections__connection_id__messages_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connection_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Connection Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Messages",
+        "tags": [
+          "marketplace-communications"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "customer-provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "conversation-created-if-missing",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "roles:customer|vendor_admin",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-connection-message-read",
+            "rate_limit_class": "standard",
+            "record_policy": "active-lead-connection-owned-by-current-participant",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "marketplace-communications",
+            "response_schema": "none",
+            "tenant_scope": "customer-or-provider-ownership"
+          }
+        }
+      },
+      "post": {
+        "operationId": "send_message_api_v2_lead_connections__connection_id__messages_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connection_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Connection Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Send Message",
+        "tags": [
+          "marketplace-communications"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "customer-provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "conversation-and-message-persisted; no-external-delivery",
+            "idempotency_key_policy": "required:body.client_message_id",
+            "if_match_version_policy": "legacy-not-enforced",
+            "permission": "roles:customer|vendor_admin",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-connection-message-create",
+            "rate_limit_class": "standard",
+            "record_policy": "active-lead-connection-owned-by-current-participant",
+            "request_hash_policy": "not-enforced",
+            "request_schema": "none",
+            "resource_owner": "marketplace-communications",
+            "response_schema": "none",
+            "tenant_scope": "customer-or-provider-ownership"
+          }
+        }
+      }
+    },
+    "/api/v2/lead-connections/{connection_id}/quotes": {
+      "get": {
+        "operationId": "quotes_api_v2_lead_connections__connection_id__quotes_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connection_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Connection Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Quotes",
+        "tags": [
+          "marketplace-communications"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "customer",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "role:customer",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-connection-quote-read",
+            "rate_limit_class": "standard",
+            "record_policy": "active-connection-for-current-customer-project-request",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "marketplace-communications",
+            "response_schema": "none",
+            "tenant_scope": "customer-ownership"
+          }
+        }
+      },
+      "post": {
+        "operationId": "quote_api_v2_lead_connections__connection_id__quotes_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connection_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Connection Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuoteCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Quote",
+        "tags": [
+          "marketplace-communications"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "versioned-quote-persisted; no-external-delivery",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "legacy-not-enforced",
+            "permission": "role:vendor_admin",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-connection-quote-create",
+            "rate_limit_class": "standard",
+            "record_policy": "active-current-provider-owned-lead-connection",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "marketplace-communications",
+            "response_schema": "none",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v2/opportunities": {
+      "get": {
+        "operationId": "list_opportunities_api_v2_opportunities_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/OpportunityRead"
+                  },
+                  "title": "Response List Opportunities Api V2 Opportunities Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Opportunities",
+        "tags": [
+          "marketplace"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "role:vendor_admin",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-opportunity-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-provider-owned-opportunities",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "marketplace-matching",
+            "response_schema": "builtins.list",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v2/opportunities/{opportunity_id}/decision": {
+      "post": {
+        "operationId": "decide_api_v2_opportunities__opportunity_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "opportunity_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Opportunity Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Decision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Decide",
+        "tags": [
+          "marketplace"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "provider",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "opportunity-decision-optional-lead-connection-and-pending-configuration-event",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "legacy-not-enforced",
+            "permission": "role:vendor_admin",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-opportunity-decide",
+            "rate_limit_class": "standard",
+            "record_policy": "current-editable-provider-owned-offered-opportunity-under-row-lock",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "marketplace-matching",
+            "response_schema": "none",
+            "tenant_scope": "provider-membership"
+          }
+        }
+      }
+    },
+    "/api/v2/project-requests": {
+      "post": {
+        "operationId": "create_api_v2_project_requests_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 8,
+              "title": "Idempotency-Key",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRequestCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRequestRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create",
+        "tags": [
+          "project-requests"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "customer",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "project-request-created-history-and-pending-configuration-event",
+            "idempotency_key_policy": "required",
+            "if_match_version_policy": "not-applicable-on-create",
+            "permission": "role:customer",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-project-request-create",
+            "rate_limit_class": "standard",
+            "record_policy": "authenticated-customer-profile; matching-idempotency-request-digest",
+            "request_hash_policy": "required",
+            "request_schema": "none",
+            "resource_owner": "project-requests",
+            "response_schema": "app.domains.project_requests.schemas.ProjectRequestRead",
+            "tenant_scope": "customer-ownership"
+          }
+        }
+      }
+    },
+    "/api/v2/project-requests/{request_id}": {
+      "get": {
+        "operationId": "get_api_v2_project_requests__request_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "request_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Request Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRequestRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get",
+        "tags": [
+          "project-requests"
+        ],
+        "x-breero-policy": {
+          "GET": {
+            "audience": "customer",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "none",
+            "idempotency_key_policy": "not-applicable",
+            "if_match_version_policy": "not-applicable",
+            "permission": "role:customer",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-project-request-read",
+            "rate_limit_class": "standard",
+            "record_policy": "current-customer-owned-project-request",
+            "request_hash_policy": "not-applicable",
+            "request_schema": "none",
+            "resource_owner": "project-requests",
+            "response_schema": "app.domains.project_requests.schemas.ProjectRequestRead",
+            "tenant_scope": "customer-ownership"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "patch_api_v2_project_requests__request_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "request_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Request Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-Match",
+            "required": true,
+            "schema": {
+              "title": "If-Match",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRequestPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRequestRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Patch",
+        "tags": [
+          "project-requests"
+        ],
+        "x-breero-policy": {
+          "PATCH": {
+            "audience": "customer",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "project-request-updated-and-pending-configuration-event",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "required",
+            "permission": "role:customer",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-project-request-patch",
+            "rate_limit_class": "standard",
+            "record_policy": "current-customer-owned-editable-project-request-under-row-lock",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "project-requests",
+            "response_schema": "app.domains.project_requests.schemas.ProjectRequestRead",
+            "tenant_scope": "customer-ownership"
+          }
+        }
+      }
+    },
+    "/api/v2/project-requests/{request_id}/cancel": {
+      "post": {
+        "operationId": "cancel_api_v2_project_requests__request_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "request_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Request Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRequestRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancel",
+        "tags": [
+          "project-requests"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "customer",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "project-request-transition-history-and-pending-configuration-event",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "legacy-not-enforced",
+            "permission": "role:customer",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-project-request-transition",
+            "rate_limit_class": "standard",
+            "record_policy": "current-customer-owned-allowed-transition-under-row-lock",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "project-requests",
+            "response_schema": "app.domains.project_requests.schemas.ProjectRequestRead",
+            "tenant_scope": "customer-ownership"
+          }
+        }
+      }
+    },
+    "/api/v2/project-requests/{request_id}/submit": {
+      "post": {
+        "operationId": "submit_api_v2_project_requests__request_id__submit_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "request_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Request Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectRequestRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Submit",
+        "tags": [
+          "project-requests"
+        ],
+        "x-breero-policy": {
+          "POST": {
+            "audience": "customer",
+            "authentication": "bearer",
+            "capability_gate": "always",
+            "deprecation_status": "active",
+            "emitted_effect": "project-request-transition-history-and-pending-configuration-event",
+            "idempotency_key_policy": "legacy-not-enforced",
+            "if_match_version_policy": "legacy-not-enforced",
+            "permission": "role:customer",
+            "pii_classification": "customer-sensitive",
+            "policy_rule": "v2-project-request-transition",
+            "rate_limit_class": "standard",
+            "record_policy": "current-customer-owned-allowed-transition-under-row-lock",
+            "request_hash_policy": "legacy-not-enforced",
+            "request_schema": "none",
+            "resource_owner": "project-requests",
+            "response_schema": "app.domains.project_requests.schemas.ProjectRequestRead",
+            "tenant_scope": "customer-ownership"
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "operationId": "health_health_get",
@@ -20424,5 +24523,5 @@
       }
     }
   },
-  "x-breero-endpoint-registry-digest": "sha256:f4a67549cacb38aacf8e739c97239f0a06694750ba595bdeec51c11fa0502472"
+  "x-breero-endpoint-registry-digest": "sha256:0be39cdf7740560912f151750547065b05754c1071ee5f01bfa8b0bc4ac868a6"
 }
