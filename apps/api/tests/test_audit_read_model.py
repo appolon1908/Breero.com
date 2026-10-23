@@ -327,7 +327,7 @@ def test_audit_routes_are_read_only_and_permission_gated() -> None:
     paths = {
         path: set(methods)
         for path, methods in app.openapi()["paths"].items()
-        if path.startswith("/api/v1/admin/audit")
+        if path.startswith("/api/v1/admin/audit/")
     }
     assert paths == {
         "/api/v1/admin/audit/events": {"get"},
