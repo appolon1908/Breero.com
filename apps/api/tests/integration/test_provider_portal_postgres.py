@@ -419,7 +419,7 @@ async def test_qualification_lifecycle_feeds_onboarding_checklist() -> None:
 async def test_team_roster_is_scoped_and_new_workers_are_not_dispatchable() -> None:
     marker = uuid.uuid4().hex
     (owner_a, vendor_a, _), (owner_b, _, _) = await _two_providers(marker)
-    email = f"tech-{marker}@example.test"
+    email = f"tech-{marker}@example.com"
 
     async with SessionLocal() as session:
         created = await ProviderTeamService(session).add_worker(

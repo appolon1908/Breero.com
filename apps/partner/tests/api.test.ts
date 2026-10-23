@@ -64,7 +64,7 @@ describe("PartnerApi authenticated BFF transport", () => {
   });
 
   it.each([401, 403])("propagates a denied BFF request (%s) without retrying", async (status) => {
-    const request = vi.fn<PartnerRequest>().mockRejectedValue(Object.assign(
+    const request = vi.fn<(path: string, init?: RequestInit) => Promise<never>>().mockRejectedValue(Object.assign(
       new Error("Access denied"), { problem: { status, message: "Access denied" } },
     ));
     const onUnauthorized = vi.fn();
@@ -74,7 +74,7 @@ describe("PartnerApi authenticated BFF transport", () => {
   });
 
   it("preserves version conflicts from the BFF session transport", async () => {
-    const request = vi.fn<PartnerRequest>().mockRejectedValue(Object.assign(
+    const request = vi.fn<(path: string, init?: RequestInit) => Promise<never>>().mockRejectedValue(Object.assign(
       new Error("This record changed."),
       { problem: { status: 409, code: "VERSION_CONFLICT", message: "This record changed." } },
     ));
@@ -84,7 +84,7 @@ describe("PartnerApi authenticated BFF transport", () => {
   });
 
   it.each(["VALIDATION_ERROR", "ONBOARDING_INCOMPLETE"])("preserves actionable %s details", async (code) => {
-    const request = vi.fn<PartnerRequest>().mockRejectedValue(Object.assign(
+    const request = vi.fn<(path: string, init?: RequestInit) => Promise<never>>().mockRejectedValue(Object.assign(
       new Error("Some fields need attention."),
       { problem: { status: 422, code, details: ["phone: Invalid phone number"] } },
     ));
@@ -95,7 +95,7 @@ describe("PartnerApi authenticated BFF transport", () => {
 
   it("keeps unexpected transport failures intact", async () => {
     const error = new Error("Network unavailable");
-    const request = vi.fn<PartnerRequest>().mockRejectedValue(error);
+    const request = vi.fn<(path: string, init?: RequestInit) => Promise<never>>().mockRejectedValue(error);
     await expect(new PartnerApi(request).profile()).rejects.toBe(error);
     expect(error).not.toBeInstanceOf(ApiError);
   });
