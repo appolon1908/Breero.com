@@ -64,7 +64,7 @@ CATALOG_REPOSITORIES = {
     "appolon1908-hue/backend2",
     "appolon1908-hue/beyvra-frontend",
     "appolon1908-hue/scrapper",
-    "ingtrader21-spec/Breero.com",
+    "appolon1908/Breero.com",
     "appolon1908-hue/Moneybee-Backend",
     "appolon1908-hue/Telnexa-web",
     CONTROLLER_REPOSITORY,
@@ -131,7 +131,7 @@ EXPECTED_CHECK_WORKFLOWS = {
         "deployment-policy": ".github/workflows/ci.yml",
         "validate": ".github/workflows/ci.yml",
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         "orchestrator-contract": ".github/workflows/production-orchestrator-contract.yml",
         "quality": ".github/workflows/quality.yml",
     },
@@ -193,9 +193,9 @@ EXPECTED_CHECK_WORKFLOW_SHA256 = {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
         ".github/workflows/ci.yml": "31d81c5be094a1510bc821ef4359bba591630d2273662f5de0683205d908c60d",
     },
-    "ingtrader21-spec/Breero.com": {
-        ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
-        ".github/workflows/quality.yml": "2be72e0820aea5373c0f273b260dd9be5599698802864ae50fb28077abe53c6a",
+    "appolon1908/Breero.com": {
+        ".github/workflows/production-orchestrator-contract.yml": '5d5f118c8089a7298cc7439327689f862bf669bad46ec9160a0b5763fa11e869',
+        ".github/workflows/quality.yml": 'e2b6dc53accdc5edcf2338dfa96cc65d6d1849fef04c94ea0ee552d0adcf609e',
     },
     "appolon1908-hue/Moneybee-Backend": {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
@@ -217,8 +217,8 @@ SHARED_PRODUCTION_VALIDATOR_SHA256 = (
     "83d2fce102104543b871530f11115f20"
 )
 BREERO_PRODUCTION_VALIDATOR_SHA256 = (
-    "19ba2f63ad6b29506e80e1a72f4ee2c4"
-    "b9f5bdd6d6177382bb6c4e03af7ad510"
+    "681f1c7715521668fb6fa49c1fcbc2d3"
+    "aefe9779204bd04bc53e3dcecf43a3d8"
 )
 KEYCLOAK_PRODUCTION_VALIDATOR_SHA256 = (
     "6006bbc7850ce7666de926b6cad2585b"
@@ -329,41 +329,35 @@ EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256 = {
             ".codestra/validate-production-orchestrator-contract.py": SHARED_PRODUCTION_VALIDATOR_SHA256,
         },
     },
-    "ingtrader21-spec/Breero.com": {
+    "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": {
             ".codestra/validate-production-orchestrator-contract.py": BREERO_PRODUCTION_VALIDATOR_SHA256,
         },
         ".github/workflows/quality.yml": {
             ".github/workflows/backend-production.yml": (
-                "22ebd9d26c48220d4c5eb62b54ee75f0"
-                "2a22e6cef69e1c74e149a6b31b2ed284"
+                '22ebd9d26c48220d4c5eb62b54ee75f02a22e6cef69e1c74e149a6b31b2ed284'
             ),
             ".github/workflows/frontend-production.yml": (
-                "ba5f99dcdbcdb78e4e638153fb740ab1"
-                "04502cb2f8c75923a134d7d5e1e24b8d"
+                'ba5f99dcdbcdb78e4e638153fb740ab104502cb2f8c75923a134d7d5e1e24b8d'
             ),
             ".github/workflows/release-images.yml": (
-                "2992386b873626cf8e9a83081034d293"
-                "d546a037bc63040d9697895dd40473b2"
+                '2992386b873626cf8e9a83081034d293d546a037bc63040d9697895dd40473b2'
             ),
             "apps/api/Dockerfile": (
-                "7287f79b9b0a2c6d8a6ff618386c0641"
-                "5a0680c940aa81c5957597f08f93095e"
+                "3d970e686a71bfcc2e27bde3a266714bbc42780e82c949e6c7371d7c442eaa87"
             ),
             "deploy/frontend/Dockerfile": (
-                "5502d3c2cb4abd3c85a1f4f8f898fb4a"
-                "8b80a290652f1d69172259a19e7e0d57"
+                '5502d3c2cb4abd3c85a1f4f8f898fb4a8b80a290652f1d69172259a19e7e0d57'
             ),
             "deploy/portals/Dockerfile": (
-                "cfefde6354cbe300a79be4f028c93d4d"
-                "3c2cda8b2e6855051c895d7d9a6856f3"
+                'cfefde6354cbe300a79be4f028c93d4d3c2cda8b2e6855051c895d7d9a6856f3'
             ),
-            "scripts/ci/classify-quality-scope.sh": "7cc6cc7d213e4c962a8cda4ce052bbcfa51decc1af78ac663b1170c1b8c210c2",
-            "scripts/ci/test-classify-quality-scope.sh": "0365cd71d85e00facf1a64c2f11734e413430af75e4cf39e0e52971d13d5c473",
-            "scripts/ci/test-validate-breero-scope.sh": "ea29de36868e28ff82e3ec151f896aed388d2421f5907151c4c13480dae20bf8",
-            "scripts/ci/validate-breero-scope.sh": "f8ffb8a3953c56d7d6722938825bfb33fced802ba162f4cefd3d12be8ffb9a1e",
-            "scripts/pr_consolidation/validate_ledger.py": "cb2ad21f2b5dce32619297d296092453a5b0b40474645271bdc1b5eaf006aa59",
-            "scripts/pr_consolidation/test_validate_ledger.py": "0dac962d1e624c294b06283ffa223ebecdedd36588aede15939d066eb1b2dcce",
+            "scripts/ci/classify-quality-scope.sh": '2b043c054929cfa5a803f8a75c985806576a833b787a3cde3a4ac640b2499e52',
+            "scripts/ci/test-classify-quality-scope.sh": '3d63dde0968e8a1dbd56847671728e36c8f00f5f142046815f7c1350987f62ea',
+            "scripts/ci/test-validate-breero-scope.sh": 'ea29de36868e28ff82e3ec151f896aed388d2421f5907151c4c13480dae20bf8',
+            "scripts/ci/validate-breero-scope.sh": 'f8ffb8a3953c56d7d6722938825bfb33fced802ba162f4cefd3d12be8ffb9a1e',
+            "scripts/pr_consolidation/validate_ledger.py": 'cb2ad21f2b5dce32619297d296092453a5b0b40474645271bdc1b5eaf006aa59',
+            "scripts/pr_consolidation/test_validate_ledger.py": '0dac962d1e624c294b06283ffa223ebecdedd36588aede15939d066eb1b2dcce',
         },
     },
     "appolon1908-hue/Moneybee-Backend": {
@@ -411,9 +405,8 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "783feb31fc0ada4b043a62bf53dbfc1f"
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
-    "ingtrader21-spec/Breero.com": (
-        "64de950026f40397f606a3fb351ab08a"
-        "b42c9abf3b856decb1aca471e06ff2dd"
+    "appolon1908/Breero.com": (
+        "269f2eebfae604a7edb76783dc1c7c7a1eb4c1d7a3c615ae880f61fd3181b811"
     ),
     "appolon1908-hue/Moneybee-Backend": (
         "a283e388028892ced3ac8445893ec2fa"
@@ -2308,7 +2301,7 @@ def self_test() -> int:
     require(
         breero_quality_closure
         <= set(
-            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["ingtrader21-spec/Breero.com"][
+            EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256["appolon1908/Breero.com"][
                 ".github/workflows/quality.yml"
             ]
         ),
@@ -2352,7 +2345,15 @@ def self_test() -> int:
         pass
     else:
         raise PolicyError("negative required-check workflow digest regression passed")
-    if local_repository == "ingtrader21-spec/Breero.com":
+    if local_repository == "appolon1908/Breero.com":
+        quality_path = ".github/workflows/quality.yml"
+        validate_workflow_definition_bytes(
+            local_repository, checkout_sha, quality_path, Path(quality_path).read_bytes()
+        )
+        for bound_path in EXPECTED_CHECK_WORKFLOW_EXECUTABLE_SHA256[local_repository][quality_path]:
+            validate_workflow_executable_bytes(
+                local_repository, quality_path, bound_path, Path(bound_path).read_bytes()
+            )
         portal_path = "deploy/portals/Dockerfile"
         portal_bytes = Path(portal_path).read_bytes()
         validate_workflow_executable_bytes(
