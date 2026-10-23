@@ -124,6 +124,8 @@ def test_finance_read_routes_are_mounted_while_payout_commands_stay_gated() -> N
     assert settings.payout_enabled is False
     paths = app.openapi()["paths"]
     reads = {
+        "/api/v1/finance/vendors": {"get"},
+        "/api/v1/finance/compensation-plans": {"get"},
         "/api/v1/finance/status": {"get"},
         "/api/v1/finance/earnings": {"get"},
         "/api/v1/finance/earnings/summary": {"get"},
@@ -147,7 +149,7 @@ def test_finance_read_routes_are_mounted_while_payout_commands_stay_gated() -> N
         "/api/v1/finance/compensation-plans",
         "/api/v1/finance/earnings/{earning_id}/adjustments",
     ):
-        assert command not in paths
+        assert "post" not in paths.get(command, {}), command
     assert "post" not in paths["/api/v1/finance/payout-batches"]
     # No refund or capture command exists on the finance surface.
     assert not [p for p in paths if p.startswith("/api/v1/finance/") and "refund" in p and p != "/api/v1/finance/refunds"]

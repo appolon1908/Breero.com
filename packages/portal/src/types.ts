@@ -72,6 +72,7 @@ export interface PortalProblem {
   message: string;
   requestId?: string;
   code?: string;
+  details?: string[];
 }
 
 export type PortalSessionState =

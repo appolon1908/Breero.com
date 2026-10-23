@@ -23,7 +23,6 @@ import {
   qualificationStatusView,
   validateQualificationDraft,
 } from "../lib/qualifications";
-import { readSession, SESSION_KEY, writeSession } from "../lib/session";
 import type { ApplicationStatus, AvailabilityRule } from "../lib/types";
 import { application } from "./fixtures";
 
@@ -144,28 +143,5 @@ describe("qualifications", () => {
     expect(validateQualificationDraft({ ...draft, expiresOn: "" }, "2026-09-25").errors).toHaveLength(1);
     expect(validateQualificationDraft({ ...draft, expiresOn: "2026-01-01" }, "2026-09-25").errors).toHaveLength(1);
     expect(validateQualificationDraft({ ...draft, qualificationType: "TRAINING", expiresOn: "" }, "2026-09-25").errors).toEqual([]);
-  });
-});
-
-describe("session storage", () => {
-  function memory() {
-    const values = new Map<string, string>();
-    return {
-      values,
-      getItem: (key: string) => values.get(key) ?? null,
-      setItem: (key: string, value: string) => void values.set(key, value),
-      removeItem: (key: string) => void values.delete(key),
-    };
-  }
-
-  it("accepts only provider sessions and clears anything else", () => {
-    const storage = memory();
-    writeSession(storage, { access_token: "t", user: { email: "p@x.test", full_name: "P", role: "vendor_admin" } });
-    expect(readSession(storage)?.access_token).toBe("t");
-    storage.setItem(SESSION_KEY, JSON.stringify({ access_token: "t", user: { email: "c@x.test", full_name: "C", role: "customer" } }));
-    expect(readSession(storage)).toBeNull();
-    expect(storage.values.has(SESSION_KEY)).toBe(false);
-    storage.setItem(SESSION_KEY, "{not json");
-    expect(readSession(storage)).toBeNull();
   });
 });

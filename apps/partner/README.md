@@ -21,6 +21,9 @@ signed-in principal and no screen sends a vendor identifier.
 Versioned mutations send `If-Match` with the version that was loaded; a `409
 VERSION_CONFLICT` reloads the record instead of overwriting newer work.
 
-Configuration: `NEXT_PUBLIC_API_BASE_URL` must be an `https://` origin including `/api/v1`.
+Authentication uses the shared Keycloak BFF session. The browser calls same-origin
+`/api/breero` routes through `usePortalSession`; bearer tokens remain in HttpOnly
+cookies, mutations carry the session CSRF token, and the BFF enforces provider roles
+and the configured route allowlist. No browser token storage or password form is used.
 
 Checks: `pnpm --filter @breero/partner lint`, `typecheck`, `test`, `build`.

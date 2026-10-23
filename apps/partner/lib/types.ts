@@ -14,8 +14,6 @@ export type JobStatus =
   | "CREATED" | "MATCHING" | "OFFERED" | "ASSIGNED" | "EN_ROUTE" | "ON_SITE" | "DIAGNOSING"
   | "AWAITING_APPROVAL" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
 
-export interface SessionUser { email: string; full_name: string; role: string }
-export interface Session { access_token: string; user: SessionUser }
 
 export interface ProviderProfile {
   id: string;

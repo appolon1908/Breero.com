@@ -44,35 +44,50 @@ const PortalSessionContext = createContext<PortalSessionContextValue | null>(nul
 const SESSION_CHANNEL = "breero-portal-session";
 const CLIENT_TIMEOUT_MS = 15_000;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 function isMutation(method: string | undefined): boolean {
   return !["GET", "HEAD", "OPTIONS"].includes((method ?? "GET").toUpperCase());
 }
 
-async function readProblem(response: Response): Promise<PortalProblem> {
+export async function readProblem(response: Response): Promise<PortalProblem> {
   const fallback: PortalProblem = {
     status: response.status,
     message: `Request failed (${response.status})`,
   };
   try {
-    const value = (await response.json()) as Partial<PortalProblem> & {
-      detail?: unknown;
-      message?: unknown;
-    };
-    const detail =
-      typeof value.detail === "string"
-        ? value.detail
-        : typeof value.message === "string"
-          ? value.message
-          : fallback.message;
+    const value: unknown = await response.json();
+    if (!isRecord(value)) return fallback;
+    const nested: Record<string, unknown> = isRecord(value.error) ? value.error : isRecord(value.detail) ? value.detail : {};
+    let message = typeof value.detail === "string" ? value.detail
+      : typeof value.message === "string" ? value.message
+        : typeof nested.message === "string" ? nested.message : fallback.message;
+    let code = typeof value.code === "string" ? value.code
+      : typeof nested.code === "string" ? nested.code : undefined;
+    let details = Array.isArray(nested.missing)
+      ? nested.missing.filter((item): item is string => typeof item === "string") : [];
+    if (code === "ONBOARDING_INCOMPLETE") message = "Complete every onboarding step before submitting.";
+    if (Array.isArray(value.detail)) {
+      message = "Some fields need attention.";
+      code = "VALIDATION_ERROR";
+      details = value.detail.filter(isRecord).map((item) => {
+        const location = Array.isArray(item.loc) ? item.loc.filter((part) => part !== "body").join(".") : "";
+        const reason = typeof item.msg === "string" ? item.msg : "Invalid value";
+        return location ? `${location}: ${reason}` : reason;
+      });
+    }
     return {
       status: response.status,
-      message: detail,
+      message,
       requestId:
-        value.requestId ??
+        (typeof value.requestId === "string" ? value.requestId : undefined) ??
         response.headers.get("x-request-id") ??
         response.headers.get("x-correlation-id") ??
         undefined,
-      code: value.code,
+      code,
+      details,
     };
   } catch {
     return fallback;
@@ -564,9 +579,10 @@ export function usePortalQuery<T>(path: string | null) {
     }
     setLoading(true);
     setError(null);
+    setData(null);
     void request<T>(path)
       .then((value) => { if (active) setData(value); })
-      .catch((reason) => { if (active) setError(reason); })
+      .catch((reason) => { if (active) { setData(null); setError(reason); } })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [path, request, version]);
@@ -625,4 +641,65 @@ export function formatDate(value: string | Date | null | undefined): string {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return "—";
   return new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "short" }).format(date);
+}
+
+export interface PortalDataSection {
+  label: string;
+  description: string;
+  path?: string;
+}
+
+/** Keeps existing read-only portal sections on the authenticated BFF transport. */
+export function PortalDataPage({ config, sections }: {
+  config: PortalRuntimeConfig;
+  sections: readonly PortalDataSection[];
+}) {
+  const [activeId, setActiveId] = useState(sections[0]?.label ?? "");
+  const active = sections.find((section) => section.label === activeId) ?? sections[0];
+  if (!active) return <PortalEmpty title="No sections configured" />;
+  return (
+    <PortalSessionProvider>
+      <PortalApplication
+        config={config}
+        navigation={sections.map((section) => ({ id: section.label, label: section.label, description: section.description }))}
+        activeId={active.label}
+        onNavigate={setActiveId}
+      >
+        <PortalSessionDataPanel key={active.label} section={active} />
+      </PortalApplication>
+    </PortalSessionProvider>
+  );
+}
+
+function PortalSessionDataPanel({ section }: { section: PortalDataSection }) {
+  const { state } = usePortalSession();
+  if (state.status !== "authenticated") return null;
+  const identity = `${state.session.context.brand_key}:${state.session.user.id}:${state.session.context.roles.join(",")}`;
+  return <PortalDataPanel key={identity} section={section} />;
+}
+
+function PortalDataPanel({ section }: { section: PortalDataSection }) {
+  const query = usePortalQuery<unknown>(section.path ?? null);
+  if (!section.path) return <PortalNotice title={section.label}>{section.description}</PortalNotice>;
+  if (query.loading) return <PortalLoading label="Loading live data" />;
+  if (query.error) return <PortalError error={query.error} onRetry={query.retry} />;
+  const data = query.data;
+  const values = Array.isArray(data) ? data
+    : data && typeof data === "object" && "items" in data && Array.isArray(data.items) ? data.items
+      : data && typeof data === "object" ? [data] : [];
+  const rows = values.filter((row): row is Record<string, unknown> => Boolean(row) && typeof row === "object" && !Array.isArray(row));
+  const keys = Object.keys(rows[0] ?? {}).slice(0, 6);
+  return (
+    <PortalSection title={section.label} subtitle={section.description}>
+      <DataTable
+        rows={rows}
+        rowKey={(row) => String(row.id ?? rows.indexOf(row))}
+        columns={keys.map((key) => ({
+          key,
+          label: formatLabel(key),
+          render: (row: Record<string, unknown>) => typeof row[key] === "object" ? JSON.stringify(row[key]) : String(row[key] ?? "—"),
+        }))}
+      />
+    </PortalSection>
+  );
 }

@@ -101,6 +101,11 @@ api_router.include_router(operations.router, prefix="/operations", tags=["operat
 api_router.include_router(portal.router, prefix="/portal", tags=["portal"])
 api_router.include_router(admin_dispatch.router, prefix="/admin", tags=["admin-dispatch"])
 api_router.include_router(admin.router, prefix="/admin", tags=["administration"])
+# Persisted finance reads remain available while payout commands stay disabled.
+api_router.include_router(finance.read_router, prefix="/finance", tags=["finance-reads"])
+api_router.include_router(
+    finance.provider_router, prefix="/provider/finance", tags=["provider-finance"]
+)
 if settings.payout_enabled:
     api_router.include_router(finance.router, prefix="/finance", tags=["finance"])
 api_router.include_router(integrations.router, prefix="/integrations", tags=["integrations"])

@@ -1,7 +1,7 @@
 import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .models import (
@@ -76,3 +76,38 @@ class FinanceRepository:
         if lock:
             query = query.with_for_update()
         return await self.session.scalar(query)
+
+    async def list_compensation_plans(
+        self,
+        vendor_id: uuid.UUID | None = None,
+        active: bool | None = None,
+        limit: int = 200,
+        offset: int = 0,
+    ) -> list[VendorCompensationPlan]:
+        query = (
+            select(VendorCompensationPlan)
+            .order_by(
+                VendorCompensationPlan.effective_from.desc(),
+                VendorCompensationPlan.id,
+            )
+            .limit(min(limit, 500))
+            .offset(offset)
+        )
+        if vendor_id:
+            query = query.where(VendorCompensationPlan.vendor_id == vendor_id)
+        if active is not None:
+            query = query.where(VendorCompensationPlan.active.is_(active))
+        return list((await self.session.scalars(query)).all())
+
+
+    async def count_compensation_plans(
+        self,
+        vendor_id: uuid.UUID | None = None,
+        active: bool | None = None,
+    ) -> int:
+        query = select(func.count()).select_from(VendorCompensationPlan)
+        if vendor_id:
+            query = query.where(VendorCompensationPlan.vendor_id == vendor_id)
+        if active is not None:
+            query = query.where(VendorCompensationPlan.active.is_(active))
+        return int(await self.session.scalar(query) or 0)

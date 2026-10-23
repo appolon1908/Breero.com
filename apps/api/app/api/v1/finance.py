@@ -1,12 +1,14 @@
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
-from app.domains.auth.dependencies import require_permissions, require_roles
-from app.domains.auth.models import User, UserRole
+from app.domains.auth.access_service import BRAND_KEY, AccessService
+from app.domains.auth.dependencies import current_user, require_permissions, require_roles
+from app.domains.auth.models import AccessRole, User, UserRole
 from app.domains.finance.models import EarningStatus, PayoutStatus
 from app.domains.finance.read_models import (
     EarningPage,
@@ -31,14 +33,17 @@ from app.domains.finance.read_service import (
 from app.domains.finance.repository import FinanceRepository
 from app.domains.finance.schemas import (
     CompensationPlanCreate,
+    CompensationPlanList,
     CompensationPlanRead,
     EarningAdjustmentCreate,
     EarningRead,
+    FinanceVendorRead,
     PayoutBatchCreate,
     PayoutBatchRead,
 )
 from app.domains.finance.service import FinanceService
 from app.domains.payments.models import PaymentStatus, RefundStatus
+from app.domains.workforce.models import Vendor
 
 # Commands: mounted only while PAYOUT_ENABLED is true (see api/v1/router.py).
 router = APIRouter()
@@ -50,6 +55,22 @@ provider_router = APIRouter()
 finance_staff = require_roles(UserRole.finance, UserRole.admin)
 provider_finance = require_permissions("provider.finance.read")
 Currency = Annotated[str, Query(pattern=r"^[A-Z]{3}$")]
+
+
+async def payout_command_actor(
+    user: User = Depends(current_user), session: AsyncSession = Depends(get_db)
+) -> User:
+    """Authorize payout commands before evaluating the runtime capability.
+
+    Operations and customer users continue to receive a concealed 404, matching the
+    previous unmounted-route behavior. Authorized finance/admin users receive the
+    explicit disabled-capability response while PAYOUT_ENABLED is false.
+    """
+    context = await AccessService(session).context(user, BRAND_KEY)
+    if not {AccessRole.finance, AccessRole.admin, AccessRole.superadmin}.intersection(context.roles):
+        raise HTTPException(404, "Not found")
+    FinanceService.require_payouts_enabled()
+    return user
 
 
 @router.post("/compensation-plans", response_model=CompensationPlanRead, status_code=201)
@@ -66,7 +87,7 @@ async def adjust_earning(
     earning_id: uuid.UUID,
     payload: EarningAdjustmentCreate,
     session: AsyncSession = Depends(get_db),
-    user: User = Depends(finance_staff),
+    user: User = Depends(payout_command_actor),
 ):
     return await FinanceService(session).adjust_earning(
         earning_id, payload.amount_minor, payload.adjustment_type, payload.reason,
@@ -78,7 +99,7 @@ async def adjust_earning(
 async def create_batch(
     payload: PayoutBatchCreate,
     session: AsyncSession = Depends(get_db),
-    _: User = Depends(finance_staff),
+    _: User = Depends(payout_command_actor),
 ):
     return await FinanceService(session).create_batch(payload.currency, payload.vendor_id, _.id)
 
@@ -87,7 +108,7 @@ async def create_batch(
 async def approve_batch(
     batch_id: uuid.UUID,
     session: AsyncSession = Depends(get_db),
-    user: User = Depends(finance_staff),
+    user: User = Depends(payout_command_actor),
 ):
     return await FinanceService(session).approve_batch(batch_id, user.id)
 
@@ -96,7 +117,7 @@ async def approve_batch(
 async def submit_batch(
     batch_id: uuid.UUID,
     session: AsyncSession = Depends(get_db),
-    user: User = Depends(finance_staff),
+    user: User = Depends(payout_command_actor),
 ):
     return await FinanceService(session).submit_batch(batch_id, user.id)
 
@@ -241,3 +262,41 @@ async def get_provider_payout(
     session: Annotated[AsyncSession, Depends(get_db)],
 ) -> ProviderPayoutDetail:
     return await ProviderFinanceService(session).payout(user, payout_id)
+
+
+@read_router.get("/vendors", response_model=list[FinanceVendorRead])
+async def list_finance_vendors(
+    limit: int = Query(500, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    session: AsyncSession = Depends(get_db),
+    _: User = Depends(require_roles(UserRole.finance, UserRole.admin)),
+) -> list[FinanceVendorRead]:
+    vendors = list(
+        (
+            await session.scalars(
+                select(Vendor)
+                .order_by(Vendor.display_name, Vendor.id)
+                .limit(limit)
+                .offset(offset)
+            )
+        ).all()
+    )
+    return [FinanceVendorRead.model_validate(vendor) for vendor in vendors]
+
+
+@read_router.get("/compensation-plans", response_model=CompensationPlanList)
+async def list_compensation_plans(
+    vendor_id: uuid.UUID | None = None,
+    active: bool | None = None,
+    limit: int = Query(200, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    session: AsyncSession = Depends(get_db),
+    _: User = Depends(require_roles(UserRole.finance, UserRole.admin)),
+) -> CompensationPlanList:
+    repository = FinanceRepository(session)
+    items = await repository.list_compensation_plans(vendor_id, active, limit, offset)
+    total = await repository.count_compensation_plans(vendor_id, active)
+    return CompensationPlanList(
+        items=[CompensationPlanRead.model_validate(item) for item in items],
+        total=total,
+    )
