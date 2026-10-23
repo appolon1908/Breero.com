@@ -854,3 +854,62 @@ html[data-horizon-root] > body {
     grid-column: auto;
   }
 }
+
+/* Match the enterprise footer copy to its inherited Horizon surface. */
+.hz-site-footer .enterprise-footer-cta {
+  --br-enterprise-text: var(--hz-text);
+  --br-enterprise-muted: var(--hz-text-muted);
+  --br-enterprise-line: var(--hz-border);
+}
+
+.hz-brand__domain,
+.hz-site-footer__bottom,
+.hz-site-footer .footer__trust {
+  color: var(--hz-text-muted);
+}
+
+/* Keep Horizon shell colors authoritative over legacy element selectors. */
+.hz-site-nav .hz-site-nav__link {
+  color: var(--hz-text-muted);
+}
+
+.hz-site-nav .hz-site-nav__link:hover,
+.hz-site-nav .hz-site-nav__link[aria-current="page"] {
+  color: var(--hz-text);
+}
+
+.site-header .hz-menu-button {
+  border-color: var(--hz-border-strong);
+  color: var(--hz-text);
+}
+
+/* These retained panels have their own dark surfaces in either shell theme. */
+.mk-section--navy,
+.mk-discovery,
+.upcoming-card {
+  --hz-text: var(--br-white);
+}
+
+/* Keep every desktop action reachable before switching to the mobile menu. */
+@media (min-width: 56.3125rem) and (max-width: 80rem) {
+  .site-header__bar.hz-site-header__inner {
+    height: auto;
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+    padding-block: 0.75rem;
+  }
+
+  .hz-site-nav--desktop {
+    position: static;
+    order: 3;
+    flex: 1 0 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 0;
+    transform: none;
+  }
+
+  .hz-header-actions {
+    flex-shrink: 0;
+  }
+}
