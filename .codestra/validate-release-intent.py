@@ -412,7 +412,7 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
     "appolon1908/Breero.com": (
-        "ecef89ce2aafe1d7ca974e2ee37a9f9d942cf00c52d39fc1a9d61806a4441760"
+        "3890c1f7586b6ee38d7584cdceb1c08e8b2c6b223ca4f9013c09faff54aa9493"
     ),
     "appolon1908-hue/Moneybee-Backend": (
         "a283e388028892ced3ac8445893ec2fa"
