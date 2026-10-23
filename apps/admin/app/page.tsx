@@ -1,5 +1,7 @@
-import { PortalApp, type PortalConfig } from "@breero/portal";
-const config: PortalConfig = { name: "Admin & Finance", eyebrow: "Governance workspace", allowedRoles: ["finance", "admin"], sections: [
+import { PortalDataPage, type PortalDataSection } from "@breero/portal";
+import { portalRuntime } from "../portal.config";
+
+const sections: readonly PortalDataSection[] = [
   { label: "Service catalog", path: "/services", description: "The live service catalog and pricing modes exposed by the canonical API." },
   { label: "Bookings", path: "/admin/bookings", description: "Booking and request administration." },
   { label: "Providers", path: "/admin/providers", description: "Provider approval records available to authorized administrators." },
@@ -14,5 +16,8 @@ const config: PortalConfig = { name: "Admin & Finance", eyebrow: "Governance wor
   { label: "Lead disputes", description: "Finance-wide dispute review and resolution is not yet exposed by a canonical API." },
   { label: "Payout batches", description: "Payout commands exist, but a list/read projection is not yet exposed." },
   { label: "Users & roles", description: "Internal accounts are created only through the protected administrator operation." }
-] };
-export default function Page() { return <PortalApp config={config} />; }
+];
+
+export default function Page() {
+  return <PortalDataPage config={portalRuntime} sections={sections} />;
+}

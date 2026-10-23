@@ -206,6 +206,8 @@ class FinanceService:
             raise HTTPException(404, "Payout batch not found")
         if batch.status != PayoutStatus.PENDING_APPROVAL:
             raise HTTPException(409, "Batch is not awaiting approval")
+        if batch.reviewed_by == approver_id:
+            raise HTTPException(409, "Approver must differ from batch reviewer")
         batch.status = PayoutStatus.APPROVED
         batch.approved_by = approver_id
         batch.approved_at = datetime.now(UTC)
@@ -223,6 +225,8 @@ class FinanceService:
             return batch
         if batch.status != PayoutStatus.APPROVED:
             raise HTTPException(409, "Only approved batches can be submitted")
+        if batch.approved_by == actor_id:
+            raise HTTPException(409, "Batch approver cannot submit the same payout")
         key = batch.idempotency_key or f"payout-batch:{batch.id}"
         batch.idempotency_key = key
         # Persist the stable key before the external call; retries reuse it.

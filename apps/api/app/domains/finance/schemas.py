@@ -67,3 +67,17 @@ class PayoutBatchRead(BaseModel):
 
 class PayoutFailure(BaseModel):
     reason: str = Field(min_length=1, max_length=500)
+
+
+class FinanceVendorRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    legal_name: str
+    display_name: str
+    status: str
+
+
+class CompensationPlanList(BaseModel):
+    items: list[CompensationPlanRead]
+    total: int

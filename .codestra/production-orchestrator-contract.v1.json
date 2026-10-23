@@ -1,6 +1,6 @@
 {
   "schema_version": "codestra.production-orchestrator-contract.v1",
-  "repository": "ingtrader21-spec/Breero.com",
+  "repository": "appolon1908/Breero.com",
   "repository_id": 1331354808,
   "default_branch": "main",
   "role": "application",
@@ -9,8 +9,16 @@
   "runtime_mutation_authority": false,
   "require_verified_commit": true,
   "required_check_app_id": 15368,
-  "required_checks": ["orchestrator-contract", "quality"],
-  "supported_phases": ["plan", "staging", "canary", "production"],
+  "required_checks": [
+    "orchestrator-contract",
+    "quality"
+  ],
+  "supported_phases": [
+    "plan",
+    "staging",
+    "canary",
+    "production"
+  ],
   "artifact_policy": {
     "minimum_images": 5,
     "maximum_images": 5,
