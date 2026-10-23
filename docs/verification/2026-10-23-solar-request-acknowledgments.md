@@ -19,7 +19,7 @@ The complete backend suite was attempted: 424 passed, 52 failed, with 16 warning
 
 The disposable Docker database setup could not complete reliably on the nearly full local disk. A Python test environment was moved to memory-backed storage. Docker creation/removal/readiness requests for this task's containers timed out; this is not a reason to restart the shared Docker service or change other containers.
 
-New PostgreSQL tests cover concurrent/replayed intake, channel permissions, current suppression, CRM/email separation, disabled delivery and real solar seed/intake. Their database assertions remain UNVERIFIED locally and require a successful isolated database/CI run.
+New PostgreSQL tests cover concurrent/replayed intake, channel permissions, current suppression, CRM/email separation, disabled delivery through OutboxService.process with persisted PENDING_CONFIGURATION assertions, and real solar seed/intake. Their database assertions remain UNVERIFIED locally and require a successful isolated database/CI run.
 
 Mypy before and after the change reports the same two pre-existing errors in app/domains/booking/repository.py at lines 198 and 202 (Select/sequence typing under the installed SQLAlchemy). No new type errors are reported in the acknowledgment/solar scope. Do not claim full backend typing is green.
 

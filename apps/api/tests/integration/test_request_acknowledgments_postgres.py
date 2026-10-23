@@ -1,6 +1,7 @@
 import asyncio
 import os
 import uuid
+from datetime import UTC, datetime
 from unittest.mock import Mock
 
 import pytest
@@ -139,19 +140,19 @@ async def test_receipt_is_independent_of_crm_parking_and_live_delivery_stays_dar
         ))
         assert event is not None
         assert event.status == EventStatus.PENDING
+        # Select this receipt first without aging the authoritative request.
+        event.created_at = datetime(1900, 1, 1, tzinfo=UTC)
+        await session.commit()
         await OutboxService(session).park_unconfigured()
         await session.refresh(event)
         assert event.status == EventStatus.PENDING
         async def deliver(item):
             return await deliver_outbox_event(item, session, Mock(), EmailAdapter())
-        # Process only this event through the real parking/error path.
-        try:
-            await deliver(event)
-        except Exception as error:
-            assert error.code == "EMAIL_DELIVERY_DISABLED"
-            assert error.pending_configuration is True
-        else:
-            pytest.fail("disabled delivery must not succeed")
+        assert await OutboxService(session).process(deliver, limit=1) == 1
+        await session.refresh(event)
+        assert event.status == EventStatus.PENDING_CONFIGURATION
+        assert event.last_error_code == "EMAIL_DELIVERY_DISABLED"
+        assert event.processed_at is None
         submission = await session.get(PublicSubmission, accepted.request_id)
         assert submission.downstream_status == DownstreamStatus.PENDING_CONFIGURATION
 
