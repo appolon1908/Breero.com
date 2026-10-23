@@ -35,7 +35,8 @@ test("login to tenant email provisioning, compose and durable outbox", async ({ 
   await page.getByLabel("Reply-to").fill("reply@breero.test");
   await page.getByRole("button", { name: "Create sender" }).click();
   await expect(page.getByText("Sender created.")).toBeVisible();
-  await expect(page.getByText("BREERO E2E Operations")).toBeVisible();
+  const senders = page.getByRole("region", { name: "2. Senders", exact: true });
+  await expect(senders.getByText("BREERO E2E Operations", { exact: true })).toBeVisible();
 
   await page.getByLabel("Credential label").fill("E2E SMTP");
   await page.getByLabel("SMTP host").fill("smtp.e2e.test");
