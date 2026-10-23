@@ -1,6 +1,8 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { AuditApiError, auditGet } from "./api";
+import { readProblem } from "@breero/portal";
+import { createAdminApi } from "../../lib/api";
+import { AuditApiError, createAuditGet } from "./api";
 import { AuditFilterError, buildSearchParams, defaultFilters, detailPath, formatMetadataValue, listPath, toLocalInput, tracePath } from "./query";
 import type { AuditFilters } from "./types";
 
@@ -58,47 +60,31 @@ describe("audit query building", () => {
 });
 
 describe("audit transport", () => {
-  afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
-
-  it("uses the browser session when checking audit access", async () => {
-    vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "https://api.example.test/api/v1");
-    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ categories: [] })));
-    vi.stubGlobal("fetch", fetcher);
-
-    await auditGet("/admin/audit/catalog");
-
-    expect(fetcher).toHaveBeenCalledWith("https://api.example.test/api/v1/admin/audit/catalog", {
-      headers: { Accept: "application/json" },
-      cache: "no-store",
-      credentials: "include",
-    });
+  it("delegates catalog reads to the shared BFF with no browser credentials or token", async () => {
+    const calls: { path: string; init?: RequestInit }[] = [];
+    const request = async <T,>(path: string, init?: RequestInit): Promise<T> => {
+      calls.push({ path, init });
+      return { categories: [] } as T;
+    };
+    await createAuditGet(createAdminApi(request).request)("/admin/audit/catalog");
+    expect(calls).toHaveLength(1);
+    expect(calls[0].path).toBe("/admin/audit/catalog");
+    expect(calls[0].init?.method).toBe("GET");
+    expect(calls[0].init?.credentials).toBeUndefined();
+    expect(new Headers(calls[0].init?.headers).has("Authorization")).toBe(false);
   });
 
-  it("requires an https API origin and sends cookies without a bearer token", async () => {
-    vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "https://api.example.test/api/v1/");
-    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ ok: true })));
-    await auditGet("/admin/audit/catalog", fetcher);
-    const [url, init] = fetcher.mock.calls[0];
-    expect(url).toBe("https://api.example.test/api/v1/admin/audit/catalog");
-    expect(init?.credentials).toBe("include");
-    expect(init?.cache).toBe("no-store");
-    expect(new Headers(init?.headers).has("Authorization")).toBe(false);
-
-    vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "http://insecure.example.test");
-    await expect(auditGet("/x", fetcher)).rejects.toThrow(/secure API origin/);
-    expect(fetcher).toHaveBeenCalledTimes(1);
-  });
-
-  it.each([401, 403])("rejects a denied browser session with status %s without leaking server details", async (status) => {
-    vi.stubEnv("NEXT_PUBLIC_API_BASE_URL", "https://api.example.test");
-    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(
-      JSON.stringify({ error: { code: "ACCESS_DENIED", message: "private-server-detail" } }),
-      { status },
-    ));
-    const failure = auditGet("/admin/audit/catalog", fetcher);
+  it.each([401, 403])("preserves safe denial messages for %s", async (status) => {
+    const problem = await readProblem(new Response(JSON.stringify({
+      error: { code: "ACCESS_DENIED", message: "private-server-detail" },
+    }), { status, headers: { "Content-Type": "application/json" } }));
+    const error = Object.assign(new Error(problem.message), { problem });
+    const request = vi.fn<(path: string, init?: RequestInit) => Promise<never>>().mockRejectedValue(error);
+    const failure = createAuditGet(createAdminApi(request).request)("/admin/audit/catalog");
     await expect(failure).rejects.toBeInstanceOf(AuditApiError);
     await expect(failure).rejects.toMatchObject({ status, code: "ACCESS_DENIED" });
     await expect(failure).rejects.not.toThrow(/private-server-detail/);
     await expect(failure).rejects.toThrow(status === 401 ? /session has expired/ : /not authorized/);
+    expect(request).toHaveBeenCalledTimes(1);
   });
 });

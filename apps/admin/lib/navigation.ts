@@ -2,6 +2,7 @@ export interface NavItem { href: string; label: string; group: string }
 
 export const NAVIGATION: NavItem[] = [
   { href: "/", label: "Overview", group: "Workspace" },
+  { href: "/audit", label: "Audit log", group: "Administration" },
   { href: "/users", label: "Users & access", group: "Administration" },
   { href: "/providers", label: "Provider applications", group: "Administration" },
   { href: "/geography", label: "Service zones", group: "Geography" },

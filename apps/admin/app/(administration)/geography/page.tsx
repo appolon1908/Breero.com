@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useCallback, useState, type FormEvent } from "react";
-import { PageHeader, useAdmin } from "../../components/AdminShell";
-import { Empty, ErrorMessage, Loading, Notice, Pager, Section, StatusBadge } from "../../components/ui";
-import { buildZoneCreatePayload, describeCoverage, type ZoneFormValues } from "../../lib/geography";
-import { useResource } from "../../lib/useResource";
+import { PageHeader, useAdmin } from "../../../components/AdminShell";
+import { Empty, ErrorMessage, Loading, Notice, Pager, Section, StatusBadge } from "../../../components/ui";
+import { buildZoneCreatePayload, describeCoverage, type ZoneFormValues } from "../../../lib/geography";
+import { useResource } from "../../../lib/useResource";
 
 const PAGE_SIZE = 25;
 const EMPTY_FORM: ZoneFormValues = { legal_entity_id: "", name: "", state_code: "", city: "", postal_codes: "", priority: "100", regular_service_enabled: true, emergency_enabled: false };

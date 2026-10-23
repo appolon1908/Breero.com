@@ -27,7 +27,7 @@ export interface PayoutViewState {
  */
 export function payoutViewState(batch: PayoutBatchDetail, status?: FinanceStatus | null): PayoutViewState {
   const tone = PAYOUT_STATUS_TONE[batch.status];
-  const payoutsEnabled = batch.payouts_enabled && (status?.payouts_enabled ?? true);
+  const payoutsEnabled = batch.payouts_enabled && (status?.payouts_enabled ?? false);
   const actions = payoutsEnabled ? batch.allowed_actions : [];
   let headline: string;
   switch (batch.status) {

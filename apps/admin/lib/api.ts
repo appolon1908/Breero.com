@@ -32,37 +32,12 @@ export class ApiError extends Error {
   readonly status: number;
   readonly code: string;
 
-  constructor(status: number, code: string, message: string) {
+  constructor(status: number, code: string, message: string, readonly details: string[] = []) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.code = code;
   }
-}
-
-/** Only HTTPS API origins are accepted; the admin never talks to plaintext APIs. */
-export function resolveApiBase(value: string | undefined): string {
-  if (!value || !/^https:\/\//.test(value)) throw new Error("A secure API origin is required");
-  return value.replace(/\/$/, "");
-}
-
-/** V1 returns either `{error: {code, message}}` (domain errors) or `{detail}` (HTTP errors). */
-export async function toApiError(response: Response): Promise<ApiError> {
-  const body = (await response.json().catch(() => ({}))) as {
-    error?: { code?: string; message?: string };
-    detail?: unknown;
-    message?: string;
-    code?: string;
-  };
-  if (body.error?.message) return new ApiError(response.status, body.error.code ?? "ERROR", body.error.message);
-  if (typeof body.detail === "string") return new ApiError(response.status, `HTTP_${response.status}`, body.detail);
-  if (Array.isArray(body.detail)) {
-    const first = body.detail[0] as { msg?: string; loc?: unknown[] } | undefined;
-    const where = first?.loc?.slice(1).join(".");
-    return new ApiError(response.status, "VALIDATION_ERROR", first?.msg ? `${where ? `${where}: ` : ""}${first.msg}` : "Invalid request");
-  }
-  if (body.message) return new ApiError(response.status, body.code ?? `HTTP_${response.status}`, body.message);
-  return new ApiError(response.status, `HTTP_${response.status}`, `Request failed (${response.status})`);
 }
 
 type Query = Record<string, string | number | boolean | null | undefined>;
@@ -86,29 +61,43 @@ export function newIdempotencyKey(prefix: string, random: () => string = () => c
   return `${prefix}-${random()}`;
 }
 
-export interface ClientOptions {
-  baseUrl: string;
-  token: string;
-  fetchImpl?: typeof fetch;
-}
+export type AdminRequest = <T>(path: string, init?: RequestInit) => Promise<T>;
 
-export function createAdminApi({ baseUrl, token, fetchImpl }: ClientOptions) {
-  const doFetch = fetchImpl ?? ((input: RequestInfo | URL, init?: RequestInit) => fetch(input, init));
-
+export function createAdminApi(portalRequest: AdminRequest) {
   async function request<T>(path: string, init: RequestInit & { json?: unknown } = {}): Promise<T> {
     const { json, ...rest } = init;
     const headers = new Headers(rest.headers);
     headers.set("Accept", "application/json");
-    headers.set("Authorization", `Bearer ${token}`);
     if (json !== undefined) headers.set("Content-Type", "application/json");
-    const response = await doFetch(`${baseUrl}${path}`, {
-      ...rest,
-      headers,
-      body: json !== undefined ? JSON.stringify(json) : rest.body,
-      cache: "no-store",
-    });
-    if (!response.ok) throw await toApiError(response);
-    return (response.status === 204 ? undefined : await response.json()) as T;
+    try {
+      const value = await portalRequest<T>(path, {
+        ...rest,
+        method: rest.method ?? "GET",
+        headers,
+        body: json !== undefined ? JSON.stringify(json) : rest.body,
+        cache: "no-store",
+      });
+      if (value !== undefined && (value === null || typeof value !== "object")) {
+        throw new ApiError(200, "INVALID_RESPONSE", "The BREERO API returned an unreadable response");
+      }
+      return value;
+    } catch (reason) {
+      const problem = reason instanceof Error && "problem" in reason ? reason.problem : null;
+      if (problem && typeof problem === "object" && "status" in problem && typeof problem.status === "number") {
+        const details = "details" in problem && Array.isArray(problem.details)
+          ? problem.details.filter((item): item is string => typeof item === "string") : [];
+        const message = "message" in problem && typeof problem.message === "string" ? problem.message : "Request failed";
+        throw new ApiError(
+          problem.status,
+          "code" in problem && typeof problem.code === "string" ? problem.code : `HTTP_${problem.status}`,
+          details.length ? `${message} ${details.join("; ")}` : message,
+          details,
+        );
+      }
+      if (reason instanceof SyntaxError) throw new ApiError(200, "INVALID_RESPONSE", "The BREERO API returned an unreadable response");
+      if (reason instanceof TypeError) throw new ApiError(0, "NETWORK_ERROR", "Unable to reach the BREERO API");
+      throw reason;
+    }
   }
 
   return {

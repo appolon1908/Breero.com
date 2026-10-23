@@ -17,13 +17,15 @@ export function useResource<T>(loader: (() => Promise<T>) | null): Resource<T> {
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    if (!loader) return;
+    setData(null);
+    setError(null);
+    if (!loader) { setLoading(false); return; }
     let cancelled = false;
     setLoading(true);
     setError(null);
     loader()
       .then((value) => { if (!cancelled) setData(value); })
-      .catch((reason: unknown) => { if (!cancelled) setError(reason instanceof Error ? reason.message : "Unable to load data"); })
+      .catch((reason: unknown) => { if (!cancelled) { setData(null); setError(reason instanceof Error ? reason.message : "Unable to load data"); } })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [loader, tick]);

@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { PageHeader, useAdmin } from "../../components/AdminShell";
-import { Empty, ErrorMessage, Loading, Pager, Section, StatusBadge } from "../../components/ui";
-import { formatDateTime, humanize } from "../../lib/format";
-import { APPLICATION_STATUS_TONE } from "../../lib/providers";
-import type { ProviderApplicationStatus } from "../../lib/types";
-import { useResource } from "../../lib/useResource";
+import { PageHeader, useAdmin } from "../../../components/AdminShell";
+import { Empty, ErrorMessage, Loading, Pager, Section, StatusBadge } from "../../../components/ui";
+import { formatDateTime, humanize } from "../../../lib/format";
+import { APPLICATION_STATUS_TONE } from "../../../lib/providers";
+import type { ProviderApplicationStatus } from "../../../lib/types";
+import { useResource } from "../../../lib/useResource";
 
 const STATUSES: ProviderApplicationStatus[] = ["PENDING", "INFORMATION_REQUESTED", "APPROVED", "REJECTED", "DRAFT"];
 const PAGE_SIZE = 50;

@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useCallback } from "react";
-import { PageHeader, useAdmin } from "../../components/AdminShell";
-import { FinanceStatusNotice } from "../../components/FinanceStatusNotice";
-import { Empty, ErrorMessage, Loading, Section, StatusBadge } from "../../components/ui";
-import { formatDateTime, formatMinor, humanize, shortId } from "../../lib/format";
-import { useResource } from "../../lib/useResource";
+import { PageHeader, useAdmin } from "../../../components/AdminShell";
+import { FinanceStatusNotice } from "../../../components/FinanceStatusNotice";
+import { Empty, ErrorMessage, Loading, Section, StatusBadge } from "../../../components/ui";
+import { formatDateTime, formatMinor, humanize, shortId } from "../../../lib/format";
+import { useResource } from "../../../lib/useResource";
 
 export default function FinanceOverviewPage() {
   const { api } = useAdmin();

@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { AuditApiError, auditGet } from "./api";
+import { useAdmin } from "../../components/AdminShell";
+import { AuditApiError, createAuditGet } from "./api";
 import { AuditFilterError, defaultFilters, detailPath, formatMetadataValue, humanize, listPath, MAX_PAGE_SIZE, tracePath } from "./query";
 import { AUDIT_CATEGORIES, type AuditCorrelationTrace, type AuditEventDetail, type AuditEventPage, type AuditFilters } from "./types";
 
@@ -48,6 +49,8 @@ function EventDetail({ event, onTrace }: { event: AuditEventDetail; onTrace: (id
 }
 
 export function AuditConsole() {
+  const { api } = useAdmin();
+  const auditGet = useMemo(() => createAuditGet(api.request), [api]);
   const [authorized, setAuthorized] = useState(false);
   const accessGranted = useRef(false);
   const [draft, setDraft] = useState<AuditFilters>(() => defaultFilters());
@@ -77,7 +80,7 @@ export function AuditConsole() {
       setAuthorized(true);
     }).catch((reason) => { if (active) handleFailure(reason); });
     return () => { active = false; accessGranted.current = false; };
-  }, [handleFailure]);
+  }, [auditGet, handleFailure]);
 
   const load = useCallback(async (filters: AuditFilters, cursor: string | null) => {
     if (!accessGranted.current) return;
@@ -88,7 +91,7 @@ export function AuditConsole() {
     }
     catch (reason) { setPage(null); handleFailure(reason); }
     finally { setLoading(false); }
-  }, [handleFailure]);
+  }, [auditGet, handleFailure]);
 
   useEffect(() => { if (applied) void load(applied, cursors[cursors.length - 1]); }, [applied, cursors, load]);
 

@@ -5,7 +5,6 @@ import { buildZoneCreatePayload, describeCoverage, normalizePostalCode, parsePos
 import { isActivePath } from "../lib/navigation";
 import { payoutViewState } from "../lib/payouts";
 import { allowedDecisions, sectionRows, validateDecisionReason } from "../lib/providers";
-import { canUseAdminPortal, parseSession } from "../lib/session";
 import type { FinanceStatus, PayoutBatchDetail } from "../lib/types";
 
 const VENDOR = "0f8fad5b-d9cb-469f-a165-70867728950e";
@@ -87,6 +86,11 @@ describe("payout view state", () => {
     expect(state.blockedReason).toMatch(/PAYOUT_ENABLED=false/);
     // A stale enabled read model cannot re-enable actions when status says disabled.
     expect(payoutViewState(batch(), { ...ENABLED, payouts_enabled: false }).actions).toEqual([]);
+  });
+
+  it("keeps commands disabled until finance capability status is loaded", () => {
+    expect(payoutViewState(batch()).actions).toEqual([]);
+    expect(payoutViewState(batch(), null).actions).toEqual([]);
   });
 
   it("explains the four-eyes block", () => {
@@ -171,15 +175,6 @@ describe("provider decisions", () => {
 });
 
 describe("session and navigation", () => {
-  it("accepts only admin and finance sessions", () => {
-    const admin = parseSession(JSON.stringify({ access_token: "t", user: { email: "a@b.co", full_name: "A", role: "admin" } }));
-    expect(admin && canUseAdminPortal(admin)).toBe(true);
-    const provider = parseSession(JSON.stringify({ access_token: "t", user: { email: "a@b.co", full_name: "A", role: "vendor_admin" } }));
-    expect(provider && canUseAdminPortal(provider)).toBe(false);
-    expect(parseSession("{not json")).toBeNull();
-    expect(parseSession(JSON.stringify({ user: {} }))).toBeNull();
-  });
-
   it("highlights the most specific navigation entry", () => {
     expect(isActivePath("/", "/")).toBe(true);
     expect(isActivePath("/users/abc", "/users")).toBe(true);

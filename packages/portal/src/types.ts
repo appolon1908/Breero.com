@@ -3,6 +3,7 @@ export type PortalHttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface PortalApiRule {
   prefix: string;
+  exact?: boolean;
   methods: readonly PortalHttpMethod[];
 }
 

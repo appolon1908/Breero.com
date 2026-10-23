@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
-import { PageHeader, useAdmin } from "../../../components/AdminShell";
-import { ConfirmAction } from "../../../components/ConfirmAction";
-import { EffectiveAccessView } from "../../../components/EffectiveAccessView";
-import { ErrorMessage, KeyValues, Loading, Notice, Section, StatusBadge } from "../../../components/ui";
-import { describeAccessChange, grantsPrivilege, newAssignment, setScope, validateAssignments, validateReason } from "../../../lib/access";
-import { formatDateTime, humanize } from "../../../lib/format";
-import type { AccessAssignment, AccessRole, AdminUserDetail, Department, EffectiveAccess, TenantScope } from "../../../lib/types";
-import { useResource } from "../../../lib/useResource";
+import { PageHeader, useAdmin } from "../../../../components/AdminShell";
+import { ConfirmAction } from "../../../../components/ConfirmAction";
+import { EffectiveAccessView } from "../../../../components/EffectiveAccessView";
+import { ErrorMessage, KeyValues, Loading, Notice, Section, StatusBadge } from "../../../../components/ui";
+import { describeAccessChange, grantsPrivilege, newAssignment, setScope, validateAssignments, validateReason } from "../../../../lib/access";
+import { formatDateTime, humanize } from "../../../../lib/format";
+import type { AccessAssignment, AccessRole, AdminUserDetail, Department, EffectiveAccess, TenantScope } from "../../../../lib/types";
+import { useResource } from "../../../../lib/useResource";
 
 export default function UserDetailPage() {
   const params = useParams<{ userId: string }>();

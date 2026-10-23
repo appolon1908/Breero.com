@@ -1,14 +1,26 @@
 import { describe, expect, it, vi } from "vitest";
-import { ApiError, createAdminApi, ifMatch, newIdempotencyKey, resolveApiBase, toApiError, withQuery } from "../lib/api";
+import { readProblem } from "@breero/portal";
+import { ApiError, createAdminApi, ifMatch, newIdempotencyKey, withQuery } from "../lib/api";
 
 function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 }
 
 function client(response: Response | (() => Response)) {
-  const fetchImpl = vi.fn(async () => (typeof response === "function" ? response() : response));
-  const api = createAdminApi({ baseUrl: "https://api.example.test/api/v1", token: "tok", fetchImpl: fetchImpl as unknown as typeof fetch });
-  return { api, fetchImpl };
+  const calls: [string, RequestInit?][] = [];
+  const request = async <T,>(path: string, init?: RequestInit): Promise<T> => {
+    calls.push([path, init]);
+    const current = typeof response === "function" ? response() : response;
+    if (!current.ok) {
+      const problem = await readProblem(current);
+      throw Object.assign(new Error(problem.message), { problem });
+    }
+    if (current.status === 204) return undefined as T;
+    return current.headers.get("content-type")?.includes("application/json")
+      ? await current.json() as T : await current.text() as T;
+  };
+  const api = createAdminApi(request);
+  return { api, fetchImpl: { mock: { calls } } };
 }
 
 type FetchCall = [string, RequestInit & { headers: Headers }];
@@ -18,35 +30,37 @@ function lastCall(fetchImpl: { mock: { calls: unknown[][] } }): { url: string; i
   return { url, init };
 }
 
-describe("resolveApiBase", () => {
-  it("accepts only https origins and strips a trailing slash", () => {
-    expect(resolveApiBase("https://api.breero.com/api/v1/")).toBe("https://api.breero.com/api/v1");
-    expect(() => resolveApiBase("http://api.breero.com")).toThrow("secure API origin");
-    expect(() => resolveApiBase(undefined)).toThrow();
-  });
-});
-
-describe("toApiError", () => {
-  it("maps V1 domain errors", async () => {
-    const error = await toApiError(json(409, { error: { code: "USER_ALREADY_DISABLED", message: "User is already disabled." } }));
-    expect(error).toBeInstanceOf(ApiError);
-    expect([error.status, error.code, error.message]).toEqual([409, "USER_ALREADY_DISABLED", "User is already disabled."]);
+describe("shared request failures", () => {
+  it.each([
+    [409, { error: { code: "USER_ALREADY_DISABLED", message: "User is already disabled." } }, "USER_ALREADY_DISABLED", "User is already disabled."],
+    [403, { detail: "Insufficient permissions" }, "HTTP_403", "Insufficient permissions"],
+    [422, { detail: [{ loc: ["body", "reason"], msg: "String should have at least 3 characters" }] }, "VALIDATION_ERROR", "Some fields need attention. reason: String should have at least 3 characters"],
+  ])("maps the real shared problem for status %s", async (status, body, code, message) => {
+    const { api } = client(json(status as number, body));
+    await expect(api.listUsers({})).rejects.toBeInstanceOf(ApiError);
+    const retry = client(json(status as number, body));
+    await expect(retry.api.listUsers({})).rejects.toMatchObject({ status, code, message });
   });
 
-  it("maps HTTPException detail strings", async () => {
-    const error = await toApiError(json(403, { detail: "Insufficient permissions" }));
-    expect([error.status, error.code, error.message]).toEqual([403, "HTTP_403", "Insufficient permissions"]);
+  it.each([401, 403])("does not retry or fall back to direct fetch for %s", async (status) => {
+    const error = Object.assign(new Error("Denied"), { problem: { status, message: "Denied" } });
+    const request = vi.fn<(path: string, init?: RequestInit) => Promise<never>>().mockRejectedValue(error);
+    await expect(createAdminApi(request).financeStatus()).rejects.toMatchObject({ status });
+    expect(request).toHaveBeenCalledTimes(1);
   });
 
-  it("maps FastAPI validation arrays to a readable message", async () => {
-    const error = await toApiError(json(422, { detail: [{ loc: ["body", "reason"], msg: "String should have at least 3 characters" }] }));
-    expect(error.code).toBe("VALIDATION_ERROR");
-    expect(error.message).toBe("reason: String should have at least 3 characters");
+  it.each([
+    new Response("<html>proxy</html>"),
+    new Response("{bad json", { headers: { "Content-Type": "application/json" } }),
+  ])("rejects unreadable success bodies", async (response) => {
+    await expect(client(response).api.financeStatus()).rejects.toMatchObject({ code: "INVALID_RESPONSE" });
   });
 
-  it("falls back when the body is not JSON", async () => {
-    const error = await toApiError(new Response("oops", { status: 502 }));
-    expect(error.message).toBe("Request failed (502)");
+  it("preserves the shared offline mutation guard", async () => {
+    const failure = new Error("You are offline. Changes are blocked until the connection returns.");
+    const request = vi.fn<(path: string, init?: RequestInit) => Promise<never>>().mockRejectedValue(failure);
+    await expect(createAdminApi(request).disableUser("u1", "review")).rejects.toBe(failure);
+    expect(request).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -64,12 +78,12 @@ describe("helpers", () => {
 });
 
 describe("createAdminApi", () => {
-  it("sends bearer auth and never caches", async () => {
+  it("delegates relative paths to the shared BFF without browser bearer auth", async () => {
     const { api, fetchImpl } = client(json(200, { items: [], total: 0, page: 1, page_size: 25 }));
     await api.listUsers({ q: "a@b.co", status: "disabled", page: 1, page_size: 25 });
     const { url, init } = lastCall(fetchImpl);
-    expect(url).toBe("https://api.example.test/api/v1/admin/users?q=a%40b.co&status=disabled&page=1&page_size=25");
-    expect(init.headers.get("Authorization")).toBe("Bearer tok");
+    expect(url).toBe("/admin/users?q=a%40b.co&status=disabled&page=1&page_size=25");
+    expect(init.headers.has("Authorization")).toBe(false);
     expect(init.cache).toBe("no-store");
   });
 

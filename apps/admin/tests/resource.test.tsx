@@ -1,0 +1,67 @@
+// @vitest-environment jsdom
+
+import { act } from "react";
+import { createRoot, type Root } from "react-dom/client";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { useResource, type Resource } from "../lib/useResource";
+
+type PrivateRecord = { secret: string };
+let root: Root | undefined;
+
+afterEach(async () => {
+  if (root) await act(async () => root?.unmount());
+  root = undefined;
+  document.body.replaceChildren();
+  vi.unstubAllGlobals();
+});
+
+describe("administration resource authorization refresh", () => {
+  it.each([401, 403, 500])("clears private data and actions while reloading and after %s", async (status) => {
+    vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
+    const container = document.createElement("div");
+    document.body.append(container);
+    root = createRoot(container);
+    const observed: { current?: Resource<PrivateRecord> } = {};
+    let rejectReload: (reason: Error) => void = () => { throw new Error("reload did not start"); };
+    const loader = vi.fn<() => Promise<PrivateRecord>>()
+      .mockResolvedValueOnce({ secret: "private-record" })
+      .mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectReload = reject; }));
+
+    function Probe() {
+      const current = useResource(loader);
+      observed.current = current;
+      return <>{current.data ? <button>{current.data.secret}</button> : current.error ?? "Loading"}</>;
+    }
+
+    await act(async () => root?.render(<Probe />));
+    expect(container.textContent).toContain("private-record");
+
+    await act(async () => observed.current?.reload());
+    expect(observed.current?.loading).toBe(true);
+    expect(observed.current?.data).toBeNull();
+    expect(container.querySelector("button")).toBeNull();
+
+    await act(async () => rejectReload(Object.assign(new Error("Access refresh failed"), { status })));
+    expect(observed.current?.loading).toBe(false);
+    expect(observed.current?.data).toBeNull();
+    expect(container.textContent).toContain("Access refresh failed");
+    expect(container.querySelector("button")).toBeNull();
+  });
+});
+
+
+it("clears private data when the loader becomes unavailable", async () => {
+  vi.stubGlobal("IS_REACT_ACT_ENVIRONMENT", true);
+  const container = document.createElement("div");
+  document.body.append(container);
+  root = createRoot(container);
+  const loader = async () => ({ secret: "private-record" });
+  function Probe({ enabled }: { enabled: boolean }) {
+    const resource = useResource(enabled ? loader : null);
+    return <>{resource.data?.secret ?? "No record"}</>;
+  }
+  await act(async () => root?.render(<Probe enabled />));
+  expect(container.textContent).toContain("private-record");
+  await act(async () => root?.render(<Probe enabled={false} />));
+  expect(container.textContent).toBe("No record");
+});

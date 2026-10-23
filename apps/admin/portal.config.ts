@@ -6,6 +6,7 @@ export const portalRuntime = {
   eyebrow: "Governance, finance, and platform control",
   allowedRoles: ["admin", "superadmin", "finance"],
   apiRules: [
+    { prefix: "/auth/access/catalog", methods: ["GET"], exact: true },
     { prefix: "/portal/capabilities", methods: ["GET"] },
     { prefix: "/portal/admin", methods: ["GET"] },
     { prefix: "/admin", methods: ["GET", "POST", "PUT", "PATCH", "DELETE"] },

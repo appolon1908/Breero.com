@@ -31,10 +31,10 @@ function OperationsWorkspace({ children }: { children: ReactNode }) {
   const authorized = session?.context.roles.some((role) =>
     (portalRuntime.allowedRoles as readonly string[]).includes(role));
   // Changing identity or effective access discards any resource state from the prior session.
-  const identity = session && [
-    session.context.brand_key, session.user.id,
-    session.context.roles.join(","), session.context.permissions.join(","),
-  ].join(":");
+  const identity = session && JSON.stringify([
+    session.user.id, session.context.brand_key, session.context.assignments,
+    session.context.roles, session.context.permissions,
+  ]);
 
   return (
     <PortalApplication

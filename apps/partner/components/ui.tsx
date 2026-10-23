@@ -68,13 +68,14 @@ export function useResource<T>(load: () => Promise<T>): Resource<T> {
 
   const reload = useCallback(async () => {
     const current = ++generation.current;
+    setData(null);
     setLoading(true);
     setError("");
     try {
       const next = await load();
       if (current === generation.current) setData(next);
     } catch (reason) {
-      if (current === generation.current) setError(errorMessage(reason, "Unable to load data"));
+      if (current === generation.current) { setData(null); setError(errorMessage(reason, "Unable to load data")); }
     } finally {
       if (current === generation.current) setLoading(false);
     }
@@ -82,6 +83,7 @@ export function useResource<T>(load: () => Promise<T>): Resource<T> {
 
   useEffect(() => {
     void reload();
+    return () => { generation.current += 1; };
   }, [reload]);
 
   return { data, error, loading, reload };

@@ -61,6 +61,10 @@ function PartnerWorkspace() {
   const [active, setActive] = useState<SectionKey>("onboarding");
   const { state, request } = usePortalSession();
   const api = useMemo(() => new PartnerApi(request), [request]);
+  const identity = state.status === "authenticated" && JSON.stringify([
+    state.session.user.id, state.session.context.brand_key, state.session.context.assignments,
+    state.session.context.roles, state.session.context.permissions,
+  ]);
   return (
     <PortalApplication
       config={portalRuntime}
@@ -69,7 +73,7 @@ function PartnerWorkspace() {
       onNavigate={(id) => setActive(id as SectionKey)}
     >
       {state.status === "authenticated" && (
-        <Fragment key={state.session.user.id}>
+        <Fragment key={identity || undefined}>
           {renderSection(active, { api, navigate: setActive })}
         </Fragment>
       )}

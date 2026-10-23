@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback, useState } from "react";
-import { PageHeader, useAdmin } from "../../../components/AdminShell";
-import { ConfirmAction } from "../../../components/ConfirmAction";
-import { ErrorMessage, KeyValues, Loading, Notice, Section, StatusBadge } from "../../../components/ui";
-import { formatDateTime } from "../../../lib/format";
-import { allowedDecisions, APPLICATION_STATUS_TONE, DECISION_COPY, sectionRows, validateDecisionReason } from "../../../lib/providers";
-import type { ProviderApplication } from "../../../lib/types";
-import { useResource } from "../../../lib/useResource";
+import { PageHeader, useAdmin } from "../../../../components/AdminShell";
+import { ConfirmAction } from "../../../../components/ConfirmAction";
+import { ErrorMessage, KeyValues, Loading, Notice, Section, StatusBadge } from "../../../../components/ui";
+import { formatDateTime } from "../../../../lib/format";
+import { allowedDecisions, APPLICATION_STATUS_TONE, DECISION_COPY, sectionRows, validateDecisionReason } from "../../../../lib/providers";
+import type { ProviderApplication } from "../../../../lib/types";
+import { useResource } from "../../../../lib/useResource";
 
 const SECTIONS: { key: keyof ProviderApplication; title: string }[] = [
   { key: "identity", title: "Identity" },

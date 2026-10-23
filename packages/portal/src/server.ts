@@ -497,7 +497,7 @@ function apiPath(parts: readonly string[]): string | null {
 
 export function isAllowedPortalRequest(path: string, method: string, config: PortalRuntimeConfig): boolean {
   const normalized = method.toUpperCase() as PortalHttpMethod;
-  return config.apiRules.some((rule) => (path === rule.prefix || path.startsWith(`${rule.prefix}/`)) && rule.methods.includes(normalized));
+  return config.apiRules.some((rule) => (path === rule.prefix || (!rule.exact && path.startsWith(`${rule.prefix}/`))) && rule.methods.includes(normalized));
 }
 
 function correlationId(request: Request): string {
