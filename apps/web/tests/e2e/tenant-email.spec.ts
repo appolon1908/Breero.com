@@ -46,8 +46,9 @@ test("login to tenant email provisioning, compose and durable outbox", async ({ 
   await expect(page.getByText("Credential metadata saved. Secret material remains outside the application database.")).toBeVisible();
   await expect(page.getByText("Secret reference configured")).toBeVisible();
 
-  await page.getByLabel("Sender").selectOption({ label: "BREERO E2E Operations" });
-  await page.getByLabel("Credential").selectOption({ label: "E2E SMTP" });
+  const compose = page.getByTestId("email-compose-form");
+  await compose.getByRole("combobox", { name: "Sender", exact: true }).selectOption({ label: "BREERO E2E Operations" });
+  await compose.getByRole("combobox", { name: "Credential", exact: true }).selectOption({ label: "E2E SMTP" });
   await page.getByLabel("Recipient").fill("recipient@breero.test");
   await page.getByLabel("Subject").fill("BREERO tenant email E2E");
   await page.getByLabel("Message").fill("This message verifies the browser-to-client-to-outbox compose workflow.");
