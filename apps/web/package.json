@@ -8,14 +8,15 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test && pnpm test:e2e:bookings",
+    "test:e2e:bookings": "playwright test -c playwright.bookings.config.ts",
     "validate:marketing": "node scripts/validate-marketing.mjs"
   },
   "dependencies": {
     "@breero/api-client": "workspace:*",
     "@breero/types": "workspace:*",
     "@breero/ui": "workspace:*",
-    "next": "15.5.24",
+    "next": "15.5.28",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -29,7 +30,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.17.0",
-    "eslint-config-next": "15.5.24",
+    "eslint-config-next": "15.5.28",
     "jsdom": "^25.0.1",
     "typescript": "^5.7.0",
     "vitest": "3.2.6"
