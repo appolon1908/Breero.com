@@ -14,9 +14,9 @@ depends_on = None
 
 
 def upgrade():
-    ms = postgresql.ENUM("OPEN", "COMPLETE", name="matching_run_status")
+    ms = postgresql.ENUM("OPEN", "COMPLETE", name="matching_run_status", create_type=False)
     os = postgresql.ENUM(
-        "OFFERED", "ACCEPTED", "DECLINED", "EXPIRED", name="marketplace_opportunity_status"
+        "OFFERED", "ACCEPTED", "DECLINED", "EXPIRED", name="marketplace_opportunity_status", create_type=False
     )
     ms.create(op.get_bind(), checkfirst=True)
     os.create(op.get_bind(), checkfirst=True)

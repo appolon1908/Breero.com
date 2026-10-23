@@ -22,6 +22,7 @@ def upgrade():
         "EXPIRED",
         "CANCELLED",
         name="marketplace_quote_status",
+        create_type=False,
     )
     qs.create(op.get_bind(), checkfirst=True)
     op.create_table(

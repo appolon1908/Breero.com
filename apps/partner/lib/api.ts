@@ -27,7 +27,6 @@ import type {
   Qualification,
   QualificationInput,
   QualificationList,
-  Session,
 } from "./types";
 
 export class ApiError extends Error {

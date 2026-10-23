@@ -26,7 +26,7 @@ STATUSES = (
 
 
 def upgrade():
-    status = postgresql.ENUM(*STATUSES, name="project_request_status")
+    status = postgresql.ENUM(*STATUSES, name="project_request_status", create_type=False)
     status.create(op.get_bind(), checkfirst=True)
     op.create_table(
         "project_requests",
