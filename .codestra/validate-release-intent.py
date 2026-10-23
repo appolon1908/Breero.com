@@ -195,7 +195,7 @@ EXPECTED_CHECK_WORKFLOW_SHA256 = {
     },
     "appolon1908/Breero.com": {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
-        ".github/workflows/quality.yml": "2be72e0820aea5373c0f273b260dd9be5599698802864ae50fb28077abe53c6a",
+        ".github/workflows/quality.yml": "e2b6dc53accdc5edcf2338dfa96cc65d6d1849fef04c94ea0ee552d0adcf609e",
     },
     "appolon1908-hue/Moneybee-Backend": {
         ".github/workflows/production-orchestrator-contract.yml": ORCHESTRATOR_CONTRACT_WORKFLOW_SHA256,
@@ -217,8 +217,8 @@ SHARED_PRODUCTION_VALIDATOR_SHA256 = (
     "83d2fce102104543b871530f11115f20"
 )
 BREERO_PRODUCTION_VALIDATOR_SHA256 = (
-    "985b1dbd5e9dcb10023bdbf27bf0cc80"
-    "eb0c8bec3bdff69b8b81aa55f60d8a3a"
+    "fcdc8a12bcf4a5733d90594001470674"
+    "856e4bb141e6df704be391c16aeb4486"
 )
 KEYCLOAK_PRODUCTION_VALIDATOR_SHA256 = (
     "6006bbc7850ce7666de926b6cad2585b"
@@ -412,8 +412,7 @@ EXPECTED_REQUIRED_CHECK_SOURCE_CLOSURE_SHA256 = {
         "19ad25962daeeff809b9a9d391b1e2f0"
     ),
     "appolon1908/Breero.com": (
-        "9d415e8ed6e53bd69315b09b8febe963"
-        "5e839182d8724fb7fd6d436ab42a06cd"
+        "087c5b63e6d05bb5fb1233c9da59c4a54fa53fa17183d21970441cbeaefb6345"
     ),
     "appolon1908-hue/Moneybee-Backend": (
         "a283e388028892ced3ac8445893ec2fa"
