@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 export type PortalRole = "vendor_admin" | "operations" | "finance" | "admin";
 export interface PortalSection { label: string; path?: string; description: string }
@@ -25,7 +25,7 @@ const apiBase = () => {
   return value.replace(/\/$/, "");
 };
 
-async function request<T>(path: string, token?: string, init?: RequestInit): Promise<T> {
+async function request<T>(path: string, token?: string, init?: RequestInit, onUnauthorized?: () => void): Promise<T> {
   const headers = new Headers(init?.headers);
   headers.set("Accept", "application/json");
   if (init?.body) headers.set("Content-Type", "application/json");
@@ -36,6 +36,7 @@ async function request<T>(path: string, token?: string, init?: RequestInit): Pro
   }
   const response = await fetch(`${apiBase()}${path}`, { ...init, headers, cache: "no-store", credentials: "include" });
   if (!response.ok) {
+    if (response.status === 401) onUnauthorized?.();
     const body = await response.json().catch(() => ({})) as { message?: string; detail?: string; error?: { message?: string } };
     throw new Error(body.error?.message ?? body.message ?? body.detail ?? `Request failed (${response.status})`);
   }
@@ -58,16 +59,43 @@ export function PortalApp({ config }: { config: PortalConfig }) {
   const [active, setActive] = useState(config.sections[0]);
   const [rows, setRows] = useState<Record<string, unknown>[]>([]);
   const [loading, setLoading] = useState(false);
+  const sessionVersion = useRef(0);
 
   useEffect(() => {
-    request<User>("/auth/me").then((user) => setSession({ user })).catch(() => setSession(null));
-  }, []);
+    let active = true;
+    const version = sessionVersion.current;
+    request<User>("/auth/me").then((user) => {
+      if (!active || version !== sessionVersion.current) return;
+      if (!config.allowedRoles.includes(user.role as PortalRole)) {
+        throw new Error("This account is not authorized for this portal.");
+      }
+      sessionVersion.current += 1;
+      setSession({ user });
+    }).catch((reason) => {
+      if (!active || version !== sessionVersion.current) return;
+      sessionVersion.current += 1;
+      setSession(null);
+      setRows([]);
+      setError(reason instanceof Error ? reason.message : "Unable to restore the session");
+    });
+    return () => { active = false; };
+  }, [config.allowedRoles]);
+
+  function onUnauthorized() {
+    sessionVersion.current += 1;
+    setSession(null);
+    setRows([]);
+    setLoading(false);
+    setError("Session expired. Sign in again.");
+  }
 
   async function login(event: FormEvent) {
     event.preventDefault(); setError("");
     try {
       const next = await request<Session>("/auth/browser/login", undefined, { method: "POST", body: JSON.stringify({ email, password }) });
       if (!config.allowedRoles.includes(next.user.role as PortalRole)) throw new Error("This account is not authorized for this portal.");
+      sessionVersion.current += 1;
+      setRows([]);
       setSession(next);
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Sign in failed"); }
   }
@@ -76,9 +104,17 @@ export function PortalApp({ config }: { config: PortalConfig }) {
     setActive(section); setRows([]); setError("");
     if (!section.path || !session) return;
     setLoading(true);
-    try { setRows(safeRows(await request<unknown>(section.path))); }
-    catch (reason) { setError(reason instanceof Error ? reason.message : "Unable to load data"); }
-    finally { setLoading(false); }
+    const version = sessionVersion.current;
+    try {
+      const result = await request<unknown>(section.path, undefined, undefined, () => {
+        if (version === sessionVersion.current) onUnauthorized();
+      });
+      if (version === sessionVersion.current) setRows(safeRows(result));
+    } catch (reason) {
+      if (version === sessionVersion.current) setError(reason instanceof Error ? reason.message : "Unable to load data");
+    } finally {
+      if (version === sessionVersion.current) setLoading(false);
+    }
   }
 
   async function logout() {
@@ -87,11 +123,14 @@ export function PortalApp({ config }: { config: PortalConfig }) {
     try {
       await request<void>("/auth/browser/logout", undefined, {
         method: "POST",
-      });
+      }, onUnauthorized);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Unable to sign out securely");
       return;
     }
+    sessionVersion.current += 1;
+    setRows([]);
+    setLoading(false);
     setSession(null);
   }
 
