@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { PortalApp, type PortalConfig } from "../../../packages/portal/src/index";
+import { PortalApp, type PortalConfig } from "./index";
 
 const config: PortalConfig = {
   name: "Administration",
