@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi.routing import APIRoute
 
 from app.api.v1 import (
     access,
@@ -21,9 +22,13 @@ from app.api.v1 import (
     operations,
     payments,
     provider,
+    provider_availability,
     provider_catalog,
     provider_leads,
     provider_onboarding,
+    provider_qualifications,
+    provider_work,
+    provider_workforce,
     public_booking,
     public_forms,
     services,
@@ -47,10 +52,19 @@ api_router.include_router(
     provider_onboarding.provider_router, prefix="/provider", tags=["provider-onboarding"]
 )
 api_router.include_router(provider_catalog.router, prefix="/provider", tags=["provider-catalog"])
+api_router.include_router(provider_workforce.router, prefix="/provider/workers", tags=["provider-workforce"])
+api_router.include_router(provider_availability.router, prefix="/provider/availability", tags=["provider-availability"])
+api_router.include_router(provider_qualifications.router, prefix="/provider/qualifications", tags=["provider-qualifications"])
+api_router.include_router(provider_work.router, prefix="/provider", tags=["provider-work"])
 api_router.include_router(
     provider_onboarding.admin_router,
     prefix="/admin/provider-applications",
     tags=["admin-provider-applications"],
+)
+api_router.include_router(
+    provider_qualifications.admin_router,
+    prefix="/admin/provider-qualifications",
+    tags=["admin-provider-qualifications"],
 )
 api_router.include_router(services.router, prefix="/services", tags=["services"])
 api_router.include_router(customers.router, prefix="/customer", tags=["customer"])
@@ -71,7 +85,17 @@ if settings.payments_enabled and settings.stripe_enabled:
     )
 api_router.include_router(jobs.router, prefix="/jobs", tags=["jobs"])
 api_router.include_router(vendors.router, prefix="/vendors", tags=["vendors"])
-api_router.include_router(provider.router, prefix="/provider", tags=["provider"])
+# The dedicated provider routers above own these two GET contracts. Keep the
+# remaining legacy operations without registering shadowed duplicate handlers.
+legacy_provider_router = APIRouter(routes=[
+    route for route in provider.router.routes
+    if not (
+        isinstance(route, APIRoute)
+        and route.methods == {"GET"}
+        and route.path in {"/jobs", "/availability"}
+    )
+])
+api_router.include_router(legacy_provider_router, prefix="/provider", tags=["provider"])
 api_router.include_router(operations.router, prefix="/operations", tags=["operations"])
 # Read-only finance projections never move money, so they stay mounted while the
 # payout command surface below remains behind PAYOUT_ENABLED.
