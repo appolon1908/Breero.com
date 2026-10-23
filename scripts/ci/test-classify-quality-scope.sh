@@ -19,6 +19,7 @@ assert_scope frontend-only $'backend=false\nfrontend=true\nbootstrap=false' apps
 assert_scope backend-and-frontend $'backend=true\nfrontend=true\nbootstrap=false' apps/api/app/main.py apps/web/app/page.tsx
 assert_scope workflow-only $'backend=false\nfrontend=false\nbootstrap=false' .github/workflows/quality.yml
 assert_scope documentation-only $'backend=false\nfrontend=false\nbootstrap=false' docs/runbook.md
+assert_scope bootstrap-regression-test $'backend=false\nfrontend=false\nbootstrap=true' scripts/tests/test_bootstrap_ci_contract.py
 
 test_cross_boundary_rename() {
   local fixture base head actual expected
