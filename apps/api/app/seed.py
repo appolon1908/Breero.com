@@ -35,6 +35,11 @@ LAUNCH_SERVICES = (
     ("pest-control", "Pest control", "Residential pest inspection and treatment requests."),
     ("lawn-landscaping", "Lawn & landscaping", "Lawn care and landscaping requests."),
     ("pressure-washing", "Pressure washing", "Exterior surface cleaning requests."),
+    (
+        "solar-panel-installation",
+        "Solar panel installation",
+        "Solar installation assessment and quote requests from independent providers.",
+    ),
 )
 
 KNOWN_CERTIFICATION_PREFIXES = ("e2e-service-", "test-", "fixture-", "certification-")
@@ -83,6 +88,15 @@ async def seed() -> None:
             launch_service.base_price = Decimal("200.00")
             launch_service.pricing_model = "evaluation_fee_quote_required"
             launch_service.duration_minutes = 30
+            if slug == "solar-panel-installation":
+                # A consultation inquiry is not an installation quote or a fixed-price visit.
+                launch_service.base_price = None
+                launch_service.pricing_model = "quote_required"
+                launch_service.duration_minutes = None
+                launch_service.quote_required = True
+                launch_service.provider_approval_required = True
+                launch_service.emergency_eligible = False
+                launch_service.sunday_emergency_eligible = False
             launch_service.is_active = True
             # This release accepts durable requests only. A later protected release may
             # enable booking after provider capacity and payments are certified.
