@@ -166,7 +166,9 @@ class AccessService:
             ).all()
         )
 
-        if profile is not None and not rows:
+        # Legacy role defaults belong only to canonical Breero accounts.
+        # Additional company brands require an explicit active assignment.
+        if not rows and (profile is not None or brand_key != BRAND_KEY):
             return PortalContext(
                 user=UserRead.model_validate(user),
                 brand_key=brand_key,
