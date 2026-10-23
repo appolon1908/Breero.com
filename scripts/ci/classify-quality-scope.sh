@@ -18,7 +18,7 @@ while IFS= read -r path; do
       ;;
   esac
   case "$path" in
-    scripts/bootstrap_breero_backend.py|scripts/tests/test_bootstrap_breero_backend.py|.github/workflows/backend-bootstrap-tool.yml)
+    scripts/bootstrap_breero_backend.py|scripts/tests/*|.github/workflows/backend-bootstrap-tool.yml)
       bootstrap=true
       ;;
   esac
