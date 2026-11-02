@@ -8,6 +8,16 @@
       "context": "quality",
       "integration_id": 15368,
       "workflow": ".github/workflows/quality.yml"
+    },
+    {
+      "context": "scope-guard",
+      "integration_id": 15368,
+      "workflow": ".github/workflows/breero-scope-guard.yml"
+    },
+    {
+      "context": "orchestrator-contract",
+      "integration_id": 15368,
+      "workflow": ".github/workflows/production-orchestrator-contract.yml"
     }
   ],
   "replaces_contexts": [
