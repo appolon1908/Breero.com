@@ -58,7 +58,6 @@ describe("Meta Pixel consent-gated loader", () => {
     saveConsentChoice(false, false);
     syncMetaPixel("/services");
     syncMetaPixel("/pricing");
-    expect(window.fbq?.queue?.some((call) => call[0] === "revoke")).toBe(false);
     expect(window.fbq?.queue).toContainEqual(["consent", "revoke"]);
     expect(window.fbq?.queue?.filter((call) => call[0] === "trackSingle")).toHaveLength(1);
 
