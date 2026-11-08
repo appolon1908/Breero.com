@@ -1,0 +1,580 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-08",
+  "brand": "BREERO",
+  "status": "PROPOSAL_NOT_LIVE",
+  "markets": [
+    "US",
+    "MX",
+    "ES",
+    "DO"
+  ],
+  "serviceCount": 35,
+  "rule": "Content-only expansion draft. Do not advertise bookability or activate routes, billing, provider recruitment, campaigns, or automatic CRM marketing based on this file.",
+  "services": [
+    {
+      "order": 1,
+      "slug": "hvac",
+      "name": {
+        "en": "HVAC (Heating, Ventilation & Air Conditioning)",
+        "es": "Climatización (calefacción, ventilación y aire acondicionado)"
+      },
+      "primaryTrade": "hvac",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 2,
+      "slug": "plumbing",
+      "name": {
+        "en": "Plumbing",
+        "es": "Plomería y fontanería"
+      },
+      "primaryTrade": "plumbing",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 3,
+      "slug": "electrical",
+      "name": {
+        "en": "Electrical",
+        "es": "Electricidad"
+      },
+      "primaryTrade": "electrical",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 4,
+      "slug": "handyman",
+      "name": {
+        "en": "Handyman",
+        "es": "Reparaciones generales del hogar"
+      },
+      "primaryTrade": "handyman",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 5,
+      "slug": "heating",
+      "name": {
+        "en": "Heating",
+        "es": "Calefacción"
+      },
+      "primaryTrade": "hvac",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": true,
+      "currentWebMarketingDefinitionPresent": true,
+      "parentCategory": "hvac",
+      "note": "Separate customer search/intake entry; de-duplicate with HVAC for provider classification."
+    },
+    {
+      "order": 6,
+      "slug": "cooling",
+      "name": {
+        "en": "Cooling",
+        "es": "Aire acondicionado y refrigeración"
+      },
+      "primaryTrade": "hvac",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": true,
+      "currentWebMarketingDefinitionPresent": true,
+      "parentCategory": "hvac",
+      "note": "Separate customer search/intake entry; de-duplicate with HVAC for provider classification."
+    },
+    {
+      "order": 7,
+      "slug": "appliance-repair",
+      "name": {
+        "en": "Appliance Repair",
+        "es": "Reparación de electrodomésticos"
+      },
+      "primaryTrade": "appliance",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 8,
+      "slug": "cleaning",
+      "name": {
+        "en": "Cleaning",
+        "es": "Limpieza del hogar y comercial"
+      },
+      "primaryTrade": "cleaning",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 9,
+      "slug": "locksmith",
+      "name": {
+        "en": "Locksmith",
+        "es": "Cerrajería"
+      },
+      "primaryTrade": "locksmith",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 10,
+      "slug": "painting",
+      "name": {
+        "en": "Painting",
+        "es": "Pintura"
+      },
+      "primaryTrade": "painting",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 11,
+      "slug": "carpentry",
+      "name": {
+        "en": "Carpentry",
+        "es": "Carpintería"
+      },
+      "primaryTrade": "carpentry",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 12,
+      "slug": "moving-help",
+      "name": {
+        "en": "Moving Help",
+        "es": "Ayuda para mudanzas"
+      },
+      "primaryTrade": "moving",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 13,
+      "slug": "home-maintenance",
+      "name": {
+        "en": "Home Maintenance",
+        "es": "Mantenimiento del hogar"
+      },
+      "primaryTrade": "home-maintenance",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": true
+    },
+    {
+      "order": 14,
+      "slug": "windows-doors",
+      "name": {
+        "en": "Windows & Doors",
+        "es": "Ventanas y puertas"
+      },
+      "primaryTrade": "windows-doors",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 15,
+      "slug": "roofing",
+      "name": {
+        "en": "Roofing",
+        "es": "Techos e impermeabilización"
+      },
+      "primaryTrade": "roofing",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 16,
+      "slug": "pest-control",
+      "name": {
+        "en": "Pest Control & Termites",
+        "es": "Control de plagas y termitas"
+      },
+      "primaryTrade": "pest-control",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 17,
+      "slug": "landscaping-lawn-care",
+      "name": {
+        "en": "Landscaping & Lawn Care",
+        "es": "Jardinería y cuidado de césped"
+      },
+      "primaryTrade": "landscaping",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": true,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 18,
+      "slug": "tree-services",
+      "name": {
+        "en": "Tree Services",
+        "es": "Poda y servicios de árboles"
+      },
+      "primaryTrade": "tree-services",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 19,
+      "slug": "pool-spa",
+      "name": {
+        "en": "Pool & Spa Services",
+        "es": "Piscinas y spas"
+      },
+      "primaryTrade": "pool",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": true,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 20,
+      "slug": "garage-door",
+      "name": {
+        "en": "Garage Door Services",
+        "es": "Puertas de garaje"
+      },
+      "primaryTrade": "garage-door",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 21,
+      "slug": "gutter-services",
+      "name": {
+        "en": "Gutter Services",
+        "es": "Canaletas y desagües pluviales"
+      },
+      "primaryTrade": "gutters",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": true,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 22,
+      "slug": "water-damage-restoration",
+      "name": {
+        "en": "Water Damage Restoration",
+        "es": "Restauración por daños de agua"
+      },
+      "primaryTrade": "restoration",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 23,
+      "slug": "pressure-washing",
+      "name": {
+        "en": "Pressure Washing",
+        "es": "Lavado a presión"
+      },
+      "primaryTrade": "pressure-washing",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 24,
+      "slug": "junk-removal",
+      "name": {
+        "en": "Junk Removal",
+        "es": "Retiro de escombros y objetos"
+      },
+      "primaryTrade": "junk-removal",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 25,
+      "slug": "mold-remediation",
+      "name": {
+        "en": "Mold Inspection & Remediation",
+        "es": "Inspección y eliminación de moho"
+      },
+      "primaryTrade": "mold",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 26,
+      "slug": "flooring-tile",
+      "name": {
+        "en": "Flooring & Tile",
+        "es": "Pisos y baldosas"
+      },
+      "primaryTrade": "flooring",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": false,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 27,
+      "slug": "kitchen-bath-remodeling",
+      "name": {
+        "en": "Kitchen & Bathroom Remodeling",
+        "es": "Remodelación de cocinas y baños"
+      },
+      "primaryTrade": "remodeling",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 28,
+      "slug": "fence-gate",
+      "name": {
+        "en": "Fence & Gate Services",
+        "es": "Cercas y portones"
+      },
+      "primaryTrade": "fencing",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 29,
+      "slug": "deck-patio",
+      "name": {
+        "en": "Deck & Patio Construction",
+        "es": "Terrazas y patios"
+      },
+      "primaryTrade": "outdoor",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 30,
+      "slug": "foundation-structural-repair",
+      "name": {
+        "en": "Foundation & Structural Repair",
+        "es": "Reparación de cimientos y estructuras"
+      },
+      "primaryTrade": "foundation",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 31,
+      "slug": "insulation-weatherization",
+      "name": {
+        "en": "Insulation & Weatherization",
+        "es": "Aislamiento y eficiencia térmica"
+      },
+      "primaryTrade": "insulation",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 32,
+      "slug": "generators-backup-power",
+      "name": {
+        "en": "Generators & Backup Power",
+        "es": "Generadores y energía de respaldo"
+      },
+      "primaryTrade": "generators",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 33,
+      "slug": "irrigation-sprinklers",
+      "name": {
+        "en": "Irrigation & Sprinkler Systems",
+        "es": "Riego y aspersores"
+      },
+      "primaryTrade": "irrigation",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": true,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 34,
+      "slug": "chimney-fireplace",
+      "name": {
+        "en": "Chimney & Fireplace Services",
+        "es": "Chimeneas y hogares a leña"
+      },
+      "primaryTrade": "chimney",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": true,
+      "currentWebMarketingDefinitionPresent": false
+    },
+    {
+      "order": 35,
+      "slug": "home-security-smart-home",
+      "name": {
+        "en": "Home Security & Smart Homes",
+        "es": "Seguridad y hogares inteligentes"
+      },
+      "primaryTrade": "smart-home",
+      "marketPlacement": "candidate_only",
+      "bookingEnabled": false,
+      "landingPageEnabled": false,
+      "providerVettingRequired": true,
+      "requiresLocalLicensingAndInsuranceReview": true,
+      "climateAndMarketFitReview": false,
+      "currentWebMarketingDefinitionPresent": false
+    }
+  ]
+}
