@@ -1,6 +1,6 @@
 # BREERO — 35 services × 4-country geographic rollout (draft)
-**Date:** 2026-11-08  
-**Repository:** appolon1908/Breero.com  
+**Date:** 2026-11-08
+**Repository:** appolon1908/Breero.com
 **Status:** Proposed public informational directory implementation on a feature branch. Not merged, deployed, or verified live.
 
 ## Deliverables in this branch
