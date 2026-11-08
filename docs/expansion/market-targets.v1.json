@@ -1,0 +1,1496 @@
+{
+  "schemaVersion": 1,
+  "createdOn": "2026-11-08",
+  "purpose": "Proposed geographic market research and rollout scope only",
+  "launchStatus": "NOT_LIVE",
+  "activationPolicy": "No location or service may be published, advertised as available, or receive live bookings until verified provider coverage, licensing/eligibility, operations, pricing, local compliance, and independent approval.",
+  "priorityCityDefinition": "Curated initial market list, not an exhaustive list of cities or legal municipalities; some entries are metro localities.",
+  "countries": [
+    {
+      "iso2": "US",
+      "name": "United States",
+      "currency": "USD",
+      "locales": [
+        "en-US",
+        "es-US"
+      ],
+      "adminUnit": "state_or_district",
+      "regions": [
+        {
+          "code": "AL",
+          "name": "Alabama",
+          "priorityCities": [
+            "Birmingham",
+            "Huntsville",
+            "Montgomery",
+            "Mobile"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "AK",
+          "name": "Alaska",
+          "priorityCities": [
+            "Anchorage",
+            "Fairbanks",
+            "Juneau"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "AZ",
+          "name": "Arizona",
+          "priorityCities": [
+            "Phoenix",
+            "Tucson",
+            "Mesa",
+            "Scottsdale"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "AR",
+          "name": "Arkansas",
+          "priorityCities": [
+            "Little Rock",
+            "Fayetteville",
+            "Fort Smith",
+            "Jonesboro"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CA",
+          "name": "California",
+          "priorityCities": [
+            "Los Angeles",
+            "San Diego",
+            "San Jose",
+            "San Francisco",
+            "Sacramento",
+            "Fresno",
+            "Oakland",
+            "Bakersfield"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CO",
+          "name": "Colorado",
+          "priorityCities": [
+            "Denver",
+            "Colorado Springs",
+            "Aurora",
+            "Fort Collins"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CT",
+          "name": "Connecticut",
+          "priorityCities": [
+            "Bridgeport",
+            "Stamford",
+            "New Haven",
+            "Hartford"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "DE",
+          "name": "Delaware",
+          "priorityCities": [
+            "Wilmington",
+            "Dover",
+            "Newark"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "FL",
+          "name": "Florida",
+          "priorityCities": [
+            "Miami",
+            "Hialeah",
+            "North Miami",
+            "Fort Lauderdale",
+            "West Palm Beach",
+            "Port St. Lucie",
+            "Orlando",
+            "Jacksonville",
+            "Tampa",
+            "St. Petersburg",
+            "Tallahassee",
+            "Gainesville",
+            "Naples"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "GA",
+          "name": "Georgia",
+          "priorityCities": [
+            "Atlanta",
+            "Savannah",
+            "Augusta",
+            "Columbus",
+            "Macon"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "HI",
+          "name": "Hawaii",
+          "priorityCities": [
+            "Honolulu",
+            "Hilo",
+            "Kailua"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "ID",
+          "name": "Idaho",
+          "priorityCities": [
+            "Boise",
+            "Meridian",
+            "Nampa",
+            "Idaho Falls"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "IL",
+          "name": "Illinois",
+          "priorityCities": [
+            "Chicago",
+            "Aurora",
+            "Naperville",
+            "Rockford",
+            "Springfield"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "IN",
+          "name": "Indiana",
+          "priorityCities": [
+            "Indianapolis",
+            "Fort Wayne",
+            "Evansville",
+            "South Bend"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "IA",
+          "name": "Iowa",
+          "priorityCities": [
+            "Des Moines",
+            "Cedar Rapids",
+            "Davenport",
+            "Sioux City"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "KS",
+          "name": "Kansas",
+          "priorityCities": [
+            "Wichita",
+            "Overland Park",
+            "Kansas City",
+            "Topeka"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "KY",
+          "name": "Kentucky",
+          "priorityCities": [
+            "Louisville",
+            "Lexington",
+            "Bowling Green"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "LA",
+          "name": "Louisiana",
+          "priorityCities": [
+            "New Orleans",
+            "Baton Rouge",
+            "Shreveport",
+            "Lafayette"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "ME",
+          "name": "Maine",
+          "priorityCities": [
+            "Portland",
+            "Lewiston",
+            "Bangor",
+            "Augusta"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MD",
+          "name": "Maryland",
+          "priorityCities": [
+            "Baltimore",
+            "Frederick",
+            "Rockville",
+            "Silver Spring",
+            "Annapolis"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MA",
+          "name": "Massachusetts",
+          "priorityCities": [
+            "Boston",
+            "Brockton",
+            "Worcester",
+            "Springfield",
+            "Cambridge",
+            "Lowell"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MI",
+          "name": "Michigan",
+          "priorityCities": [
+            "Detroit",
+            "Grand Rapids",
+            "Warren",
+            "Ann Arbor",
+            "Lansing",
+            "Flint"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MN",
+          "name": "Minnesota",
+          "priorityCities": [
+            "Minneapolis",
+            "St. Paul",
+            "Rochester",
+            "Duluth"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MS",
+          "name": "Mississippi",
+          "priorityCities": [
+            "Jackson",
+            "Gulfport",
+            "Hattiesburg",
+            "Biloxi"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MO",
+          "name": "Missouri",
+          "priorityCities": [
+            "Kansas City",
+            "St. Louis",
+            "Springfield",
+            "Columbia"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MT",
+          "name": "Montana",
+          "priorityCities": [
+            "Billings",
+            "Missoula",
+            "Bozeman",
+            "Great Falls"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NE",
+          "name": "Nebraska",
+          "priorityCities": [
+            "Omaha",
+            "Lincoln",
+            "Bellevue",
+            "Grand Island"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NV",
+          "name": "Nevada",
+          "priorityCities": [
+            "Las Vegas",
+            "Henderson",
+            "Reno",
+            "Sparks"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NH",
+          "name": "New Hampshire",
+          "priorityCities": [
+            "Manchester",
+            "Nashua",
+            "Concord",
+            "Portsmouth"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NJ",
+          "name": "New Jersey",
+          "priorityCities": [
+            "Newark",
+            "Jersey City",
+            "Paterson",
+            "Elizabeth",
+            "Trenton"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NM",
+          "name": "New Mexico",
+          "priorityCities": [
+            "Albuquerque",
+            "Las Cruces",
+            "Rio Rancho",
+            "Santa Fe"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NY",
+          "name": "New York",
+          "priorityCities": [
+            "New York City",
+            "Buffalo",
+            "Rochester",
+            "Yonkers",
+            "Syracuse",
+            "Albany"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NC",
+          "name": "North Carolina",
+          "priorityCities": [
+            "Charlotte",
+            "Raleigh",
+            "Greensboro",
+            "Durham",
+            "Winston-Salem"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "ND",
+          "name": "North Dakota",
+          "priorityCities": [
+            "Fargo",
+            "Bismarck",
+            "Grand Forks",
+            "Minot"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "OH",
+          "name": "Ohio",
+          "priorityCities": [
+            "Columbus",
+            "Cleveland",
+            "Cincinnati",
+            "Toledo",
+            "Akron",
+            "Dayton"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "OK",
+          "name": "Oklahoma",
+          "priorityCities": [
+            "Oklahoma City",
+            "Tulsa",
+            "Norman",
+            "Broken Arrow"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "OR",
+          "name": "Oregon",
+          "priorityCities": [
+            "Portland",
+            "Eugene",
+            "Salem",
+            "Gresham"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "PA",
+          "name": "Pennsylvania",
+          "priorityCities": [
+            "Philadelphia",
+            "Pittsburgh",
+            "Allentown",
+            "Erie",
+            "Harrisburg"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "RI",
+          "name": "Rhode Island",
+          "priorityCities": [
+            "Providence",
+            "Warwick",
+            "Cranston",
+            "Pawtucket"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "SC",
+          "name": "South Carolina",
+          "priorityCities": [
+            "Charleston",
+            "Columbia",
+            "North Charleston",
+            "Greenville"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "SD",
+          "name": "South Dakota",
+          "priorityCities": [
+            "Sioux Falls",
+            "Rapid City",
+            "Aberdeen",
+            "Brookings"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "TN",
+          "name": "Tennessee",
+          "priorityCities": [
+            "Nashville",
+            "Memphis",
+            "Knoxville",
+            "Chattanooga",
+            "Clarksville"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "TX",
+          "name": "Texas",
+          "priorityCities": [
+            "Houston",
+            "San Antonio",
+            "Laredo",
+            "McAllen",
+            "Dallas",
+            "Fort Worth",
+            "Austin",
+            "El Paso",
+            "Arlington",
+            "Corpus Christi",
+            "Plano"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "UT",
+          "name": "Utah",
+          "priorityCities": [
+            "Salt Lake City",
+            "West Valley City",
+            "Provo",
+            "Ogden"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "VT",
+          "name": "Vermont",
+          "priorityCities": [
+            "Burlington",
+            "South Burlington",
+            "Rutland",
+            "Montpelier"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "VA",
+          "name": "Virginia",
+          "priorityCities": [
+            "Virginia Beach",
+            "Richmond",
+            "Chesapeake",
+            "Norfolk",
+            "Arlington"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "WA",
+          "name": "Washington",
+          "priorityCities": [
+            "Seattle",
+            "Spokane",
+            "Tacoma",
+            "Bellevue",
+            "Vancouver"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "WV",
+          "name": "West Virginia",
+          "priorityCities": [
+            "Charleston",
+            "Huntington",
+            "Morgantown",
+            "Parkersburg"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "WI",
+          "name": "Wisconsin",
+          "priorityCities": [
+            "Milwaukee",
+            "Madison",
+            "Green Bay",
+            "Kenosha"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "WY",
+          "name": "Wyoming",
+          "priorityCities": [
+            "Cheyenne",
+            "Casper",
+            "Laramie",
+            "Gillette"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "DC",
+          "name": "District of Columbia",
+          "priorityCities": [
+            "Washington"
+          ],
+          "status": "research_only"
+        }
+      ]
+    },
+    {
+      "iso2": "MX",
+      "name": "Mexico",
+      "currency": "MXN",
+      "locales": [
+        "es-MX"
+      ],
+      "adminUnit": "federal_entity",
+      "regions": [
+        {
+          "code": "AGU",
+          "name": "Aguascalientes",
+          "priorityCities": [
+            "Aguascalientes",
+            "Jesús María"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "BCN",
+          "name": "Baja California",
+          "priorityCities": [
+            "Tijuana",
+            "Mexicali",
+            "Ensenada",
+            "Playas de Rosarito"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "BCS",
+          "name": "Baja California Sur",
+          "priorityCities": [
+            "La Paz",
+            "Cabo San Lucas",
+            "San José del Cabo"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CAM",
+          "name": "Campeche",
+          "priorityCities": [
+            "San Francisco de Campeche",
+            "Ciudad del Carmen"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "COA",
+          "name": "Coahuila",
+          "priorityCities": [
+            "Saltillo",
+            "Torreón",
+            "Monclova",
+            "Piedras Negras"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "COL",
+          "name": "Colima",
+          "priorityCities": [
+            "Colima",
+            "Manzanillo",
+            "Villa de Álvarez"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CHP",
+          "name": "Chiapas",
+          "priorityCities": [
+            "Tuxtla Gutiérrez",
+            "Tapachula",
+            "San Cristóbal de las Casas"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CHH",
+          "name": "Chihuahua",
+          "priorityCities": [
+            "Ciudad Juárez",
+            "Chihuahua",
+            "Delicias"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CMX",
+          "name": "Ciudad de México",
+          "priorityCities": [
+            "Ciudad de México"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "DUR",
+          "name": "Durango",
+          "priorityCities": [
+            "Durango",
+            "Gómez Palacio",
+            "Lerdo"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "GUA",
+          "name": "Guanajuato",
+          "priorityCities": [
+            "León",
+            "Irapuato",
+            "Celaya",
+            "Salamanca",
+            "Guanajuato"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "GRO",
+          "name": "Guerrero",
+          "priorityCities": [
+            "Acapulco",
+            "Chilpancingo",
+            "Iguala",
+            "Zihuatanejo"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "HID",
+          "name": "Hidalgo",
+          "priorityCities": [
+            "Pachuca",
+            "Tulancingo",
+            "Tizayuca"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "JAL",
+          "name": "Jalisco",
+          "priorityCities": [
+            "Guadalajara",
+            "Zapopan",
+            "San Pedro Tlaquepaque",
+            "Puerto Vallarta",
+            "Tonalá"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MEX",
+          "name": "Estado de México",
+          "priorityCities": [
+            "Ecatepec",
+            "Nezahualcóyotl",
+            "Naucalpan",
+            "Toluca",
+            "Tlalnepantla"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MIC",
+          "name": "Michoacán",
+          "priorityCities": [
+            "Morelia",
+            "Uruapan",
+            "Zamora",
+            "Lázaro Cárdenas"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MOR",
+          "name": "Morelos",
+          "priorityCities": [
+            "Cuernavaca",
+            "Jiutepec",
+            "Cuautla"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NAY",
+          "name": "Nayarit",
+          "priorityCities": [
+            "Tepic",
+            "Bahía de Banderas"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NLE",
+          "name": "Nuevo León",
+          "priorityCities": [
+            "Monterrey",
+            "Guadalupe",
+            "Apodaca",
+            "San Nicolás de los Garza",
+            "San Pedro Garza García"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "OAX",
+          "name": "Oaxaca",
+          "priorityCities": [
+            "Oaxaca de Juárez",
+            "Salina Cruz",
+            "Juchitán de Zaragoza"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "PUE",
+          "name": "Puebla",
+          "priorityCities": [
+            "Puebla",
+            "Tehuacán",
+            "San Martín Texmelucan"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "QUE",
+          "name": "Querétaro",
+          "priorityCities": [
+            "Santiago de Querétaro",
+            "San Juan del Río",
+            "El Marqués"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "ROO",
+          "name": "Quintana Roo",
+          "priorityCities": [
+            "Cancún",
+            "Playa del Carmen",
+            "Chetumal",
+            "Tulum",
+            "Cozumel"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "SLP",
+          "name": "San Luis Potosí",
+          "priorityCities": [
+            "San Luis Potosí",
+            "Soledad de Graciano Sánchez",
+            "Ciudad Valles"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "SIN",
+          "name": "Sinaloa",
+          "priorityCities": [
+            "Culiacán",
+            "Mazatlán",
+            "Los Mochis"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "SON",
+          "name": "Sonora",
+          "priorityCities": [
+            "Hermosillo",
+            "Ciudad Obregón",
+            "Nogales",
+            "San Luis Río Colorado"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "TAB",
+          "name": "Tabasco",
+          "priorityCities": [
+            "Villahermosa",
+            "Cárdenas",
+            "Comalcalco"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "TAM",
+          "name": "Tamaulipas",
+          "priorityCities": [
+            "Reynosa",
+            "Matamoros",
+            "Nuevo Laredo",
+            "Tampico",
+            "Ciudad Victoria"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "TLA",
+          "name": "Tlaxcala",
+          "priorityCities": [
+            "Tlaxcala",
+            "Apizaco",
+            "Huamantla"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "VER",
+          "name": "Veracruz",
+          "priorityCities": [
+            "Veracruz",
+            "Xalapa",
+            "Coatzacoalcos",
+            "Poza Rica",
+            "Córdoba"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "YUC",
+          "name": "Yucatán",
+          "priorityCities": [
+            "Mérida",
+            "Valladolid",
+            "Tizimín"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "ZAC",
+          "name": "Zacatecas",
+          "priorityCities": [
+            "Zacatecas",
+            "Guadalupe",
+            "Fresnillo"
+          ],
+          "status": "research_only"
+        }
+      ]
+    },
+    {
+      "iso2": "ES",
+      "name": "Spain",
+      "currency": "EUR",
+      "locales": [
+        "es-ES"
+      ],
+      "adminUnit": "autonomous_community_or_city",
+      "regions": [
+        {
+          "code": "AN",
+          "name": "Andalucía",
+          "priorityCities": [
+            "Sevilla",
+            "Málaga",
+            "Córdoba",
+            "Granada",
+            "Cádiz",
+            "Almería",
+            "Jerez de la Frontera"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "AR",
+          "name": "Aragón",
+          "priorityCities": [
+            "Zaragoza",
+            "Huesca",
+            "Teruel"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "AS",
+          "name": "Principado de Asturias",
+          "priorityCities": [
+            "Gijón",
+            "Oviedo",
+            "Avilés"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "IB",
+          "name": "Illes Balears",
+          "priorityCities": [
+            "Palma",
+            "Ibiza",
+            "Manacor",
+            "Mahón"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CN",
+          "name": "Canarias",
+          "priorityCities": [
+            "Las Palmas de Gran Canaria",
+            "Santa Cruz de Tenerife",
+            "San Cristóbal de La Laguna",
+            "Arrecife"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CB",
+          "name": "Cantabria",
+          "priorityCities": [
+            "Santander",
+            "Torrelavega",
+            "Castro Urdiales"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CL",
+          "name": "Castilla y León",
+          "priorityCities": [
+            "Valladolid",
+            "Burgos",
+            "Salamanca",
+            "León",
+            "Segovia",
+            "Ávila"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CM",
+          "name": "Castilla-La Mancha",
+          "priorityCities": [
+            "Albacete",
+            "Toledo",
+            "Guadalajara",
+            "Ciudad Real",
+            "Cuenca"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CT",
+          "name": "Cataluña",
+          "priorityCities": [
+            "Barcelona",
+            "L'Hospitalet de Llobregat",
+            "Badalona",
+            "Terrassa",
+            "Sabadell",
+            "Tarragona",
+            "Girona",
+            "Lleida"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "VC",
+          "name": "Comunitat Valenciana",
+          "priorityCities": [
+            "Valencia",
+            "Alicante",
+            "Elche",
+            "Castellón de la Plana",
+            "Benidorm"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "EX",
+          "name": "Extremadura",
+          "priorityCities": [
+            "Badajoz",
+            "Cáceres",
+            "Mérida"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "GA",
+          "name": "Galicia",
+          "priorityCities": [
+            "Vigo",
+            "A Coruña",
+            "Ourense",
+            "Santiago de Compostela",
+            "Lugo",
+            "Pontevedra"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "RI",
+          "name": "La Rioja",
+          "priorityCities": [
+            "Logroño",
+            "Calahorra"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MD",
+          "name": "Comunidad de Madrid",
+          "priorityCities": [
+            "Madrid",
+            "Móstoles",
+            "Alcalá de Henares",
+            "Fuenlabrada",
+            "Leganés",
+            "Getafe"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "MC",
+          "name": "Región de Murcia",
+          "priorityCities": [
+            "Murcia",
+            "Cartagena",
+            "Lorca",
+            "Molina de Segura"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "NC",
+          "name": "Comunidad Foral de Navarra",
+          "priorityCities": [
+            "Pamplona",
+            "Tudela",
+            "Barañáin"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "PV",
+          "name": "País Vasco",
+          "priorityCities": [
+            "Bilbao",
+            "Vitoria-Gasteiz",
+            "Donostia-San Sebastián",
+            "Barakaldo"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "CE",
+          "name": "Ceuta",
+          "priorityCities": [
+            "Ceuta"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "ML",
+          "name": "Melilla",
+          "priorityCities": [
+            "Melilla"
+          ],
+          "status": "research_only"
+        }
+      ]
+    },
+    {
+      "iso2": "DO",
+      "name": "Dominican Republic",
+      "currency": "DOP",
+      "locales": [
+        "es-DO"
+      ],
+      "adminUnit": "province_or_district",
+      "regions": [
+        {
+          "code": "DN",
+          "name": "Distrito Nacional",
+          "priorityCities": [
+            "Santo Domingo de Guzmán"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "SD",
+          "name": "Santo Domingo",
+          "priorityCities": [
+            "Santo Domingo Este",
+            "Santo Domingo Norte",
+            "Santo Domingo Oeste",
+            "Boca Chica",
+            "Los Alcarrizos",
+            "Pedro Brand"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "01",
+          "name": "Azua",
+          "priorityCities": [
+            "Azua de Compostela",
+            "Sabana Yegua"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "02",
+          "name": "Bahoruco",
+          "priorityCities": [
+            "Neiba",
+            "Tamayo"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "03",
+          "name": "Barahona",
+          "priorityCities": [
+            "Santa Cruz de Barahona",
+            "Cabral"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "04",
+          "name": "Dajabón",
+          "priorityCities": [
+            "Dajabón",
+            "Loma de Cabrera"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "05",
+          "name": "Duarte",
+          "priorityCities": [
+            "San Francisco de Macorís",
+            "Pimentel",
+            "Villa Riva"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "06",
+          "name": "Elías Piña",
+          "priorityCities": [
+            "Comendador"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "07",
+          "name": "El Seibo",
+          "priorityCities": [
+            "Santa Cruz de El Seibo",
+            "Miches"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "08",
+          "name": "Espaillat",
+          "priorityCities": [
+            "Moca",
+            "Gaspar Hernández"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "09",
+          "name": "Independencia",
+          "priorityCities": [
+            "Jimaní",
+            "Duvergé"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "10",
+          "name": "La Altagracia",
+          "priorityCities": [
+            "Higüey",
+            "Punta Cana",
+            "Bávaro"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "11",
+          "name": "La Romana",
+          "priorityCities": [
+            "La Romana",
+            "Villa Hermosa"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "12",
+          "name": "La Vega",
+          "priorityCities": [
+            "La Vega",
+            "Constanza",
+            "Jarabacoa"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "13",
+          "name": "María Trinidad Sánchez",
+          "priorityCities": [
+            "Nagua",
+            "Cabrera",
+            "Río San Juan"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "14",
+          "name": "Monte Cristi",
+          "priorityCities": [
+            "San Fernando de Monte Cristi",
+            "Villa Vásquez",
+            "Guayubín"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "15",
+          "name": "Pedernales",
+          "priorityCities": [
+            "Pedernales",
+            "Oviedo"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "16",
+          "name": "Peravia",
+          "priorityCities": [
+            "Baní",
+            "Nizao"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "17",
+          "name": "Puerto Plata",
+          "priorityCities": [
+            "Puerto Plata",
+            "Sosúa",
+            "Cabarete"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "18",
+          "name": "Hermanas Mirabal",
+          "priorityCities": [
+            "Salcedo",
+            "Tenares",
+            "Villa Tapia"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "19",
+          "name": "Samaná",
+          "priorityCities": [
+            "Santa Bárbara de Samaná",
+            "Las Terrenas",
+            "Sánchez"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "20",
+          "name": "San Cristóbal",
+          "priorityCities": [
+            "San Cristóbal",
+            "Bajos de Haina",
+            "Villa Altagracia"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "21",
+          "name": "San Juan",
+          "priorityCities": [
+            "San Juan de la Maguana",
+            "Las Matas de Farfán"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "22",
+          "name": "San Pedro de Macorís",
+          "priorityCities": [
+            "San Pedro de Macorís",
+            "Consuelo",
+            "Quisqueya"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "23",
+          "name": "Sánchez Ramírez",
+          "priorityCities": [
+            "Cotuí",
+            "Fantino",
+            "Cevicos"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "24",
+          "name": "Santiago",
+          "priorityCities": [
+            "Santiago de los Caballeros",
+            "Tamboril",
+            "Villa González",
+            "Licey al Medio"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "25",
+          "name": "Santiago Rodríguez",
+          "priorityCities": [
+            "San Ignacio de Sabaneta",
+            "Monción"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "26",
+          "name": "Valverde",
+          "priorityCities": [
+            "Mao",
+            "Esperanza",
+            "Laguna Salada"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "27",
+          "name": "Monseñor Nouel",
+          "priorityCities": [
+            "Bonao",
+            "Maimón"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "28",
+          "name": "Monte Plata",
+          "priorityCities": [
+            "Monte Plata",
+            "Bayaguana",
+            "Yamasá"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "29",
+          "name": "Hato Mayor",
+          "priorityCities": [
+            "Hato Mayor del Rey",
+            "Sabana de la Mar"
+          ],
+          "status": "research_only"
+        },
+        {
+          "code": "30",
+          "name": "San José de Ocoa",
+          "priorityCities": [
+            "San José de Ocoa",
+            "Sabana Larga"
+          ],
+          "status": "research_only"
+        }
+      ]
+    }
+  ]
+}
