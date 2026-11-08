@@ -1492,5 +1492,9 @@
         }
       ]
     }
-  ]
+  ],
+  "minimumVerifiedProfessionalsPerCity": 7,
+  "minimumRequirementDefinition": "At least seven distinct, source-verified, locally eligible and contactable professional businesses per city before BREERO may claim operational market coverage. Verify service-by-service coverage independently; seven providers overall never means all 35 services are bookable.",
+  "verifiedProviderCountIsUnknownByDefault": true,
+  "directoryPublicationPolicy": "All priority-city directory pages may be publicly accessible as informational pages, but must be noindex and non-bookable until the city and service-specific verification gates pass."
 }
